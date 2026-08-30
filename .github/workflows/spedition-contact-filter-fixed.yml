@@ -1,0 +1,30 @@
+name: Validate Spedition contact hits fixed
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/spedition-contact-filter-fixed.yml'
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate strictly
+        run: |
+          git pull --rebase origin main
+          sed -i "s/csv.DictWriter(f,fieldnames=fields)/csv.DictWriter(f,fieldnames=fields,extrasaction='ignore')/g" scripts/spedition_contact_filter.py
+          python scripts/spedition_contact_filter.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/official_hits_validated.csv data/spedition/contacts/official_best_contacts.csv
+          git commit -m 'Validate and rank Spedition direct contact evidence' || exit 0
+          for n in 1 2 3 4 5; do git pull --rebase origin main || true; git push origin HEAD:main && exit 0; sleep $((n*2)); done
+          exit 1
