@@ -1,0 +1,93 @@
+name: Spedition external direct-contact search
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/spedition_contact_external_search.py'
+      - '.github/workflows/spedition-contact-external-search.yml'
+permissions:
+  contents: write
+jobs:
+  search:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        chunk:
+          - {start: 1, end: 6, id: '001_006'}
+          - {start: 7, end: 12, id: '007_012'}
+          - {start: 13, end: 18, id: '013_018'}
+          - {start: 19, end: 24, id: '019_024'}
+          - {start: 25, end: 30, id: '025_030'}
+          - {start: 31, end: 36, id: '031_036'}
+          - {start: 37, end: 42, id: '037_042'}
+          - {start: 43, end: 48, id: '043_048'}
+          - {start: 49, end: 54, id: '049_054'}
+          - {start: 55, end: 60, id: '055_060'}
+          - {start: 61, end: 66, id: '061_066'}
+          - {start: 67, end: 72, id: '067_072'}
+          - {start: 73, end: 78, id: '073_078'}
+          - {start: 79, end: 84, id: '079_084'}
+          - {start: 85, end: 90, id: '085_090'}
+          - {start: 91, end: 96, id: '091_096'}
+          - {start: 97, end: 102, id: '097_102'}
+          - {start: 103, end: 108, id: '103_108'}
+          - {start: 109, end: 114, id: '109_114'}
+          - {start: 115, end: 118, id: '115_118'}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4
+      - name: Search external sources
+        run: |
+          mkdir -p data/spedition/contacts/external_chunks
+          python scripts/spedition_contact_external_search.py --start ${{ matrix.chunk.start }} --end ${{ matrix.chunk.end }} --out data/spedition/contacts/external_chunks/chunk_${{ matrix.chunk.id }}.csv
+      - name: Persist checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          FILE=data/spedition/contacts/external_chunks/chunk_${{ matrix.chunk.id }}.csv
+          git add "$FILE"
+          git commit -m "Checkpoint external Spedition contact search ${{ matrix.chunk.id }}" || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; git pull origin main --no-rebase || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*3))
+          done
+          exit 1
+  merge:
+    needs: search
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Merge external checkpoints
+        run: |
+          git pull --rebase origin main
+          python - <<'PY'
+          import csv,glob,os
+          fields=['no','company','person','contact_type','contact','contact_class','method','source_url','source_title','query_family','origin','context']
+          rows=[];seen=set()
+          for f in sorted(glob.glob('data/spedition/contacts/external_chunks/chunk_*.csv')):
+            with open(f,encoding='utf-8-sig',newline='') as h:
+              for r in csv.DictReader(h):
+                k=(r['no'],r['person'].lower(),r['contact_type'],r['contact'].lower(),r['source_url'],r['method'])
+                if k not in seen:seen.add(k);rows.append(r)
+          out='data/spedition/contacts/external_hits.csv'
+          with open(out,'w',encoding='utf-8-sig',newline='') as h:
+            w=csv.DictWriter(h,fieldnames=fields);w.writeheader();w.writerows(rows)
+          print('chunks',len(glob.glob('data/spedition/contacts/external_chunks/chunk_*.csv')),'hits',len(rows),'companies',len(set(r['no'] for r in rows)))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/external_hits.csv
+          git commit -m 'Merge external Spedition direct contact search' || exit 0
+          for n in 1 2 3 4 5; do git pull --rebase origin main || true; git push origin HEAD:main && exit 0; sleep $((n*2)); done
+          exit 1
