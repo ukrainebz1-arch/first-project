@@ -1,0 +1,58 @@
+name: KSW legal entities Austria
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/ksw-legal-entities.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  scrape:
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests==2.32.4 beautifulsoup4==4.12.3
+      - name: Scrape KSW legal entities only
+        env:
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: 32
+          TOTAL_PAGES: 536
+          OUTDIR: out
+        run: python scrape_ksw_legal_entities.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-legal-chunk-${{ matrix.chunk }}
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
+  merge:
+    needs: scrape
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ksw-legal-chunk-*
+          path: chunks
+          merge-multiple: true
+      - name: Deduplicate legal entities and groups
+        env:
+          INDIR: chunks
+          OUTDIR: ksw_final
+        run: python merge_ksw_legal_entities.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-legal-entities-austria-complete
+          path: ksw_final/
+          if-no-files-found: error
+          retention-days: 7
