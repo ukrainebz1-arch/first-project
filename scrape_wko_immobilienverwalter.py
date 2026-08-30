@@ -1,4 +1,3 @@
-# Triggered via GitHub Actions to collect the complete Austrian WKO Immobilienverwalter universe.
 import asyncio
 import csv
 import json
@@ -42,7 +41,7 @@ async def dismiss_cookie(page):
             loc = page.get_by_role("button", name=re.compile(f"^{re.escape(text)}$", re.I))
             if await loc.count() and await loc.first.is_visible():
                 await loc.first.click(timeout=2000, force=True)
-                await page.wait_for_timeout(300)
+                await page.wait_for_timeout(250)
                 return
         except Exception:
             pass
@@ -52,105 +51,87 @@ async def result_links(page):
     data = await page.locator('a[href*="firmaid="]').evaluate_all(
         """els => els.map(a => ({href: a.href, text: (a.innerText || a.textContent || '').trim()}))"""
     )
-    out, seen = [], set()
+    # WKO can render more than one anchor for the same profile. Keep the most
+    # informative label rather than whichever duplicate happens to appear first.
+    best = {}
     for item in data:
         href = item.get("href") or ""
-        if not href or href in seen:
+        if not href or not qs_value(href, "firmaid"):
             continue
-        seen.add(href)
-        out.append({"href": href, "text": clean_text(item.get("text", ""))})
-    return out
+        text = clean_text(item.get("text", ""))
+        old = best.get(href)
+        if old is None or len(text) > len(old["text"]):
+            best[href] = {"href": href, "text": text}
+    return list(best.values())
 
 
-async def locate_more(page):
-    # WKO has changed markup over time, so support buttons, anchors, inputs,
-    # spans/divs containing the label, and accessible-text matching.
-    selectors = [
-        'button:has-text("Mehr laden")', 'a:has-text("Mehr laden")',
-        'input[value*="Mehr laden" i]', '[role="button"]:has-text("Mehr laden")',
-        'button:has-text("Mehr")', 'a:has-text("Mehr")',
-        'input[value*="Mehr" i]', '[role="button"]:has-text("Mehr")',
-        'text=/Mehr laden/i',
-    ]
-    for sel in selectors:
-        try:
-            loc = page.locator(sel)
-            count = await loc.count()
-            for i in range(count):
-                el = loc.nth(i)
-                if await el.is_visible():
-                    return el
-        except Exception:
-            pass
-    return None
+async def wait_for_batch_change(page, before_hrefs, timeout_ms=30000):
+    deadline = asyncio.get_running_loop().time() + timeout_ms / 1000
+    while asyncio.get_running_loop().time() < deadline:
+        await page.wait_for_timeout(200)
+        current = {x["href"] for x in await result_links(page)}
+        if current and current != before_hrefs:
+            return current
+    return {x["href"] for x in await result_links(page)}
 
 
-async def dump_more_diagnostics(page, state):
-    try:
-        els = await page.locator('button,a,input,[role="button"],span,div').evaluate_all(
-            """els => els.map(e => ({tag:e.tagName, text:(e.innerText||e.textContent||'').trim(), value:e.value||'', cls:e.className||'', id:e.id||'', html:e.outerHTML||''}))
-                 .filter(x => /mehr|laden/i.test((x.text||'')+' '+(x.value||'')))
-                 .slice(0,30)"""
-        )
-        print(f"  MORE_DIAG {state}: {json.dumps(els, ensure_ascii=False)[:12000]}", flush=True)
-    except Exception as e:
-        print(f"  MORE_DIAG failed: {e}", flush=True)
+async def collect_all_batches(page, state, expected):
+    accumulated = {}
+    batches = 0
+    seen_batch_signatures = set()
 
-
-async def click_more_until_done(page, state, expected=None):
-    stagnant = 0
-    clicks = 0
     while True:
-        n_before = len(await result_links(page))
-        if expected and n_before >= expected:
+        current = await result_links(page)
+        hrefs = {x["href"] for x in current}
+        signature = tuple(sorted(hrefs))
+        if signature in seen_batch_signatures:
+            print(f"  repeated batch detected at batch={batches+1}", flush=True)
+            break
+        seen_batch_signatures.add(signature)
+        batches += 1
+        for item in current:
+            old = accumulated.get(item["href"])
+            if old is None or len(item["text"]) > len(old["text"]):
+                accumulated[item["href"]] = item
+
+        n = len(accumulated)
+        if batches == 1 or batches % 10 == 0 or (expected and n >= expected):
+            print(f"  {state}: batches={batches}, collected={n}/{expected}", flush=True)
+        if expected and n >= expected:
             break
 
-        btn = await locate_more(page)
-        if btn is None:
-            await dump_more_diagnostics(page, state)
+        more = page.locator('#ctl00_ContentPlaceHolder1_nextPageButton')
+        if not await more.count() or not await more.first.is_visible():
+            more = page.locator('input[type="submit"][value="Mehr laden"]')
+        if not await more.count() or not await more.first.is_visible():
+            print(f"  no next-page submit after {n} records", flush=True)
             break
 
+        before = hrefs
         try:
-            await btn.scroll_into_view_if_needed(timeout=3000)
-        except Exception:
-            pass
-        clicked = False
-        for method in ("normal", "force", "js"):
+            # This is an ASP.NET form postback to the same URL. Depending on the
+            # WKO response it may register as navigation or only as a document
+            # replacement, so tolerate expect_navigation timeout and verify the
+            # actual result set afterwards.
             try:
-                if method == "normal":
-                    await btn.click(timeout=8000)
-                elif method == "force":
-                    await btn.click(timeout=8000, force=True)
-                else:
-                    await btn.evaluate("el => el.click()")
-                clicked = True
+                async with page.expect_navigation(wait_until="domcontentloaded", timeout=15000):
+                    await more.first.click(timeout=8000)
+            except PlaywrightTimeoutError:
+                try:
+                    await more.first.click(timeout=3000, force=True)
+                except Exception:
+                    pass
+            after = await wait_for_batch_change(page, before, timeout_ms=20000)
+            if not after or after == before:
+                print(f"  next-page submit did not change result batch", flush=True)
                 break
-            except Exception:
-                pass
-        if not clicked:
-            await dump_more_diagnostics(page, state)
+        except Exception as e:
+            print(f"  pagination error: {type(e).__name__}: {e}", flush=True)
             break
 
-        clicks += 1
-        grew = False
-        for _ in range(32):
-            await page.wait_for_timeout(250)
-            if len(await result_links(page)) > n_before:
-                grew = True
-                break
-        if grew:
-            stagnant = 0
-        else:
-            stagnant += 1
-            if stagnant >= 2:
-                await dump_more_diagnostics(page, state)
-                break
+        await page.wait_for_timeout(100)
 
-        if clicks % 10 == 0:
-            print(f"  clicks={clicks}, loaded={len(await result_links(page))}, expected={expected}", flush=True)
-        if clicks > 250:
-            raise RuntimeError("Safety stop: more than 250 load-more clicks")
-    return clicks
+    return list(accumulated.values()), batches
 
 
 async def scrape_state(browser, state, slug):
@@ -163,42 +144,36 @@ async def scrape_state(browser, state, slug):
     page = await context.new_page()
     print(f"STATE {state}: {url}", flush=True)
     await page.goto(url, wait_until="domcontentloaded", timeout=120000)
-    try:
-        await page.wait_for_load_state("networkidle", timeout=15000)
-    except PlaywrightTimeoutError:
-        pass
     await dismiss_cookie(page)
-    await page.wait_for_timeout(700)
+    await page.wait_for_timeout(400)
 
     body = clean_text(await page.locator("body").inner_text())
     m = re.search(r"Ihre Suche erzielte\s+(?:über\s+)?([\d\.]+)\s+Treffer", body, re.I)
     expected = int(m.group(1).replace(".", "")) if m else None
     print(f"  expected={expected}", flush=True)
 
-    clicks = await click_more_until_done(page, state, expected=expected)
-    links = await result_links(page)
-    print(f"  final loaded links={len(links)} after {clicks} clicks", flush=True)
-
+    links, batches = await collect_all_batches(page, state, expected)
     rows = []
     for item in links:
         href = item["href"]
-        firmaid = qs_value(href, "firmaid")
-        if not firmaid:
-            continue
         rows.append({
             "bundesland": state,
             "company_name": item["text"],
-            "firmaid": firmaid,
+            "firmaid": qs_value(href, "firmaid"),
             "standortid": qs_value(href, "standortid"),
             "profile_url": href,
             "source_list_url": url,
         })
-    rows = list({r["profile_url"]: r for r in rows}.values())
+
     diag = {
-        "bundesland": state, "source_url": url, "expected_treffer": expected,
-        "extracted_profile_urls": len(rows), "load_more_clicks": clicks,
+        "bundesland": state,
+        "source_url": url,
+        "expected_treffer": expected,
+        "extracted_profile_urls": len(rows),
+        "batches": batches,
         "count_match": (expected == len(rows)) if expected is not None else None,
     }
+    print(f"  DONE {state}: {len(rows)}/{expected}, batches={batches}", flush=True)
     await context.close()
     return rows, diag
 
@@ -215,21 +190,32 @@ async def main():
 
     raw_fields = ["bundesland", "company_name", "firmaid", "standortid", "profile_url", "source_list_url"]
     with (OUT / "immobilienverwalter_standorte.csv").open("w", newline="", encoding="utf-8-sig") as f:
-        w = csv.DictWriter(f, fieldnames=raw_fields); w.writeheader(); w.writerows(all_rows)
+        w = csv.DictWriter(f, fieldnames=raw_fields)
+        w.writeheader(); w.writerows(all_rows)
 
     grouped = {}
     for r in all_rows:
         key = r["firmaid"] or r["profile_url"]
-        g = grouped.setdefault(key, {"company_name": r["company_name"], "firmaid": r["firmaid"], "bundeslaender": set(), "standort_count": 0, "profile_url": r["profile_url"]})
+        g = grouped.setdefault(key, {
+            "company_name": r["company_name"], "firmaid": r["firmaid"],
+            "bundeslaender": set(), "standort_count": 0, "profile_url": r["profile_url"]
+        })
         g["bundeslaender"].add(r["bundesland"])
         g["standort_count"] += 1
-        if len(r["company_name"]) > len(g["company_name"]): g["company_name"] = r["company_name"]
+        if len(r["company_name"]) > len(g["company_name"]):
+            g["company_name"] = r["company_name"]
 
-    unique = [{"company_name": g["company_name"], "firmaid": g["firmaid"], "bundeslaender": "; ".join(sorted(g["bundeslaender"])), "standort_count": g["standort_count"], "profile_url": g["profile_url"]} for g in grouped.values()]
+    unique = [{
+        "company_name": g["company_name"], "firmaid": g["firmaid"],
+        "bundeslaender": "; ".join(sorted(g["bundeslaender"])),
+        "standort_count": g["standort_count"], "profile_url": g["profile_url"]
+    } for g in grouped.values()]
     unique.sort(key=lambda x: x["company_name"].casefold())
+
     with (OUT / "immobilienverwalter_unique_companies.csv").open("w", newline="", encoding="utf-8-sig") as f:
         fields = ["company_name", "firmaid", "bundeslaender", "standort_count", "profile_url"]
-        w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(unique)
+        w = csv.DictWriter(f, fieldnames=fields)
+        w.writeheader(); w.writerows(unique)
 
     summary = {"raw_standort_rows": len(all_rows), "unique_firmaids": len(unique), "states": diagnostics}
     (OUT / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
