@@ -17,3 +17,4 @@ for fn,data in [('new_30plus_linkedin.csv',conf30),('new_20plus_linkedin.csv',co
   w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(data)
 with open('final_refine/summary.json','w') as f: json.dump({'rows':len(rows),'new_30plus':len(conf30),'new_20plus':len(conf20)},f,indent=2)
 print('refined',len(rows),'new30',len(conf30),'new20',len(conf20))
+# triggered after workflow creation
