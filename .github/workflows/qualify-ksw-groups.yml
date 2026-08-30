@@ -56,7 +56,7 @@ jobs:
           CHUNK: ${{ matrix.chunk }}
           CHUNKS: 32
           INPUT: input/ksw_target_universe.csv
-        run: python qualify_ksw_groups.py
+        run: python run_qualify_ksw_safe.py
       - uses: actions/upload-artifact@v4
         with:
           name: ksw-qualified-chunk-${{ matrix.chunk }}
