@@ -1,0 +1,52 @@
+name: Refine KSW possible via LinkedIn
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'merge_ksw_possible_linkedin.py'
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+      max-parallel: 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install requests==2.32.4 beautifulsoup4==4.12.3
+      - name: Download prior qualification artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ksw-accounting-austria-qualified-20plus
+          path: input
+          github-token: ${{ github.token }}
+          run-id: 33308176305
+      - name: Refine possible candidates
+        env:
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: 16
+          INPUT: input/ksw_all_groups_qualified.csv
+          OUTDIR: out
+        run: python refine_ksw_possible_linkedin.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: refine-ksw-${{ matrix.chunk }}
+          path: out/refine_*.csv
+  merge:
+    needs: qualify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: refine-ksw-*
+          path: refined
+          merge-multiple: true
+      - run: python merge_ksw_possible_linkedin.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-possible-linkedin-refined
+          path: final_refine/
