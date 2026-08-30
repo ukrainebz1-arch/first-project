@@ -4,6 +4,8 @@ from urllib.parse import urlparse
 
 INDIR=os.environ.get('INDIR','chunks')
 OUTDIR=os.environ.get('OUTDIR','ksw_final')
+TOTAL_PAGES=int(os.environ.get('TOTAL_PAGES','536'))
+EXPECTED_CHUNKS=int(os.environ.get('EXPECTED_CHUNKS','32'))
 os.makedirs(OUTDIR,exist_ok=True)
 GENERIC_MAIL={'gmail.com','gmx.at','gmx.net','outlook.com','hotmail.com','aon.at','icloud.com','yahoo.com','yahoo.de'}
 
@@ -34,12 +36,26 @@ def joinuniq(vals):
     return ' | '.join(seen)
 
 files=sorted(glob.glob(os.path.join(INDIR,'ksw_legal_chunk_*.csv')))
-if len(files)!=32:raise SystemExit(f'expected 32 chunks, got {len(files)}')
+metafiles=sorted(glob.glob(os.path.join(INDIR,'ksw_legal_chunk_*.json')))
+if len(files)!=EXPECTED_CHUNKS:raise SystemExit(f'expected {EXPECTED_CHUNKS} CSV chunks, got {len(files)}')
+if len(metafiles)!=EXPECTED_CHUNKS:raise SystemExit(f'expected {EXPECTED_CHUNKS} metadata chunks, got {len(metafiles)}')
+completed=[];failed=[];meta_rows=0
+for p in metafiles:
+    with open(p,encoding='utf-8') as f:m=json.load(f)
+    completed += [int(x) for x in m.get('completed_pages',[])]
+    failed += [int(x['page']) for x in m.get('failed_pages',[])]
+    meta_rows += int(m.get('rows',0))
+expected=set(range(1,TOTAL_PAGES+1));done=set(completed)
+missing=sorted(expected-done)
+duplicated=sorted(p for p in done if completed.count(p)>1)
+if failed or missing or duplicated:
+    raise SystemExit(f'KSW completeness failure: failed={failed[:30]}, missing={missing[:30]}, duplicates={duplicated[:30]}, completed={len(done)}/{TOTAL_PAGES}')
+
 raw=[]
 for p in files:
     with open(p,encoding='utf-8-sig',newline='') as f:raw.extend(csv.DictReader(f))
+if len(raw)!=meta_rows:raise SystemExit(f'row count mismatch csv={len(raw)} meta={meta_rows}')
 
-# Deduplicate branches/listings of the same legal entity by exact normalized title.
 by_entity=defaultdict(list)
 for r in raw:by_entity[r['title_norm']].append(r)
 entities=[]
@@ -54,7 +70,6 @@ for k,rs in by_entity.items():
         'brand_norm':brand_norm(rep['title'])
     })
 
-# Group separate legal entities that clearly share one corporate domain/email domain.
 by_group=defaultdict(list)
 for e in entities:
     d=e['domain'];md=e['email_domain']
@@ -81,6 +96,6 @@ def write(path,rows):
 write(os.path.join(OUTDIR,'ksw_legal_entities_raw.csv'),raw)
 write(os.path.join(OUTDIR,'ksw_legal_entities_unique.csv'),entities)
 write(os.path.join(OUTDIR,'ksw_legal_entity_groups.csv'),groups)
-summary={'raw_legal_listings':len(raw),'unique_legal_entities':len(entities),'grouped_targets_before_size_filter':len(groups),'chunks':len(files)}
+summary={'pages_verified':len(done),'raw_legal_listings':len(raw),'unique_legal_entities':len(entities),'grouped_targets_before_size_filter':len(groups),'chunks':len(files),'failed_pages':[]}
 with open(os.path.join(OUTDIR,'summary.json'),'w') as f:json.dump(summary,f,indent=2)
 print(json.dumps(summary,indent=2))
