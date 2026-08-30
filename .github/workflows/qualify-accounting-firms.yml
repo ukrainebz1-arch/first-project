@@ -1,0 +1,66 @@
+name: Qualify accounting firms 20plus
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/qualify-accounting-firms.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests==2.32.4 beautifulsoup4==4.12.3
+      - name: Download complete WKO source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wko-bookkeeping-austria-complete
+          path: input
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298661159
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Qualify chunk
+        env:
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: 16
+          INPUT: input/wko_bookkeeping_austria_combined.csv
+          OUTDIR: out
+        run: python qualify_accounting_firms.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qualification-chunk-${{ matrix.chunk }}
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
+  merge:
+    needs: qualify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: qualification-chunk-*
+          path: chunks
+          merge-multiple: true
+      - name: Merge, group-deduplicate and create target shortlist
+        env:
+          INDIR: chunks
+          OUTDIR: final_qualification
+        run: python merge_accounting_qualification.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-firms-austria-qualified-20plus
+          path: final_qualification/
+          if-no-files-found: error
+          retention-days: 7
