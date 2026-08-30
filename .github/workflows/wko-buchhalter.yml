@@ -1,0 +1,52 @@
+name: WKO Buchhalter Austria scrape
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'wko_buchhalter_scraper.py'
+      - 'requirements-wko.txt'
+      - '.github/workflows/wko-buchhalter.yml'
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements-wko.txt
+
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Scrape all WKO Buchhalter listings
+        env:
+          PROFILE_WORKERS: '5'
+          OUT_DIR: output
+        run: python wko_buchhalter_scraper.py
+
+      - name: Show summary
+        if: always()
+        run: |
+          if [ -f output/summary.json ]; then cat output/summary.json; fi
+          if [ -f output/scrape_errors.csv ]; then echo 'Errors:'; wc -l output/scrape_errors.csv; fi
+
+      - name: Upload scrape result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-buchhalter-austria
+          path: output/
+          if-no-files-found: warn
+          retention-days: 7
