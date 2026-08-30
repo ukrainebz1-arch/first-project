@@ -1,0 +1,83 @@
+name: Crawl Kompass Spedition employee ranges
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'crawl_kompass_spedition.py'
+      - '.github/workflows/crawl-kompass-spedition.yml'
+permissions:
+  contents: write
+jobs:
+  crawl:
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        page: [1,2,3,4,5]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4
+      - name: Crawl page
+        run: |
+          mkdir -p data/spedition/kompass/chunks
+          python crawl_kompass_spedition.py --page ${{ matrix.page }} --out data/spedition/kompass/chunks/page_${{ matrix.page }}.csv
+      - name: Persist completed chunk
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/kompass/chunks/page_${{ matrix.page }}.csv
+          git commit -m "Checkpoint Kompass Spedition page ${{ matrix.page }}" || exit 0
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            if git push origin HEAD:main; then exit 0; fi
+            sleep $((n*2))
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kompass-page-${{ matrix.page }}
+          path: data/spedition/kompass/chunks/page_${{ matrix.page }}.csv
+          retention-days: 7
+  merge:
+    needs: crawl
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Pull all persisted chunks and merge
+        run: |
+          git pull --rebase origin main
+          python - <<'PY'
+          import csv,glob,os
+          files=sorted(glob.glob('data/spedition/kompass/chunks/page_*.csv'))
+          rows=[]; seen=set()
+          fields=[]
+          for f in files:
+              with open(f,encoding='utf-8-sig',newline='') as h:
+                  rr=list(csv.DictReader(h))
+                  if rr and not fields: fields=list(rr[0])
+                  for r in rr:
+                      u=r.get('kompass_url','')
+                      if u and u not in seen:
+                          seen.add(u); rows.append(r)
+          os.makedirs('data/spedition/kompass',exist_ok=True)
+          out='data/spedition/kompass/kompass_spedition_employee_ranges.csv'
+          with open(out,'w',encoding='utf-8-sig',newline='') as h:
+              w=csv.DictWriter(h,fieldnames=fields);w.writeheader();w.writerows(rows)
+          print('chunks',len(files),'rows',len(rows),'with employees',sum(bool(r.get('employee_min')) for r in rows))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/kompass
+          git commit -m 'Merge persistent Kompass Spedition employee ranges' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
