@@ -1,0 +1,44 @@
+name: Recover Spedition contacts 013-024
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/spedition-contact-recover-013-024.yml'
+permissions:
+  contents: write
+jobs:
+  crawl:
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        chunk:
+          - {start: 13, end: 15, id: '013_015'}
+          - {start: 16, end: 18, id: '016_018'}
+          - {start: 19, end: 21, id: '019_021'}
+          - {start: 22, end: 24, id: '022_024'}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - name: Crawl official sources
+        run: |
+          mkdir -p data/spedition/contacts/official_chunks
+          python scripts/spedition_contact_official_crawl.py --start ${{ matrix.chunk.start }} --end ${{ matrix.chunk.end }} --out data/spedition/contacts/official_chunks/chunk_${{ matrix.chunk.id }}.csv
+      - name: Persist checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          FILE=data/spedition/contacts/official_chunks/chunk_${{ matrix.chunk.id }}.csv
+          git add "$FILE"
+          git commit -m "Recover Spedition contacts ${{ matrix.chunk.id }}" || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; git pull origin main --no-rebase || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*3))
+          done
+          exit 1
