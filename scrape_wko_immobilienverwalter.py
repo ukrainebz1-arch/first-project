@@ -1,3 +1,4 @@
+# Triggered via GitHub Actions to collect the complete Austrian WKO Immobilienverwalter universe.
 import asyncio
 import csv
 import json
@@ -52,8 +53,6 @@ async def dismiss_cookie(page):
 
 
 async def result_links(page):
-    # Company detail links in WKO Firmen A-Z include firmaid=. A result may expose
-    # the same URL more than once (e.g. image/title), so dedupe by absolute href.
     data = await page.locator('a[href*="firmaid="]').evaluate_all(
         """els => els.map(a => ({href: a.href, text: (a.innerText || a.textContent || '').trim()}))"""
     )
@@ -77,8 +76,6 @@ async def click_more_until_done(page, expected=None):
         if expected and n_before >= expected:
             break
 
-        # WKO help documents the control as "Mehr laden". Keep fallbacks in
-        # case the accessible name changes slightly.
         selectors = [
             'button:has-text("Mehr laden")',
             'a:has-text("Mehr laden")',
@@ -169,7 +166,6 @@ async def scrape_state(browser, state, slug):
     for item in links:
         href = item["href"]
         name = item["text"]
-        # Keep only WKO profile URLs with an actual firmaid.
         firmaid = qs_value(href, "firmaid")
         if not firmaid:
             continue
@@ -182,15 +178,11 @@ async def scrape_state(browser, state, slug):
             "source_list_url": url,
         })
 
-    # Deduplicate exact profile hrefs only; same firmaid at multiple locations is
-    # intentionally retained in the raw Standort export.
     dedup = {}
     for r in rows:
         dedup[r["profile_url"]] = r
     rows = list(dedup.values())
 
-    # Write diagnostics even if counts differ; overall workflow will fail after
-    # all states so partial data remains available in logs.
     diag = {
         "bundesland": state,
         "source_url": url,
@@ -214,15 +206,12 @@ async def main():
             diagnostics.append(diag)
         await browser.close()
 
-    # Raw location-level export.
     fields = ["bundesland", "company_name", "firmaid", "standortid", "profile_url", "source_list_url"]
     with (OUT / "immobilienverwalter_standorte.csv").open("w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(all_rows)
 
-    # Unique company export: WKO firmaid is the primary stable key. If the same
-    # company appears in several states/locations, combine the state/location data.
     grouped = {}
     for r in all_rows:
         key = r["firmaid"] or r["profile_url"]
