@@ -4,7 +4,7 @@ import csv
 import json
 import re
 from pathlib import Path
-from urllib.parse import urljoin, urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 
@@ -37,11 +37,7 @@ def clean_text(s):
 
 
 async def dismiss_cookie(page):
-    candidates = [
-        "Alle akzeptieren", "Akzeptieren", "Zustimmen", "Einverstanden",
-        "Accept all", "Accept", "OK"
-    ]
-    for text in candidates:
+    for text in ["Alle akzeptieren", "Akzeptieren", "Zustimmen", "Einverstanden", "Accept all", "Accept", "OK"]:
         try:
             loc = page.get_by_role("button", name=re.compile(f"^{re.escape(text)}$", re.I))
             if await loc.count() and await loc.first.is_visible():
@@ -56,8 +52,7 @@ async def result_links(page):
     data = await page.locator('a[href*="firmaid="]').evaluate_all(
         """els => els.map(a => ({href: a.href, text: (a.innerText || a.textContent || '').trim()}))"""
     )
-    out = []
-    seen = set()
+    out, seen = [], set()
     for item in data:
         href = item.get("href") or ""
         if not href or href in seen:
@@ -67,69 +62,94 @@ async def result_links(page):
     return out
 
 
-async def click_more_until_done(page, expected=None):
+async def locate_more(page):
+    # WKO has changed markup over time, so support buttons, anchors, inputs,
+    # spans/divs containing the label, and accessible-text matching.
+    selectors = [
+        'button:has-text("Mehr laden")', 'a:has-text("Mehr laden")',
+        'input[value*="Mehr laden" i]', '[role="button"]:has-text("Mehr laden")',
+        'button:has-text("Mehr")', 'a:has-text("Mehr")',
+        'input[value*="Mehr" i]', '[role="button"]:has-text("Mehr")',
+        'text=/Mehr laden/i',
+    ]
+    for sel in selectors:
+        try:
+            loc = page.locator(sel)
+            count = await loc.count()
+            for i in range(count):
+                el = loc.nth(i)
+                if await el.is_visible():
+                    return el
+        except Exception:
+            pass
+    return None
+
+
+async def dump_more_diagnostics(page, state):
+    try:
+        els = await page.locator('button,a,input,[role="button"],span,div').evaluate_all(
+            """els => els.map(e => ({tag:e.tagName, text:(e.innerText||e.textContent||'').trim(), value:e.value||'', cls:e.className||'', id:e.id||'', html:e.outerHTML||''}))
+                 .filter(x => /mehr|laden/i.test((x.text||'')+' '+(x.value||'')))
+                 .slice(0,30)"""
+        )
+        print(f"  MORE_DIAG {state}: {json.dumps(els, ensure_ascii=False)[:12000]}", flush=True)
+    except Exception as e:
+        print(f"  MORE_DIAG failed: {e}", flush=True)
+
+
+async def click_more_until_done(page, state, expected=None):
     stagnant = 0
     clicks = 0
     while True:
-        links = await result_links(page)
-        n_before = len(links)
+        n_before = len(await result_links(page))
         if expected and n_before >= expected:
             break
 
-        selectors = [
-            'button:has-text("Mehr laden")',
-            'a:has-text("Mehr laden")',
-            'button:has-text("Mehr anzeigen")',
-            'a:has-text("Mehr anzeigen")',
-        ]
-        btn = None
-        for sel in selectors:
-            loc = page.locator(sel)
-            if await loc.count():
-                for i in range(await loc.count()):
-                    try:
-                        if await loc.nth(i).is_visible():
-                            btn = loc.nth(i)
-                            break
-                    except Exception:
-                        pass
-            if btn:
-                break
-        if not btn:
+        btn = await locate_more(page)
+        if btn is None:
+            await dump_more_diagnostics(page, state)
             break
 
         try:
             await btn.scroll_into_view_if_needed(timeout=3000)
         except Exception:
             pass
-        try:
-            await btn.click(timeout=10000, force=True)
-        except Exception:
+        clicked = False
+        for method in ("normal", "force", "js"):
             try:
-                await btn.evaluate("el => el.click()")
-            except Exception:
+                if method == "normal":
+                    await btn.click(timeout=8000)
+                elif method == "force":
+                    await btn.click(timeout=8000, force=True)
+                else:
+                    await btn.evaluate("el => el.click()")
+                clicked = True
                 break
+            except Exception:
+                pass
+        if not clicked:
+            await dump_more_diagnostics(page, state)
+            break
 
         clicks += 1
         grew = False
-        for _ in range(24):
+        for _ in range(32):
             await page.wait_for_timeout(250)
-            n_after = len(await result_links(page))
-            if n_after > n_before:
+            if len(await result_links(page)) > n_before:
                 grew = True
                 break
         if grew:
             stagnant = 0
         else:
             stagnant += 1
-            if stagnant >= 3:
+            if stagnant >= 2:
+                await dump_more_diagnostics(page, state)
                 break
 
         if clicks % 10 == 0:
             print(f"  clicks={clicks}, loaded={len(await result_links(page))}, expected={expected}", flush=True)
         if clicks > 250:
             raise RuntimeError("Safety stop: more than 250 load-more clicks")
-
     return clicks
 
 
@@ -137,10 +157,7 @@ async def scrape_state(browser, state, slug):
     url = f"{BASE}/immobilienverwalter/{slug}/"
     context = await browser.new_context(
         locale="de-AT",
-        user_agent=(
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-            "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-        ),
+        user_agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
         viewport={"width": 1440, "height": 1200},
     )
     page = await context.new_page()
@@ -158,37 +175,28 @@ async def scrape_state(browser, state, slug):
     expected = int(m.group(1).replace(".", "")) if m else None
     print(f"  expected={expected}", flush=True)
 
-    clicks = await click_more_until_done(page, expected=expected)
+    clicks = await click_more_until_done(page, state, expected=expected)
     links = await result_links(page)
     print(f"  final loaded links={len(links)} after {clicks} clicks", flush=True)
 
     rows = []
     for item in links:
         href = item["href"]
-        name = item["text"]
         firmaid = qs_value(href, "firmaid")
         if not firmaid:
             continue
         rows.append({
             "bundesland": state,
-            "company_name": name,
+            "company_name": item["text"],
             "firmaid": firmaid,
             "standortid": qs_value(href, "standortid"),
             "profile_url": href,
             "source_list_url": url,
         })
-
-    dedup = {}
-    for r in rows:
-        dedup[r["profile_url"]] = r
-    rows = list(dedup.values())
-
+    rows = list({r["profile_url"]: r for r in rows}.values())
     diag = {
-        "bundesland": state,
-        "source_url": url,
-        "expected_treffer": expected,
-        "extracted_profile_urls": len(rows),
-        "load_more_clicks": clicks,
+        "bundesland": state, "source_url": url, "expected_treffer": expected,
+        "extracted_profile_urls": len(rows), "load_more_clicks": clicks,
         "count_match": (expected == len(rows)) if expected is not None else None,
     }
     await context.close()
@@ -196,8 +204,7 @@ async def scrape_state(browser, state, slug):
 
 
 async def main():
-    all_rows = []
-    diagnostics = []
+    all_rows, diagnostics = [], []
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         for state, slug in STATES.items():
@@ -206,53 +213,27 @@ async def main():
             diagnostics.append(diag)
         await browser.close()
 
-    fields = ["bundesland", "company_name", "firmaid", "standortid", "profile_url", "source_list_url"]
+    raw_fields = ["bundesland", "company_name", "firmaid", "standortid", "profile_url", "source_list_url"]
     with (OUT / "immobilienverwalter_standorte.csv").open("w", newline="", encoding="utf-8-sig") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
-        w.writeheader()
-        w.writerows(all_rows)
+        w = csv.DictWriter(f, fieldnames=raw_fields); w.writeheader(); w.writerows(all_rows)
 
     grouped = {}
     for r in all_rows:
         key = r["firmaid"] or r["profile_url"]
-        g = grouped.setdefault(key, {
-            "company_name": r["company_name"],
-            "firmaid": r["firmaid"],
-            "bundeslaender": set(),
-            "standort_count": 0,
-            "profile_url": r["profile_url"],
-        })
-        if r["bundesland"]:
-            g["bundeslaender"].add(r["bundesland"])
+        g = grouped.setdefault(key, {"company_name": r["company_name"], "firmaid": r["firmaid"], "bundeslaender": set(), "standort_count": 0, "profile_url": r["profile_url"]})
+        g["bundeslaender"].add(r["bundesland"])
         g["standort_count"] += 1
-        if len(r["company_name"]) > len(g["company_name"]):
-            g["company_name"] = r["company_name"]
+        if len(r["company_name"]) > len(g["company_name"]): g["company_name"] = r["company_name"]
 
-    unique = []
-    for g in grouped.values():
-        unique.append({
-            "company_name": g["company_name"],
-            "firmaid": g["firmaid"],
-            "bundeslaender": "; ".join(sorted(g["bundeslaender"])),
-            "standort_count": g["standort_count"],
-            "profile_url": g["profile_url"],
-        })
+    unique = [{"company_name": g["company_name"], "firmaid": g["firmaid"], "bundeslaender": "; ".join(sorted(g["bundeslaender"])), "standort_count": g["standort_count"], "profile_url": g["profile_url"]} for g in grouped.values()]
     unique.sort(key=lambda x: x["company_name"].casefold())
-
     with (OUT / "immobilienverwalter_unique_companies.csv").open("w", newline="", encoding="utf-8-sig") as f:
-        fields2 = ["company_name", "firmaid", "bundeslaender", "standort_count", "profile_url"]
-        w = csv.DictWriter(f, fieldnames=fields2)
-        w.writeheader()
-        w.writerows(unique)
+        fields = ["company_name", "firmaid", "bundeslaender", "standort_count", "profile_url"]
+        w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(unique)
 
-    summary = {
-        "raw_standort_rows": len(all_rows),
-        "unique_firmaids": len(unique),
-        "states": diagnostics,
-    }
+    summary = {"raw_standort_rows": len(all_rows), "unique_firmaids": len(unique), "states": diagnostics}
     (OUT / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     (OUT / "diagnostics.json").write_text(json.dumps(diagnostics, ensure_ascii=False, indent=2), encoding="utf-8")
-
     print(json.dumps(summary, ensure_ascii=False, indent=2), flush=True)
 
     mismatches = [d for d in diagnostics if d["expected_treffer"] is not None and not d["count_match"]]
