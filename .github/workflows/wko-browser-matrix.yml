@@ -1,0 +1,89 @@
+name: WKO Browser Matrix Full Austria
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'wko_playwright_state.py'
+      - 'merge_wko_parts.py'
+      - '.github/workflows/wko-browser-matrix.yml'
+
+jobs:
+  scrape:
+    name: ${{ matrix.term }} / ${{ matrix.slug }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 18
+      matrix:
+        include:
+          - {term: buchhalter, state: burgenland, slug: burgenland}
+          - {term: buchhalter, state: kärnten, slug: kaernten}
+          - {term: buchhalter, state: niederösterreich, slug: niederoesterreich}
+          - {term: buchhalter, state: oberösterreich, slug: oberoesterreich}
+          - {term: buchhalter, state: salzburg, slug: salzburg}
+          - {term: buchhalter, state: steiermark, slug: steiermark}
+          - {term: buchhalter, state: tirol, slug: tirol}
+          - {term: buchhalter, state: vorarlberg, slug: vorarlberg}
+          - {term: buchhalter, state: wien, slug: wien}
+          - {term: bilanzbuchhalter, state: burgenland, slug: burgenland}
+          - {term: bilanzbuchhalter, state: kärnten, slug: kaernten}
+          - {term: bilanzbuchhalter, state: niederösterreich, slug: niederoesterreich}
+          - {term: bilanzbuchhalter, state: oberösterreich, slug: oberoesterreich}
+          - {term: bilanzbuchhalter, state: salzburg, slug: salzburg}
+          - {term: bilanzbuchhalter, state: steiermark, slug: steiermark}
+          - {term: bilanzbuchhalter, state: tirol, slug: tirol}
+          - {term: bilanzbuchhalter, state: vorarlberg, slug: vorarlberg}
+          - {term: bilanzbuchhalter, state: wien, slug: wien}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install playwright==1.54.0 beautifulsoup4==4.12.3
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Scrape exact WKO state/category result set
+        env:
+          TERM_NAME: ${{ matrix.term }}
+          STATE_NAME: ${{ matrix.state }}
+          STATE_SLUG: ${{ matrix.slug }}
+          OUT_DIR: part
+        run: python wko_playwright_state.py
+      - name: Upload validated part
+        uses: actions/upload-artifact@v4
+        with:
+          name: part-${{ matrix.term }}-${{ matrix.slug }}
+          path: part/
+          if-no-files-found: error
+          retention-days: 7
+
+  merge:
+    name: Validate and merge all 18 parts
+    needs: scrape
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all parts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: part-*
+          path: parts
+          merge-multiple: true
+      - name: Validate completeness and merge
+        env:
+          PARTS_DIR: parts
+          OUT_DIR: final
+        run: python merge_wko_parts.py
+      - name: Upload final result
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-bookkeeping-austria-complete
+          path: final/
+          if-no-files-found: error
+          retention-days: 7
