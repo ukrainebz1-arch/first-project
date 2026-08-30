@@ -1,0 +1,60 @@
+name: Merge final KSW qualification
+on:
+  push:
+    paths:
+      - '.github/workflows/merge-ksw-final.yml'
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect all 32 completed KSW qualification chunks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p chunks
+          for i in $(seq 0 7); do
+            mkdir -p /tmp/k$i
+            for attempt in $(seq 1 40); do
+              if gh run download 33308176305 -n "ksw-qualified-chunk-$i" -D /tmp/k$i 2>/dev/null; then break; fi
+              sleep 15
+            done
+            cp /tmp/k$i/*.csv chunks/
+          done
+          for i in $(seq 8 31); do
+            mkdir -p /tmp/k$i
+            for attempt in $(seq 1 80); do
+              if gh run download 33308301551 -n "ksw-qualified-rest-chunk-$i" -D /tmp/k$i 2>/dev/null; then break; fi
+              sleep 15
+            done
+            test -f /tmp/k$i/ksw_qualified_chunk_$(printf '%02d' $i).csv
+            cp /tmp/k$i/*.csv chunks/
+          done
+          test "$(find chunks -name 'ksw_qualified_chunk_*.csv' | wc -l)" -eq 32
+      - name: Merge and validate 2780 groups
+        env:
+          IN_GLOB: chunks/ksw_qualified_chunk_*.csv
+          OUTDIR: final
+        run: |
+          python merge_ksw_qualification.py
+          python - <<'PY'
+          import csv
+          p='final/ksw_all_groups_reviewed.csv'
+          rows=list(csv.DictReader(open(p,encoding='utf-8-sig')))
+          assert len(rows)==2780, len(rows)
+          assert len({r['group_key'] for r in rows})==2780
+          print('validated',len(rows),'unique KSW corporate groups')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-final-2780-qualified
+          path: final/*
+          retention-days: 7
