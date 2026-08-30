@@ -1,0 +1,32 @@
+name: WKO Spediteur validated export
+on:
+  push:
+    paths:
+      - 'scrape_wko_spediteur_post.py'
+      - '.github/workflows/wko-spediteur-post-full.yml'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Export all WKO Spediteur results
+        run: python scrape_wko_spediteur_post.py
+      - name: Print validation summary
+        if: always()
+        run: |
+          if [ -f spedition_post_output/summary.json ]; then cat spedition_post_output/summary.json; fi
+      - name: Upload validated output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-spediteur-validated
+          path: spedition_post_output/
+          if-no-files-found: warn
