@@ -1,0 +1,43 @@
+name: WKO Spedition scrape
+
+on:
+  push:
+    paths:
+      - 'wko_scrape.py'
+      - '.github/workflows/wko-scrape.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+      - name: Scrape test pages
+        run: python wko_scrape.py 3
+      - name: Print summary
+        if: always()
+        run: |
+          if [ -f summary.json ]; then cat summary.json; fi
+      - name: Upload output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-spedition-output
+          path: |
+            wko_spedition_companies.csv
+            wko_spedition_memberships.csv
+            wko_listing_raw.csv
+            summary.json
+          if-no-files-found: warn
