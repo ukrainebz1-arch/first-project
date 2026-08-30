@@ -1,0 +1,31 @@
+name: Enrich WKO Spediteure from WKO profiles
+on:
+  push:
+    paths:
+      - 'enrich_spediteur_wko_profiles.py'
+      - '.github/workflows/enrich-spediteur-wko-profiles.yml'
+  workflow_dispatch:
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Download validated WKO export
+        uses: actions/download-artifact@v4
+        with:
+          name: wko-spediteur-validated
+          path: wko_input
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298295541
+      - run: pip install requests beautifulsoup4
+      - run: python enrich_spediteur_wko_profiles.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spediteur-wko-profile-enrichment
+          path: wko_profile_size_out/
+          if-no-files-found: error
+          retention-days: 7
