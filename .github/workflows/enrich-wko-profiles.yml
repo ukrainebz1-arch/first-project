@@ -1,0 +1,70 @@
+name: Enrich all WKO profiles
+on:
+  push:
+    paths:
+      - enrich_wko_profiles.py
+      - .github/workflows/enrich-wko-profiles.yml
+  workflow_dispatch:
+jobs:
+  enrich:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: wko-bookkeeping-austria-complete
+          path: source
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298661159
+      - run: pip install playwright==1.54.0 beautifulsoup4
+      - run: python -m playwright install --with-deps chromium
+      - name: Enrich WKO profiles
+        run: python enrich_wko_profiles.py
+        env:
+          SHARD: ${{ matrix.shard }}
+          SHARDS: '24'
+          SRC: source/wko_bookkeeping_austria_combined.csv
+          OUT: wko_profile_out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wko-profile-${{ matrix.shard }}
+          path: wko_profile_out/
+          retention-days: 7
+  merge:
+    needs: enrich
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wko-profile-*
+          path: parts
+          merge-multiple: true
+      - run: |
+          python - <<'PY'
+          import csv,glob
+          fs=glob.glob('parts/*.csv'); rows=[]; headers=None
+          for f in fs:
+              with open(f,encoding='utf-8-sig',newline='') as h:
+                  rr=list(csv.DictReader(h)); rows+=rr
+                  if rr and headers is None: headers=list(rr[0])
+          assert len(rows)==4331, len(rows)
+          with open('wko_profiles_enriched.csv','w',encoding='utf-8-sig',newline='') as h:
+              w=csv.DictWriter(h,fieldnames=headers);w.writeheader();w.writerows(rows)
+          print('MERGED',len(rows))
+          print('WITH_WEBSITE',sum(bool(r['profile_website']) for r in rows))
+          print('WITH_EMAIL',sum(bool(r['profile_email']) for r in rows))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wko-profiles-enriched-all
+          path: wko_profiles_enriched.csv
+          retention-days: 7
