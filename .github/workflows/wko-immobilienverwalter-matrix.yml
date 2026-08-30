@@ -1,0 +1,79 @@
+name: WKO Immobilienverwalter Full Austria
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'merge_immobilienverwalter_parts.py'
+      - '.github/workflows/wko-immobilienverwalter-matrix.yml'
+
+jobs:
+  scrape:
+    name: immobilienverwalter / ${{ matrix.slug }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        include:
+          - {state: burgenland, slug: burgenland}
+          - {state: kärnten, slug: kaernten}
+          - {state: niederösterreich, slug: niederoesterreich}
+          - {state: oberösterreich, slug: oberoesterreich}
+          - {state: salzburg, slug: salzburg}
+          - {state: steiermark, slug: steiermark}
+          - {state: tirol, slug: tirol}
+          - {state: vorarlberg, slug: vorarlberg}
+          - {state: wien, slug: wien}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install playwright==1.54.0 beautifulsoup4==4.12.3
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Scrape and validate exact WKO state result set
+        env:
+          TERM_NAME: immobilienverwalter
+          STATE_NAME: ${{ matrix.state }}
+          STATE_SLUG: ${{ matrix.slug }}
+          OUT_DIR: part
+        run: python wko_playwright_state.py
+      - name: Upload validated part
+        uses: actions/upload-artifact@v4
+        with:
+          name: iv-part-${{ matrix.slug }}
+          path: part/
+          if-no-files-found: error
+          retention-days: 7
+
+  merge:
+    name: Validate and merge all 9 parts
+    needs: scrape
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all parts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: iv-part-*
+          path: parts
+          merge-multiple: true
+      - name: Validate completeness and merge
+        env:
+          PARTS_DIR: parts
+          OUT_DIR: final_immobilienverwalter
+        run: python merge_immobilienverwalter_parts.py
+      - name: Upload complete Austria result
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-immobilienverwalter-austria-complete
+          path: final_immobilienverwalter/
+          if-no-files-found: error
+          retention-days: 7
