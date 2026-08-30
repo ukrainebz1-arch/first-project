@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'wko_buchhalter_scraper.py'
+      - 'wko_debug.py'
       - 'requirements-wko.txt'
       - '.github/workflows/wko-buchhalter.yml'
 
@@ -29,6 +30,9 @@ jobs:
 
       - name: Install Chromium
         run: python -m playwright install --with-deps chromium
+
+      - name: Diagnose WKO pagination
+        run: python wko_debug.py
 
       - name: Scrape all WKO Buchhalter listings
         env:
