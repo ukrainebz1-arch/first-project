@@ -1,0 +1,80 @@
+name: Qualify KSW corporate accounting groups 20plus
+on:
+  push:
+    paths:
+      - '.github/workflows/qualify-ksw-groups.yml'
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download complete KSW corporate artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p input
+          gh api repos/${{ github.repository }}/actions/artifacts/9730691555/zip > /tmp/ksw.zip
+          unzip -o /tmp/ksw.zip -d input
+          test -f input/ksw_legal_entities_unique.csv
+      - name: Build conservative corporate groups
+        env:
+          INPUT: input/ksw_legal_entities_unique.csv
+          OUTPUT: input/ksw_target_universe.csv
+        run: python build_ksw_universe.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-target-universe
+          path: input/ksw_target_universe.csv
+          retention-days: 7
+  qualify:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests==2.32.4 beautifulsoup4==4.12.3
+      - uses: actions/download-artifact@v4
+        with:
+          name: ksw-target-universe
+          path: input
+      - name: Qualify KSW group
+        env:
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: 32
+          INPUT: input/ksw_target_universe.csv
+        run: python qualify_ksw_groups.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-qualified-chunk-${{ matrix.chunk }}
+          path: out/ksw_qualified_chunk_*.csv
+          retention-days: 7
+  merge:
+    needs: qualify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ksw-qualified-chunk-*
+          path: chunks
+          merge-multiple: true
+      - run: python merge_ksw_qualification.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ksw-accounting-austria-qualified-20plus
+          path: final/*
+          retention-days: 7
