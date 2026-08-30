@@ -1,0 +1,69 @@
+name: Crawl accounting company websites for size signals
+on:
+  push:
+    paths:
+      - crawl_company_websites.py
+      - .github/workflows/crawl-company-websites.yml
+  workflow_dispatch:
+jobs:
+  crawl:
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: wko-bookkeeping-austria-complete
+          path: source
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298661159
+      - run: pip install requests beautifulsoup4
+      - run: python crawl_company_websites.py
+        env:
+          SHARD: ${{ matrix.shard }}
+          SHARDS: '20'
+          SRC: source/wko_bookkeeping_austria_combined.csv
+          OUT: site_out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-signals-${{ matrix.shard }}
+          path: site_out/
+          retention-days: 7
+  merge:
+    needs: crawl
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: site-signals-*
+          path: parts
+          merge-multiple: true
+      - run: |
+          python - <<'PY'
+          import csv,glob
+          rows=[];headers=None
+          for f in glob.glob('parts/*.csv'):
+            with open(f,encoding='utf-8-sig',newline='') as h:
+              rr=list(csv.DictReader(h)); rows+=rr
+              if rr and headers is None: headers=list(rr[0])
+          with open('company_website_size_signals.csv','w',encoding='utf-8-sig',newline='') as h:
+            w=csv.DictWriter(h,fieldnames=headers);w.writeheader();w.writerows(rows)
+          print('WEBSITES_PROCESSED',len(rows))
+          print('TEAM20',sum(int(r.get('team_lower_bound') or 0)>=20 for r in rows))
+          print('TEAM30',sum(int(r.get('team_lower_bound') or 0)>=30 for r in rows))
+          print('CAREER',sum(r.get('career_signal')=='1' for r in rows))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: company-website-size-signals-all
+          path: company_website_size_signals.csv
+          retention-days: 7
