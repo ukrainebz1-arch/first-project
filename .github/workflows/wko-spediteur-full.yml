@@ -1,0 +1,41 @@
+name: WKO Spediteur full export
+
+on:
+  push:
+    paths:
+      - 'scrape_wko_spediteur.py'
+      - '.github/workflows/wko-spediteur-full.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scraper dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Scrape complete WKO Spediteur lists
+        run: python scrape_wko_spediteur.py
+      - name: Print summary
+        if: always()
+        run: |
+          if [ -f spedition_output/summary.json ]; then cat spedition_output/summary.json; fi
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-spediteur-full
+          path: spedition_output/
+          if-no-files-found: warn
