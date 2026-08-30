@@ -65,12 +65,16 @@ def load_all_profile_links(page, label, url):
             previous = count
 
         clicked = False
-        # WKO currently uses “Mehr laden”; keep fallbacks for wording changes.
+        # WKO renders the "Mehr laden" control in different element types depending on the page/version.
         candidates = [
+            "input[type='submit'][value*='Mehr']",
+            "input[type='button'][value*='Mehr']",
+            "input[value*='laden']",
             "button:has-text('Mehr laden')",
             "a:has-text('Mehr laden')",
             "button:has-text('Weitere')",
             "a:has-text('Weitere')",
+            "[role='button']:has-text('Mehr')",
         ]
         for selector in candidates:
             try:
@@ -101,8 +105,25 @@ def load_all_profile_links(page, label, url):
         else:
             stable = 0
 
-        # Give the page several chances to reveal the next load-more button.
+        # Give the page several chances to reveal the next load-more control.
         if stable >= 7:
+            if new_count <= 10:
+                try:
+                    controls = page.locator("input,button,[role='button']")
+                    samples = []
+                    for j in range(min(controls.count(), 80)):
+                        el = controls.nth(j)
+                        samples.append({
+                            "tag": el.evaluate("e => e.tagName"),
+                            "type": el.get_attribute("type"),
+                            "value": el.get_attribute("value"),
+                            "text": normalize_space(el.inner_text(timeout=500) if el.evaluate("e => e.tagName") != "INPUT" else ""),
+                            "class": el.get_attribute("class"),
+                            "visible": el.is_visible(),
+                        })
+                    print(f"[{label}] controls diagnostic: {json.dumps(samples, ensure_ascii=False)[:12000]}", flush=True)
+                except Exception as e:
+                    print(f"[{label}] diagnostic failed: {e!r}", flush=True)
             print(f"[{label}] stable after {round_no} rounds at {new_count} links", flush=True)
             break
 
@@ -201,7 +222,6 @@ def scrape_profile(item, timeout=40):
         gln = gln_m.group(1)
 
     business_label = ""
-    # Usually the line/text immediately following the H1 is the business designation.
     if h1:
         nxt = h1.find_next()
         seen = 0
@@ -214,7 +234,6 @@ def scrape_profile(item, timeout=40):
             nxt = nxt.find_next()
             seen += 1
 
-    # Authorization/category clues useful for later filtering.
     authorizations = []
     for term in ["Bilanzbuchhalter", "Buchhalter", "Personalverrechner"]:
         if re.search(rf"\b{re.escape(term)}\b", flat, flags=re.I):
@@ -304,7 +323,6 @@ def main():
     ]
     write_csv(os.path.join(OUT_DIR, "wko_buchhalter_austria_combined.csv"), rows, fields)
 
-    # Per-query CSVs from the combined enrichment.
     for label in SEARCHES:
         subset = [r for r in rows if label in (r.get("query_sources") or "").split(" | ")]
         write_csv(os.path.join(OUT_DIR, f"wko_{label}_austria.csv"), subset, fields)
