@@ -1,0 +1,82 @@
+name: Verify WKO employee counts
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/wko-employee-counts.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  scrape:
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests==2.32.4 beautifulsoup4==4.12.3
+      - name: Download complete WKO source artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wko-bookkeeping-austria-complete
+          path: input
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298661159
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read WKO profiles
+        env:
+          CHUNK: ${{ matrix.chunk }}
+          CHUNKS: 16
+          WORKERS: 8
+          INPUT: input/wko_bookkeeping_austria_combined.csv
+          OUTDIR: out
+        run: python scrape_wko_employee_counts.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wko-employee-counts-${{ matrix.chunk }}
+          path: out/
+          if-no-files-found: error
+          retention-days: 7
+  merge:
+    needs: scrape
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: wko-employee-counts-*
+          path: chunks
+          merge-multiple: true
+      - name: Merge verified WKO counts
+        run: |
+          python - <<'PY'
+          import csv, glob, json, os
+          files=sorted(glob.glob('chunks/wko_employee_counts_chunk_*.csv'))
+          rows=[]
+          for p in files:
+              with open(p,encoding='utf-8-sig',newline='') as f: rows.extend(csv.DictReader(f))
+          rows.sort(key=lambda r:r.get('firmaid',''))
+          os.makedirs('final',exist_ok=True)
+          fields=list(rows[0].keys())
+          with open('final/wko_4331_employee_counts_verified.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(rows)
+          counts=[r for r in rows if r.get('wko_employee_count','').isdigit()]
+          ge20=[r for r in counts if int(r['wko_employee_count'])>=20]
+          with open('final/wko_employee_count_20plus.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(sorted(ge20,key=lambda r:int(r['wko_employee_count']),reverse=True))
+          summary={'rows':len(rows),'fetch_ok':sum(r.get('wko_profile_fetch_ok')=='1' for r in rows),'explicit_wko_employee_counts':len(counts),'wko_20plus':len(ge20)}
+          open('final/wko_employee_count_summary.json','w').write(json.dumps(summary,indent=2))
+          print(summary)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wko-employee-counts-verified-complete
+          path: final/
+          if-no-files-found: error
+          retention-days: 7
