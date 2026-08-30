@@ -1,0 +1,38 @@
+name: Scrape WKO Immobilienverwalter
+
+on:
+  push:
+    paths:
+      - 'scrape_wko_immobilienverwalter.py'
+      - '.github/workflows/scrape-wko.yml'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install scraper dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Scrape WKO
+        run: python scrape_wko_immobilienverwalter.py
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wko-immobilienverwalter
+          path: output/
+          if-no-files-found: warn
