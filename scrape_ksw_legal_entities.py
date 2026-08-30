@@ -1,10 +1,10 @@
-import csv, os, re, time, random
+import csv, os, re, time, random, json
 from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 
 CHUNK=int(os.environ.get('CHUNK','0'))
-CHUNKS=int(os.environ.get('CHUNKS','32'))
+CHUNKS=int(os.environ.get('CHUNKS','16'))
 OUTDIR=os.environ.get('OUTDIR','out')
 TOTAL_PAGES=int(os.environ.get('TOTAL_PAGES','536'))
 os.makedirs(OUTDIR,exist_ok=True)
@@ -24,15 +24,19 @@ def page_url(p):
     if p==1:return BASE
     return BASE+'?tx_kswmembers_membersdirectory%5Bcontroller%5D=MembersDirectory&tx_kswmembers_membersdirectory%5BcurrentPage%5D='+str(p)
 
-def fetch(p):
-    for attempt in range(5):
+def fetch(p,session):
+    # KSW occasionally rate-limits individual requests; spread retries over a longer window.
+    last=''
+    for attempt in range(10):
         try:
-            r=requests.get(page_url(p),headers=H,timeout=30)
+            r=session.get(page_url(p),headers=H,timeout=35)
+            last=f'status={r.status_code} len={len(r.text)}'
             if r.status_code==200 and 'Ergebnisse gefunden' in r.text:
-                return r.text
-        except Exception:pass
-        time.sleep(1.5*(attempt+1))
-    raise RuntimeError(f'failed page {p}')
+                return r.text,''
+        except Exception as e:
+            last=repr(e)
+        time.sleep(min(18, 1.2*(attempt+1)) + random.uniform(.4,1.8))
+    return '',last
 
 def parse_page(html,p):
     soup=BeautifulSoup(html,'html.parser')
@@ -42,9 +46,7 @@ def parse_page(html,p):
         title=h.get_text(' ',strip=True)
         if not title or not LEGAL_RE.search(title):continue
         parts=[];links=[]
-        # collect siblings/elements until the next listing heading
-        cur=h.next_sibling
-        steps=0
+        cur=h.next_sibling;steps=0
         while cur is not None and steps<80:
             if getattr(cur,'name',None)=='h4':break
             if hasattr(cur,'find_all'):
@@ -52,7 +54,6 @@ def parse_page(html,p):
             txt=cur.get_text(' ',strip=True) if hasattr(cur,'get_text') else str(cur).strip()
             if txt:parts.append(txt)
             cur=cur.next_sibling;steps+=1
-        # fallback when markup nests the content differently
         if not parts:
             for el in h.next_elements:
                 if el is h:continue
@@ -69,9 +70,7 @@ def parse_page(html,p):
                 host=urlparse(href).netloc.lower()
                 if 'ksw.or.at' not in host and 'kwt.or.at' not in host:websites.append(href)
         emails += [m.replace('(at)','@') for m in re.findall(r'[A-Za-z0-9._%+-]+\(at\)[A-Za-z0-9.-]+\.[A-Za-z]{2,}',text)]
-        pm=POSTAL_RE.search(text)
-        postal=pm.group(1) if pm else ''
-        city=pm.group(2).split('|')[0].strip() if pm else ''
+        pm=POSTAL_RE.search(text);postal=pm.group(1) if pm else '';city=pm.group(2).split('|')[0].strip() if pm else ''
         phones=PHONE_RE.findall(text)
         out.append({'page':p,'title':title,'title_norm':norm(title),'postal_code':postal,'city':city,
                     'website':' | '.join(dict.fromkeys(websites[:5])),'email':' | '.join(dict.fromkeys(emails[:5])),
@@ -80,14 +79,21 @@ def parse_page(html,p):
 
 def main():
     pages=[p for p in range(1,TOTAL_PAGES+1) if (p-1)%CHUNKS==CHUNK]
-    rows=[]
+    rows=[];failed=[];done=[];session=requests.Session()
     for p in pages:
-        parsed=parse_page(fetch(p),p);rows.extend(parsed)
+        html,err=fetch(p,session)
+        if not html:
+            failed.append({'page':p,'error':err});print(f'chunk={CHUNK} page={p} FAILED {err}',flush=True);continue
+        parsed=parse_page(html,p);rows.extend(parsed);done.append(p)
         print(f'chunk={CHUNK} page={p} legal={len(parsed)} cumulative={len(rows)}',flush=True)
-        time.sleep(random.uniform(.05,.15))
-    path=os.path.join(OUTDIR,f'ksw_legal_chunk_{CHUNK:02d}.csv')
+        time.sleep(random.uniform(.3,.9))
     fields=['page','title','title_norm','postal_code','city','website','email','phones','text','source_url']
+    path=os.path.join(OUTDIR,f'ksw_legal_chunk_{CHUNK:02d}.csv')
     with open(path,'w',encoding='utf-8-sig',newline='') as f:
         w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
-    print(path,len(rows))
+    meta={'chunk':CHUNK,'chunks':CHUNKS,'expected_pages':pages,'completed_pages':done,'failed_pages':failed,'rows':len(rows)}
+    with open(os.path.join(OUTDIR,f'ksw_legal_chunk_{CHUNK:02d}.json'),'w') as f:json.dump(meta,f,indent=2)
+    print(json.dumps({'chunk':CHUNK,'pages':len(pages),'completed':len(done),'failed':[x['page'] for x in failed],'rows':len(rows)}),flush=True)
+    # Fail only after preserving partial data, so a retry can target incompleteness explicitly.
+    if failed:raise SystemExit(2)
 if __name__=='__main__':main()
