@@ -15,6 +15,7 @@ STATE = os.environ["STATE_NAME"]
 STATE_SLUG = os.environ.get("STATE_SLUG", STATE)
 OUT_DIR = os.environ.get("OUT_DIR", "part")
 os.makedirs(OUT_DIR, exist_ok=True)
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
 
 EXPECTED_REFERENCE = {
     ("buchhalter", "burgenland"): 119,
@@ -157,6 +158,7 @@ def collect_once(attempt_no):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
         context = browser.new_context(
+            user_agent=UA,
             locale="de-AT",
             timezone_id="Europe/Vienna",
             viewport={"width": 1440, "height": 1000},
