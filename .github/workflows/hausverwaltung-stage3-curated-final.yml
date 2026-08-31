@@ -1,0 +1,113 @@
+name: Hausverwaltung Stage 3 curated final
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hausverwaltung-stage3-curated-final.yml'
+  workflow_dispatch:
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Merge curated Stage 3 and enforce completeness
+        run: |
+          python - <<'PY'
+          import csv,glob,json,os,collections,sys
+          curated=[]
+          for p in sorted(glob.glob('data/hausverwaltung/stage3_curated/curated_*.tsv')):
+              curated += list(csv.DictReader(open(p,encoding='utf-8'),delimiter='\t'))
+          nums=[int(r['no']) for r in curated]
+          errors=[]
+          if len(curated)!=99: errors.append(f'curated rows {len(curated)} != 99')
+          if sorted(nums)!=list(range(1,100)): errors.append('numbers are not exactly 1..99')
+          if len(nums)!=len(set(nums)): errors.append('duplicate no')
+          main=list(csv.DictReader(open('data/hausverwaltung/stage3_work/main_targets_compact.tsv',encoding='utf-8'),delimiter='\t'))
+          main_by_no={int(r['no']):r for r in main}
+          secondary_names=[x.strip() for x in open('data/hausverwaltung/stage3_work/secondary_targets.txt',encoding='utf-8') if x.strip()]
+          if len(main)!=90:errors.append(f'main input {len(main)} != 90')
+          if len(secondary_names)!=9:errors.append(f'secondary input {len(secondary_names)} != 9')
+          required=['company_name','management','immediate_owners','ultimate_control','ownership_type','primary_dm','primary_dm_role','primary_dm_reason','curated_source_url','confidence']
+          out=[]
+          for r in sorted(curated,key=lambda x:int(x['no'])):
+              n=int(r['no']); scope='MAIN' if n<=90 else 'SECONDARY'
+              if r.get('stage3_scope')!=scope:errors.append(f'{n}: bad scope')
+              for k in required:
+                  if not (r.get(k) or '').strip():errors.append(f'{n}: missing {k}')
+              if r.get('confidence') not in {'HIGH','MEDIUM_HIGH'}:errors.append(f'{n}: unacceptable confidence {r.get("confidence")}')
+              if 'UNRESOLVED' in (r.get('ownership_type') or ''):errors.append(f'{n}: unresolved ownership')
+              base={}
+              if n<=90:
+                  base=main_by_no.get(n,{})
+                  if base and base.get('company_name')!=r.get('company_name'):
+                      # tolerate only typography/legal-punctuation differences if normalized text is effectively equal
+                      import re,unicodedata
+                      def norm(s):
+                          s=unicodedata.normalize('NFKD',s or '').encode('ascii','ignore').decode().lower().replace('&',' und ')
+                          return re.sub(r'[^a-z0-9]+',' ',s).strip()
+                      if norm(base.get('company_name'))!=norm(r.get('company_name')):
+                          errors.append(f'{n}: company mismatch: {base.get("company_name")} != {r.get("company_name")}')
+              else:
+                  expected=secondary_names[n-91]
+                  if expected!=r.get('company_name'):errors.append(f'{n}: secondary mismatch {expected} != {r.get("company_name")}')
+              x=dict(r)
+              x['stage2_process_fit_class']=base.get('process_fit_class','SECONDARY_PROCESS_TARGET') if base else 'SECONDARY_PROCESS_TARGET'
+              x['stage2_size_class']=base.get('size_class','SECONDARY') if base else 'SECONDARY'
+              x['website']=base.get('website','') if base else ''
+              x['wko_url']=base.get('wko_url','') if base else ''
+              urls=[]
+              for u in (r.get('curated_source_url','')+' | '+x['wko_url']).split(' | '):
+                  u=u.strip()
+                  if u and u not in urls:urls.append(u)
+              x['source_urls']=' | '.join(urls)
+              x['research_complete']='yes'
+              out.append(x)
+          if errors:
+              print(json.dumps({'ok':False,'errors':errors},ensure_ascii=False,indent=2));sys.exit(2)
+          os.makedirs('data/hausverwaltung/stage3_owners',exist_ok=True)
+          fields=['no','company_name','stage3_scope','stage2_process_fit_class','stage2_size_class','management','immediate_owners','ownership_pct','ultimate_control','ownership_type','primary_dm','primary_dm_role','primary_dm_reason','website','wko_url','source_urls','confidence','review_note','research_complete']
+          with open('data/hausverwaltung/stage3_owners/stage3_master_99.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');w.writeheader();w.writerows(out)
+          main_out=[r for r in out if r['stage3_scope']=='MAIN'];sec_out=[r for r in out if r['stage3_scope']=='SECONDARY']
+          for name,rows in [('stage3_main_90.csv',main_out),('stage3_secondary_9.csv',sec_out)]:
+              with open('data/hausverwaltung/stage3_owners/'+name,'w',encoding='utf-8-sig',newline='') as f:
+                  w=csv.DictWriter(f,fieldnames=fields,extrasaction='ignore');w.writeheader();w.writerows(rows)
+          summary={
+              'stage3_status':'FINAL', 'expected':99,'rows':len(out),'main':len(main_out),'secondary':len(sec_out),
+              'missing_management':sum(not r['management'] for r in out),
+              'missing_immediate_owners':sum(not r['immediate_owners'] for r in out),
+              'missing_ultimate_control':sum(not r['ultimate_control'] for r in out),
+              'missing_primary_dm':sum(not r['primary_dm'] for r in out),
+              'missing_sources':sum(not r['source_urls'] for r in out),
+              'unresolved_ownership':sum('UNRESOLVED' in r['ownership_type'] for r in out),
+              'research_complete':sum(r['research_complete']=='yes' for r in out),
+              'confidence':dict(collections.Counter(r['confidence'] for r in out)),
+              'ownership_types':dict(collections.Counter(r['ownership_type'] for r in out)),
+              'stage4_started':False,
+              'quality_note':'Curated registry/official-source Stage 3; deterministic/free-text parser outputs were not accepted as final without manual resolution.'
+          }
+          json.dump(summary,open('data/hausverwaltung/stage3_owners/summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          open('data/hausverwaltung/stage3_owners/README.md','w',encoding='utf-8').write('''# Hausverwaltung Stage 3 — FINAL\n\nUniverse: 90 main process-fit targets + 9 secondary opportunities = 99.\n\nFor every company this checkpoint contains current/public management, immediate ownership, ownership percentages where publicly available, ultimate control, Primary Decision Maker logic, source URLs, and confidence. Unknown percentages were not invented. Corporate/state/foundation ownership is preserved as such; Austrian operational management is selected when there is no actionable controlling individual.\n\n`stage3_master_99.csv` is the Stage 3 source of truth. Stage 4 direct-contact research has not been started by this workflow.\n''')
+          print(json.dumps({'ok':True,**summary},ensure_ascii=False,indent=2))
+          PY
+      - name: Persist final Stage 3 checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage3_owners
+          git commit -m 'Finalize Hausverwaltung Stage 3 ownership and decision makers' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-final
+          path: data/hausverwaltung/stage3_owners/*
+          retention-days: 30
