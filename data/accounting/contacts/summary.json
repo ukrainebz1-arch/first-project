@@ -1,0 +1,9 @@
+{
+  "targets": 157,
+  "raw_hits": 1272,
+  "deduped_hits": 1272,
+  "targets_with_direct_phone": 59,
+  "targets_with_personal_email": 70,
+  "targets_with_any_phone_including_fallback": 98,
+  "targets_with_any_email_including_fallback": 100
+}
