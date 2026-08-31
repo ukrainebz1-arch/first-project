@@ -1,0 +1,40 @@
+name: Extract new Stage2 team candidates
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hv-stage2-new-team-candidates.yml'
+permissions:
+  contents: write
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Diff against union
+        run: |
+          python - <<'PY'
+          import csv,re,unicodedata,os
+          def k(s):
+            s=unicodedata.normalize('NFKD',s or '').encode('ascii','ignore').decode().lower().replace('&',' und ')
+            return re.sub(r'[^a-z0-9]+',' ',s).strip()
+          union=list(csv.DictReader(open('data/hausverwaltung/size_agent_first/agent_review_union.tsv',encoding='utf-8'),delimiter='\t'))
+          cand=list(csv.DictReader(open('data/hausverwaltung/size_agent_first/team_signal_fast_candidates.tsv',encoding='utf-8'),delimiter='\t'))
+          uk={k(r['company_name']) for r in union}
+          new=[r for r in cand if k(r['company_name']) not in uk]
+          fields=['company_name','website','personal_emails','name_headings','signal','urls','emails']
+          with open('data/hausverwaltung/size_agent_first/team_signal_new_candidates.tsv','w',encoding='utf-8') as f:
+            f.write('\t'.join(fields)+'\n')
+            for r in new:f.write('\t'.join((r.get(x,'') or '').replace('\t',' ').replace('\n',' ') for x in fields)+'\n')
+          print('CAND',len(cand),'UNION',len(union),'NEW',len(new))
+          PY
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first/team_signal_new_candidates.tsv
+          git commit -m 'Checkpoint new Hausverwaltung team-signal candidates' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
