@@ -8,7 +8,7 @@ on:
 
 jobs:
   prepare:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_sha == '501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
