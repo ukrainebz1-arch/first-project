@@ -1,0 +1,175 @@
+no	company_name	in_manual	in_recall	strict_class	standort_count	states_seen	website	recall_priority	recall_score	recall_reason
+1	WAG Wohnungsanlagen Gesellschaft m.b.H.	no	yes	U_NOT_PROVEN	7	Oberösterreich | Salzburg | Steiermark | Wien	http://www.wag.at/	P1	17	7 WKO Standorte; multi-Bundesland; official website; scale/management keyword; group/enterprise signal
+2	SES Center Management GmbH	yes	yes	A_TARGET_30_PLUS	8	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | wien		P1	15	8 WKO Standorte; multi-Bundesland; scale/management keyword; group/enterprise signal
+3	ÖBB-Immobilienmanagement Gesellschaft mbH	no	yes	U_NOT_PROVEN	8	Kärnten | Niederösterreich | Oberösterreich | Salzburg | Steiermark | Tirol | Wien		P1	15	8 WKO Standorte; multi-Bundesland; scale/management keyword; group/enterprise signal
+4	Bundesimmobiliengesellschaft m.b.H.	yes	yes	B_LIKELY_30_PLUS_GROUP	21	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | vorarlberg | wien	http://www.big.at/	P1	14	21 WKO Standorte; multi-Bundesland; official website; group/enterprise signal
+5	Frieda Rustler Gebäudeverwaltung GmbH & Co KG	yes	yes	B_LIKELY_30_PLUS_GROUP	6	kärnten | oberösterreich | salzburg | steiermark | tirol | wien	http://www.rustler.eu/	P1	14	6 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+6	IMMOcontract Real Estate Management GmbH	yes	yes	B_LIKELY_30_PLUS_GROUP	6	kärnten | niederösterreich | oberösterreich | steiermark | wien	http://www.donath.at/	P1	14	6 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+7	BUWOG - Bauen und Wohnen Gesellschaft mbH	no	yes	U_NOT_PROVEN	4	Kärnten | Salzburg | Steiermark | Wien	http://www.buwog.at/	P1	13	4 WKO Standorte; multi-Bundesland; official website; group/enterprise signal
+8	PRISMA Zentrum für Standort- und Regionalentwicklung GmbH	no	yes	U_NOT_PROVEN	3	Salzburg | Tirol | Vorarlberg	https://www.prisma-zentrum.com/	P1	13	3 WKO Standorte; multi-Bundesland; official website; group/enterprise signal
+9	Immo-Pro Immobilien GmbH	no	yes	U_NOT_PROVEN	7	Kärnten | Salzburg | Steiermark | Tirol | Wien	http://www.immopro.at/	P1	12	7 WKO Standorte; multi-Bundesland; official website
+10	IMV Immobilien Management GmbH	yes	yes	A_TARGET_30_PLUS	4	niederösterreich | steiermark | wien	http://www.imv.co.at/	P1	12	4 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+11	WEVIG Wohnungseigentumsverwaltungs- und Immobilientreuhand-Gesellschaft m.b.H.	no	yes	U_NOT_PROVEN	4	Niederösterreich | Oberösterreich | Wien	https://wevig.at/	P1	12	4 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+12	BUWOG Süd GmbH	no	yes	U_NOT_PROVEN	2	Kärnten | Steiermark	http://www.esg-villach.at/	P1	11	2 WKO Standorte; multi-Bundesland; official website; group/enterprise signal
+13	AUREA Hausverwaltung KG	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien	http://www.aurea-hausverwaltung.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+14	BOE Gebäudemanagement Gesellschaft m.b.H.	yes	yes	A_TARGET_30_PLUS	2	tirol | wien	http://www.boe-parking.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+15	IM-Quadrat Immobilien Vermittlung & Verwaltung GmbH	yes	yes	C_BORDERLINE_20_30	2	oberösterreich | wien	https://www.im-quadrat.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+16	Immobilienverwaltung Cvitkovits KG	no	yes	U_NOT_PROVEN	2	Burgenland | Wien	http://www.ivc.co.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+17	Karin Schuster KG Immobilienverwaltung	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien	http://www.ivschuster.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+18	PMV Immobilien Management GmbH	yes	yes	A_TARGET_30_PLUS	4	kärnten | niederösterreich | wien		P1	10	4 WKO Standorte; multi-Bundesland; scale/management keyword
+19	Reikersdorfer Hausverwaltung GmbH	no	yes	U_NOT_PROVEN	2	Niederösterreich | Oberösterreich	http://www.reikersdorfer.at/	P1	10	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+20	BUWOG Group GmbH	no	yes	U_NOT_PROVEN	2	Kärnten | Wien		P2	9	2 WKO Standorte; multi-Bundesland; group/enterprise signal
+21	CBRE GWS Austria GmbH	no	yes	U_NOT_PROVEN	2	Tirol | Wien		P2	9	2 WKO Standorte; multi-Bundesland; group/enterprise signal
+22	Stadt Wien - Wiener Wohnen Kundenservice GmbH	no	yes	U_NOT_PROVEN	3	Wien		P2	9	3 WKO Standorte; group/enterprise signal
+23	VerwaltungsGmbH Pruckner	no	yes	U_NOT_PROVEN	2	Oberösterreich | Salzburg	http://www.verwaltungsgmbh.at/	P2	9	2 WKO Standorte; multi-Bundesland; official website; scale/management keyword
+24	AI Immobilienverwertung GmbH.	no	yes	U_NOT_PROVEN	2	Oberösterreich | Wien	http://www.apk.at/aiig	P2	8	2 WKO Standorte; multi-Bundesland; official website
+25	AREV Immobilien Gesellschaft m.b.H.	yes	yes	A_TARGET_30_PLUS	3	oberösterreich	http://www.arev.at/	P2	8	3 WKO Standorte; official website
+26	at home Immobilien-GmbH	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien	http://www.at-home.co.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+27	Bischof Immobilien Ges.m.b.H.	no	yes	U_NOT_PROVEN	2	Steiermark | Wien	http://www.ibi.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+28	Dr. Friedrich Noszek GmbH	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien	http://www.immo-noszek.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+29	GMG Immobilien Invest GmbH	no	yes	U_NOT_PROVEN	3	Kärnten | Wien		P2	8	3 WKO Standorte; multi-Bundesland
+30	Haus & Grund Immobilien Management GmbH	yes	yes	C_BORDERLINE_20_30	2	oberösterreich | salzburg		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+31	KALA Immobilienmanagement GmbH	yes	yes	C_BORDERLINE_20_30	2	oberösterreich | wien		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+32	LIFING Gebäudetechnik & Verwaltung GmbH	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+33	McArthurGlen Management Gesellschaft m.b.H.	yes	yes	A_TARGET_30_PLUS	2	burgenland | salzburg		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+34	NV Immobilien GmbH	no	yes	U_NOT_PROVEN	3	Niederösterreich | Wien		P2	8	3 WKO Standorte; multi-Bundesland
+35	OM Objektmanagement GmbH	no	yes	U_NOT_PROVEN	2	Salzburg | Wien		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+36	PFG Liegenschaftsbewirtschaftungs GmbH & Co KG	no	yes	U_NOT_PROVEN	2	Salzburg | Wien		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+37	Realkanzlei Ferdinand König Gesellschaft m.b.H.	yes	yes	C_BORDERLINE_20_30	2	niederösterreich | wien	http://www.koenigimmobilien.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+38	Steinkogler Immobilientreuhand GmbH	no	yes	U_NOT_PROVEN	2	Oberösterreich | Tirol	http://www.steinkogler-verwaltungen.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+39	Terra Immobilien Gesellschaft m.b.H.	no	yes	U_NOT_PROVEN	2	Tirol | Wien	http://www.terrainternational.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+40	UBM Development AG	yes	yes	A_TARGET_30_PLUS	2	tirol | wien	http://www.ubm.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+41	Unibail-Rodamco Austria Verwaltungs GmbH	no	yes	U_NOT_PROVEN	2	Niederösterreich | Wien		P2	8	2 WKO Standorte; multi-Bundesland; scale/management keyword
+42	Viviamo Immobilien GmbH	no	yes	U_NOT_PROVEN	2	Oberösterreich | Wien	http://www.viviamo.at/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+43	Zirm Immobilien GmbH	no	yes	U_NOT_PROVEN	2	Steiermark | Tirol	https://www.zirm-immo.net/	P2	8	2 WKO Standorte; multi-Bundesland; official website
+44	APCOA Austria GmbH	yes	yes	A_TARGET_30_PLUS	1	wien	http://www.apcoa.at/	P3	7	official website; group/enterprise signal
+45	Apleona Real Estate AT GmbH	yes	yes	A_TARGET_30_PLUS	1	wien	https://www.realestate.apleona.at/	P3	7	official website; scale/management keyword; group/enterprise signal
+46	CBRE GmbH	yes	yes	A_TARGET_30_PLUS	1	wien	http://www.cbre.at/	P3	7	official website; group/enterprise signal
+47	EHL Immobilien Management GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.ehl.at/	P3	7	official website; scale/management keyword
+48	GRAWE IMMO AG	no	yes	U_NOT_PROVEN	1	Steiermark	https://www.grawe-immo.at/	P3	7	official website; group/enterprise signal
+49	ÖRAG Immobilien Vermittlung GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.oerag.at/	P3	7	official website; group/enterprise signal
+50	ÖRAG Liegenschaftsverwaltung Gesellschaft m.b.H.	no	yes	U_NOT_PROVEN	1	Wien	http://www.oerag.at/	P3	7	official website; scale/management keyword; group/enterprise signal
+51	BIG Operations GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.big.at/	P3	6	official website; group/enterprise signal
+52	BUWOG Facility Management GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.buwog.at/	P3	6	official website; scale/management keyword; group/enterprise signal
+53	IG Immobilien Management GmbH	yes	yes	A_TARGET_30_PLUS	1	wien	http://www.ig-immobilien.com/	P3	6	official website; scale/management keyword
+54	IMMOFINANZ AG	no	yes	U_NOT_PROVEN	1	Wien	http://www.immofinanz.com/	P3	6	official website; group/enterprise signal
+55	KONE Aktiengesellschaft	no	yes	U_NOT_PROVEN	1	Wien	http://www.kone.at/	P3	6	official website; group/enterprise signal
+56	PORR Bau GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.porr.at/	P3	6	official website; group/enterprise signal
+57	STRABAG BRVZ GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.strabag.com/	P3	6	official website; group/enterprise signal
+58	VAMED Standortentwicklung und Engineering GmbH	no	yes	U_NOT_PROVEN	1	Wien	http://www.vamed.com/	P3	6	official website; group/enterprise signal
+59	Wohnservice Wien Ges.m.b.H.	no	yes	U_NOT_PROVEN	1	Wien	http://www.wohnservice-wien.at/	P3	6	official website; scale/management keyword; group/enterprise signal
+60	"Die Kärntner"-Wohnbau und Hausverwaltungsgesellschaft m.b.H.	yes	no	C_BORDERLINE_20_30	1	kärnten				
+61	"Hausverwaltung Franz Dangl" Gesellschaft m.b.H.	yes	no	C_BORDERLINE_20_30	1	wien	http://www.franz-dangl-gmbh.at/			
+62	Allgemeine Unfallversicherungs- Betriebsgesellschaft m.b.H.(AUVB)	yes	no	U_NOT_PROVEN	2	oberösterreich | salzburg				
+63	Alpen Real Immobilien GmbH	yes	no	C_BORDERLINE_20_30	2	oberösterreich | salzburg				
+64	Alwog-Allgemeine Wohnbaugesellschaft m.b.H.	yes	no	U_NOT_PROVEN	1	steiermark				
+65	AREALIS Liegenschaftsmanagement GmbH	yes	no	A_TARGET_30_PLUS	1	wien	http://www.arealis.at/			
+66	at home FM Services GmbH	yes	no	A_TARGET_30_PLUS	1	wien				
+67	Bank Austria Real Invest Asset Management GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+68	Best in Parking Garagen GmbH & Co KG	yes	no	U_NOT_PROVEN	1	wien	http://www.bestinparking.at/			
+69	BFM Facility Management GmbH	yes	no	U_NOT_PROVEN	1	tirol				
+70	Brichard Immobilien GmbH	yes	no	A_TARGET_30_PLUS	1	wien	http://www.brichard.at/			
+71	BWF Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	kärnten				
+72	convival Immobilien GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+73	Dr. Martin Schober Immobilienverwaltung GmbH	yes	no	C_BORDERLINE_20_30	1	niederösterreich				
+74	Dr. Peter Dirnbacher Immobilientreuhand GmbH & Co KG	yes	no	C_BORDERLINE_20_30	1	wien				
+75	Dr.Gerlich + Co.Hausverwaltung & Facility Management GmbH	yes	no	U_NOT_PROVEN	1	salzburg				
+76	Erste Group Immorent GmbH	yes	no	A_TARGET_30_PLUS	1	wien	https://www.erstegroupimmorent.com/			
+77	FLE GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+78	FM-Plus Facility Management GmbH für Wissenschaft + Kultur in NOE	yes	no	U_NOT_PROVEN	1	niederösterreich				
+79	Franz Kramas Gebäudeverwaltung G.m.b.H.	yes	no	C_BORDERLINE_20_30	1	wien	http://www.kramas.at/			
+80	GBG Gebäude- und Baumanagement Graz GmbH	yes	no	A_TARGET_30_PLUS	1	steiermark	http://www.gbg.graz.at/			
+81	GFR Gebäude- und Facilitymanagement GmbH	yes	no	U_NOT_PROVEN	1	burgenland				
+82	Globale Baugesellschaft m.b.H. & Co. KG.	yes	no	U_NOT_PROVEN	1	tirol				
+83	GOLDBECK Parking GmbH	yes	no	C_BORDERLINE_20_30	1	niederösterreich				
+84	GSA Wohnbauträger GmbH	yes	no	C_BORDERLINE_20_30	1	oberösterreich				
+85	Gutwerk Immobilien Treuhand GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+86	GWS Bau- und Verwaltungsgesellschaft m.b.H.	yes	no	A_TARGET_30_PLUS	1	steiermark	http://www.gws-exklusiv.at/			
+87	H & R Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	tirol				
+88	HAGA Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	tirol				
+89	Hammerl Immobilien Management GmbH	yes	no	C_BORDERLINE_20_30	1	wien	http://hammerl.at/			
+90	huma eleven Shopping Center GmbH	yes	no	U_NOT_PROVEN	1	wien				
+91	HÖS Heimat Österreich Service GesmbH	yes	no	A_TARGET_30_PLUS	1	salzburg				
+92	IBT Verwaltung GmbH	yes	no	C_BORDERLINE_20_30	1	salzburg	http://www.ibt.ag/			
+93	Immobilien Verwaltung Klagenfurt GmbH	yes	no	C_BORDERLINE_20_30	1	kärnten	https://www.klagenfurt-wohnen.at/			
+94	Immobilienkanzlei Mag. Wolf-Dietrich Schneeweiss e.U.	yes	no	A_TARGET_30_PLUS	1	wien				
+95	Immobilientreuhand Kluger GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+96	Immobilienverwaltung Mag. Alois Rosenberger GmbH	yes	no	A_TARGET_30_PLUS	1	wien	https://www.iv-ro.at/			
+97	IMMOGARANT GEBÄUDEMANAGEMENT Gesellschaft m.b.H.	yes	no	U_NOT_PROVEN	1	wien				
+98	IMMOTOTAL Immobilientreuhand GmbH	yes	no	A_TARGET_30_PLUS	3	niederösterreich | wien	http://www.immototal.at/			
+99	International Campus Austria GmbH	yes	no	A_TARGET_30_PLUS	1	wien				
+100	ISSUK Projektentwicklungs GmbH	yes	no	U_NOT_PROVEN	1	kärnten				
+101	ista Österreich GmbH	yes	no	B_LIKELY_30_PLUS_GROUP	1	wien	http://www.ista.at/			
+102	IVB-Immobilienvermarktung und Bauträger Ges.m.b.H.	yes	no	C_BORDERLINE_20_30	1	burgenland				
+103	KAPPACHER-SELINA Hausverwaltung GmbH	yes	no	A_TARGET_30_PLUS	1	salzburg	https://www.kappacher-selina.at/			
+104	Kaswurm Immobilien & Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	wien				
+105	KIBB Immobilien GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+106	Krenn Wohnbauservice KG	yes	no	U_NOT_PROVEN	1	steiermark				
+107	LIM-MANAGEMENT GmbH	yes	no	B_LIKELY_30_PLUS_GROUP	1	wien	http://www.lim-management.at/			
+108	LSH Facility GmbH	yes	no	U_NOT_PROVEN	1	steiermark				
+109	LUC Facility- und Brandschutzmanagement e.U.	yes	no	U_NOT_PROVEN	1	steiermark	https://www.fb-management.at/			
+110	Ludwig Hallas, Immobilienverwaltung Gesellschaft m.b.H.	yes	no	C_BORDERLINE_20_30	1	wien	http://www.hallas.at/			
+111	Marktgemeinde Perchtoldsdorf	yes	no	A_TARGET_30_PLUS	1	niederösterreich	http://www.perchtoldsdorf.at/			
+112	Norikum Wohnungsbaugesellschaft m.b.H.	yes	no	U_NOT_PROVEN	2	oberösterreich	http://www.norikum.at/			
+113	Oberbank Infrastruktur Management GmbH	yes	no	U_NOT_PROVEN	1	oberösterreich				
+114	Palladio Immobilien GmbH	yes	no	C_BORDERLINE_20_30	1	wien	http://www.palladio-immobilien.at/			
+115	Pilger Facility Management GmbH	yes	no	U_NOT_PROVEN	1	steiermark	http://www.pfm.at/			
+116	Plansee Group Functions Austria GmbH	yes	no	A_TARGET_30_PLUS	1	tirol	https://plansee-group.com/de			
+117	Porsche Immobilien Gesellschaft m.b.H.	yes	no	A_TARGET_30_PLUS	1	salzburg				
+118	PROCON Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	oberösterreich				
+119	Raiffeisen Realitäten Betreuung Tirol GmbH	yes	no	C_BORDERLINE_20_30	1	tirol				
+120	REAL-WOHNBAUGESELLSCHAFT M.B.H.	yes	no	U_NOT_PROVEN	1	kärnten				
+121	REALITÄTEN - INVEST Immobilientreuhand- und Wohnbaugesellschaft m.b.H	yes	no	U_NOT_PROVEN	1	kärnten	http://www.realitaeten-invest.at/			
+122	Realverwaltung GmbH	yes	no	B_LIKELY_30_PLUS_GROUP	1	kärnten	http://stefan.rutter@rutter.at/			
+123	Regelsberger Liegenschaftsverwaltungs GmbH	yes	no	C_BORDERLINE_20_30	1	wien	http://www.rlvg.at/			
+124	Reinberg & Partner Immobilienberatung GmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+125	Reischauer Consulting GmbH	yes	no	C_BORDERLINE_20_30	1	oberösterreich	https://www.reischauer.at/			
+126	REIWAG Facility Services GmbH	yes	no	A_TARGET_30_PLUS	1	wien	http://www.reiwag.com/			
+127	Rella Facility GmbH	yes	no	U_NOT_PROVEN	1	wien				
+128	Salinen Immobilien Gesellschaft m.b.H.	yes	no	B_LIKELY_30_PLUS_GROUP	1	oberösterreich	http://www.salinen.com/			
+129	Salzburg Wohnbau GmbH	yes	no	A_TARGET_30_PLUS	1	salzburg	http://www.salzburg-wohnbau.at/			
+130	Schantl ITH Immobilientreuhand GmbH	yes	no	C_BORDERLINE_20_30	1	steiermark				
+131	Schwechater Wohnbau GmbH	yes	no	U_NOT_PROVEN	1	niederösterreich				
+132	Schönberg Immobilientreuhand GmbH	yes	no	C_BORDERLINE_20_30	1	steiermark	http://www.schoenberg-immobilien.at/			
+133	SDD Gebäudemanagement GmbH	yes	no	U_NOT_PROVEN	1	wien				
+134	SE Facility Management OG	yes	no	U_NOT_PROVEN	1	tirol	http://www.se-facility.at/			
+135	SEE.HAUS Weiden Betriebs GmbH	yes	no	A_TARGET_30_PLUS	1	burgenland				
+136	SELINA Hausverwaltung u. Facility-Management GmbH	yes	no	U_NOT_PROVEN	1	oberösterreich				
+137	Selina Verwaltung und Gebäudemanagement GmbH	yes	no	U_NOT_PROVEN	1	salzburg				
+138	Siemens Aktiengesellschaft Österreich	yes	no	A_TARGET_30_PLUS	1	wien				
+139	SMG Facility Management GmbH	yes	no	U_NOT_PROVEN	1	steiermark				
+140	Stadtgemeinde Gmünd	yes	no	U_NOT_PROVEN	1	niederösterreich				
+141	Steiner & Wanner Wohnbau Gesellschaft mbH	yes	no	U_NOT_PROVEN	1	salzburg	http://steiner-wanner.at/			
+142	Steinkogler Projektentwicklungs GmbH	yes	no	U_NOT_PROVEN	1	oberösterreich				
+143	Steinkogler Wohnbau und Vermietungs GmbH	yes	no	U_NOT_PROVEN	1	oberösterreich				
+144	Steirische Wirtschaftsförderungsgesellschaft m.b.H.	yes	no	A_TARGET_30_PLUS	1	steiermark	http://impulszentren.at/			
+145	Stiller & Hohla Immobilientreuhänder GmbH	yes	no	A_TARGET_30_PLUS	1	salzburg	http://www.stiller-hohla.at/			
+146	STRABAG Property and Facility Services GmbH	yes	no	B_LIKELY_30_PLUS_GROUP	1	wien	http://www.strabag-pfs.at/			
+147	Supernova Invest GmbH	yes	no	A_TARGET_30_PLUS	1	steiermark				
+148	Technopark Raaba Projektentwicklung GmbH	yes	no	U_NOT_PROVEN	1	steiermark	https://www.technopark-raaba.com/			
+149	TFM Bau GmbH	yes	no	A_TARGET_30_PLUS	1	salzburg	https://tfm-bau.at/			
+150	U.M. Bau AG	yes	no	C_BORDERLINE_20_30	1	wien				
+151	Ulreich VerwaltungsGmbH	yes	no	C_BORDERLINE_20_30	1	wien				
+152	VB - REAL Volksbank NÖ GmbH	yes	no	U_NOT_PROVEN	1	niederösterreich				
+153	Venta Immobilien Service GmbH	yes	no	C_BORDERLINE_20_30	1	steiermark				
+154	Verein zur Förderung der Expertis Gruppe - BBRZ BFI FAB	yes	no	B_LIKELY_30_PLUS_GROUP	1	oberösterreich	http://www.expertis.at/			
+155	Victoria Projektentwicklungs GmbH	yes	no	U_NOT_PROVEN	1	steiermark				
+156	VIVIR Holding GmbH	yes	no	C_BORDERLINE_20_30	1	oberösterreich	http://www.vivir-holding.at/			
+157	Volksbank Salzburg Immobilien GmbH	yes	no	U_NOT_PROVEN	1	steiermark				
+158	WARIWODA & RICHTER Immobilientreuhandgesellschaft m.b.H.	yes	no	C_BORDERLINE_20_30	1	wien				
+159	WEGRAZ Gesellschaft für Stadterneuerung und Assanierung m.b.H.	yes	no	C_BORDERLINE_20_30	1	steiermark	http://www.wegraz.at/			
+160	WEGRAZ Haring Projektentwicklungs GmbH	yes	no	U_NOT_PROVEN	1	steiermark				
+161	Weinberger Biletti Immobilien GmbH	yes	no	C_BORDERLINE_20_30	1	wien	http://www.wbi.wien/			
+162	Weinberger Biletti Immobilien Graz GmbH	yes	no	C_BORDERLINE_20_30	1	steiermark	http://www.weinberger-biletti.at/			
+163	Wert-Heim Versicherungsservice GmbH & Co KG	yes	no	U_NOT_PROVEN	1	wien				
+164	WESIAK Gesellschaft m.b.H.	yes	no	B_LIKELY_30_PLUS_GROUP	1	steiermark	http://www.wesiak.com/			
+165	Wirtschaftsagentur Burgenland GmbH	yes	no	A_TARGET_30_PLUS	1	burgenland				
+166	Woge Realitäten Gesellschaft m.b.H.	yes	no	C_BORDERLINE_20_30	1	wien	https://www.hausverwaltungwoge.at/			
+167	wohn3 Management GmbH	yes	no	C_BORDERLINE_20_30	1	wien	http://www.wohn3.at/			
+168	Wohnbau 2000 Gesellschaft mbH	yes	no	C_BORDERLINE_20_30	1	oberösterreich	http://www.wohnbau2000.at/			
+169	Wohnbauservice Immobiliengesellschaft mit beschränkter Haftung	yes	no	U_NOT_PROVEN	1	oberösterreich	http://www.wosig.at/			
+170	Wohnraumwerk Bauträger- und Projektentwicklungs GmbH	yes	no	C_BORDERLINE_20_30	1	steiermark				
+171	WSE Wiener Standortentwicklung GmbH	yes	no	A_TARGET_30_PLUS	1	wien				
+172	ZHS Office- & Facilitymanagement GmbH	yes	no	U_NOT_PROVEN	1	wien				
+173	ZIMA Objektmanagement GmbH	yes	no	A_TARGET_30_PLUS	1	tirol	http://www.zima.at/			
+174	Zurich Immobilien Liegenschaftsverwaltungs-GesmbH	yes	no	C_BORDERLINE_20_30	1	wien				
