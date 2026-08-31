@@ -1,0 +1,20 @@
+{
+  "generated_at_utc": "2026-08-31T07:37:56.237744+00:00",
+  "companies": 1780,
+  "counts": {
+    "A_TARGET_30_PLUS": 34,
+    "B_LIKELY_30_PLUS_GROUP": 13,
+    "C_BORDERLINE_20_30": 43,
+    "U_NOT_PROVEN": 1690
+  },
+  "exact_karriere_matches": 183,
+  "strict_20plus_queue": 90,
+  "manual_review_queue": 133,
+  "rules": [
+    "karriere automatic evidence only for exact normalized legal-name match",
+    "website/WKO years 1900-2035 rejected",
+    "group/global context separated from standalone evidence",
+    "standalone numeric mentions above 5000 treated as suspicious/group until manual verification",
+    "U_NOT_PROVEN does not mean small"
+  ]
+}
