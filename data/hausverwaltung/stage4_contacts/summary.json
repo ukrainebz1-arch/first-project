@@ -10,9 +10,9 @@
   "manual_review_complete": 99,
   "overall": {
     "rows": 99,
-    "companies_with_public_mobile": 10,
+    "companies_with_public_mobile": 11,
     "companies_with_direct_dial": 15,
-    "companies_with_person_bound_phone": 13,
+    "companies_with_person_bound_phone": 12,
     "companies_with_verified_personal_email": 28,
     "companies_with_inferred_personal_email": 1,
     "companies_with_only_fallback": 22,
@@ -20,9 +20,9 @@
   },
   "MAIN": {
     "rows": 90,
-    "companies_with_public_mobile": 9,
+    "companies_with_public_mobile": 10,
     "companies_with_direct_dial": 12,
-    "companies_with_person_bound_phone": 13,
+    "companies_with_person_bound_phone": 12,
     "companies_with_verified_personal_email": 25,
     "companies_with_inferred_personal_email": 1,
     "companies_with_only_fallback": 21,
