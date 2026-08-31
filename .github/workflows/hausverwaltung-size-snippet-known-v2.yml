@@ -1,0 +1,29 @@
+name: Hausverwaltung Size Snippet Known Targets v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hausverwaltung-size-snippet-known-v2.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - name: Test AREV and Brichard
+        run: |
+          python scripts/hausverwaltung_size_external_snippets.py --start 95 --end 95 --out smoke/evidence.csv --progress-out smoke/progress.csv
+          python scripts/hausverwaltung_size_external_snippets.py --start 186 --end 186 --out smoke/evidence.csv --progress-out smoke/progress.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-snippet-known-v2
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
