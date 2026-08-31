@@ -1,0 +1,41 @@
+company_name	previous_class	process_fit_class	process_fit_reason	website	states_seen
+APCOA Austria GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	large parking operator with back-office/customer/billing automation potential, but not sufficiently close to Hausverwaltung workflows	http://www.apcoa.at/	wien
+at home FM Services GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	facility management / recurring building operations and back-office workflows		wien
+BOE Gebäudemanagement Gesellschaft m.b.H.	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	commercial/technical property management, accounting, operating-cost allocation, contracts and tenant/owner workflows	http://www.boe-parking.at/	tirol | wien
+CBRE GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large property/facility management platform with recurring real-estate back-office processes	http://www.cbre.at/	wien
+Erste Group Immorent GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	large real-estate finance/leasing platform; automation potential is strong but process set is less Hausverwaltung-like	https://www.erstegroupimmorent.com/	wien
+GBG Gebäude- und Baumanagement Graz GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large building-management operator with technical and administrative property processes	http://www.gbg.graz.at/	steiermark
+International Campus Austria GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large student-housing operator with tenant, property and facility operations		wien
+McArthurGlen Management Gesellschaft m.b.H.	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	shopping-centre management with tenant, service-charge, facility and operational workflows		burgenland | salzburg
+Porsche Immobilien Gesellschaft m.b.H.	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large in-house real-estate/facility operator with maintenance, contractor and property administration processes		salzburg
+REIWAG Facility Services GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large facility/property services operator with recurring back-office and building processes	http://www.reiwag.com/	wien
+SEE.HAUS Weiden Betriebs GmbH	E_ADJACENT_30_PLUS	EXCLUDE_PROCESS_MISMATCH	operating business is hospitality/accommodation rather than property administration		burgenland
+SES Center Management GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	multi-site shopping-centre management with tenant, facility and commercial administration workflows		kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | wien
+Supernova Invest GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	active asset and centre management; commercial/technical management and tenant workflows		steiermark
+UBM Development AG	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	large developer with substantial administration, but recurring property-management processes are not the primary operation	http://www.ubm.at/	tirol | wien
+WSE Wiener Standortentwicklung GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	explicitly develops, manages and administers real estate including office and public buildings		wien
+Bundesimmobiliengesellschaft m.b.H.	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large property operator with Hausverwaltung, tenant service, operating-cost accounting and maintenance workflows	http://www.big.at/	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | vorarlberg | wien
+ista Österreich GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	high-volume billing, meter, operating-cost, customer and Hausverwaltung-facing workflows	http://www.ista.at/	wien
+Realverwaltung GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	one of Austria’s larger commercial Hausverwaltungen; tenant and commercial/technical FM processes	http://stefan.rutter@rutter.at/	kärnten
+Salinen Immobilien Gesellschaft m.b.H.	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	internal/group real-estate entity; scale exists but recurring Hausverwaltung process depth not yet proven	http://www.salinen.com/	oberösterreich
+STRABAG Property and Facility Services GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large property/facility management operation with recurring commercial and technical back-office	http://www.strabag-pfs.at/	wien
+Bank Austria Real Invest Asset Management GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	real-estate asset/fund management; finance-heavy back office but less direct property administration		wien
+FLE GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	licensed Immobilienverwalter with Immobilienmanagement and portfolio administration		wien
+GSA Wohnbauträger GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	group provides property management, accounting, billing, complaints, document and contractor workflows		oberösterreich
+KIBB Immobilien GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	explicit Hausverwaltung with billing, customer portal, legal/technical and tenant-owner workflows		wien
+Reinberg & Partner Immobilienberatung GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	real-estate advisory/consulting; automation potential exists but less recurring property operations		wien
+Reischauer Consulting GmbH	E_ADJACENT_30_PLUS	EXCLUDE_PROCESS_MISMATCH	consulting-focused business rather than recurring property operations	https://www.reischauer.at/	oberösterreich
+U.M. Bau AG	E_ADJACENT_30_PLUS	EXCLUDE_PROCESS_MISMATCH	construction-focused business rather than recurring Hausverwaltung/property back-office		wien
+VIVIR Holding GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	licensed Immobilienverwalter; recurring real-estate administration qualifies for process-fit pool	http://www.vivir-holding.at/	oberösterreich
+WEGRAZ Gesellschaft für Stadterneuerung und Assanierung m.b.H.	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	development/urban-renewal operator; relevant administration but less direct Hausverwaltung workflow evidence	http://www.wegraz.at/	steiermark
+Wohnraumwerk Bauträger- und Projektentwicklungs GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	developer/project company; relevant back office but not enough recurring property-management evidence		steiermark
+Zurich Immobilien Liegenschaftsverwaltungs-GesmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	direct Liegenschaftsverwaltung entity with recurring administration workflows		wien
+AI Immobilienverwertung GmbH.	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	WKO lists Mietshausverwaltung; recurring rental-house administration processes	http://www.apk.at/aiig	oberösterreich | wien
+CBRE GWS Austria GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large facility/property services operator with recurring property back-office		tirol | wien
+GRAWE Immo AG	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	manages GRAWE real-estate portfolio across Austria and operates customer service	http://www.gwimmo.at/	steiermark
+Oberbank Infrastruktur Management GmbH	E_ADJACENT_30_PLUS	SECONDARY_PROCESS_TARGET	internal infrastructure/asset management; potentially relevant but process similarity is not yet established		oberösterreich
+PFG Liegenschaftsbewirtschaftungs GmbH &Co KG	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	Liegenschaftsbewirtschaftung is directly aligned with property administration workflows		salzburg | wien
+PRISMA Zentrum für Standort- und Regionalentwicklung GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	100+ buildings under management; commercial/technical Hausverwaltung, facility services, accounting and rent administration	https://www.prisma-zentrum.com/	salzburg | tirol | vorarlberg
+Stadt Wien - Wiener Wohnen Kundenservice GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	very large housing customer-service/property operation with rent and operating-cost accounting		wien
+Unibail-Rodamco Austria Verwaltungs GmbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	large shopping-centre/property administration operator with tenant and facility workflows		niederösterreich | wien
+ÖBB-Immobilienmanagement Gesellschaft mbH	E_ADJACENT_30_PLUS	ADD_TO_SALES_POOL	Austria-scale Hausverwaltung with commercial/technical management, tenant service and rent/operating-cost billing		kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | wien

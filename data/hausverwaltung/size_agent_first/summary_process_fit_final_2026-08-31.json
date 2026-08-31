@@ -1,0 +1,12 @@
+{
+  "previous_core_targets": 62,
+  "adjacent_reviewed": 40,
+  "adjacent_added_to_main_sales_pool": 28,
+  "secondary_process_targets": 9,
+  "process_mismatch_excluded": 3,
+  "unresolved_process_review": 0,
+  "main_process_fit_sales_pool": 90,
+  "main_plus_secondary_opportunities": 99,
+  "stage2_definition": "size + sales process fit; includes classic Hausverwaltung and large property/facility/housing/centre operators with recurring administration, accounting, billing, tenant/customer, document, maintenance or contractor workflows",
+  "stage3_started": false
+}
