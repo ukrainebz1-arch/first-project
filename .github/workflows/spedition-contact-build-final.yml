@@ -1,0 +1,39 @@
+name: Build final Spedition contact enrichment
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/spedition_contact_build_final.py'
+      - 'data/spedition/contacts/validated_contacts.csv'
+      - 'data/spedition/contacts/official_best_contacts.csv'
+      - 'data/spedition/contacts/official_chunks/**'
+      - 'data/spedition/contacts/external_chunks/**'
+      - '.github/workflows/spedition-contact-build-final.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build final evidence and contacts
+        run: python scripts/spedition_contact_build_final.py
+      - name: Persist final outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/all_contact_evidence.csv \
+                  data/spedition/contacts/final_contacts.csv \
+                  data/spedition/contacts/method_performance.csv \
+                  data/spedition/contacts/final_status_summary.csv \
+                  data/spedition/contacts/README_final.md
+          git commit -m 'Build final Spedition decision-maker contact enrichment' || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; git pull origin main --no-rebase || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
