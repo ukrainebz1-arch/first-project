@@ -1,0 +1,25 @@
+{
+  "companies": 118,
+  "decision_makers": 242,
+  "evidence_rows": 117,
+  "status_counts": {
+    "C_DIRECT_EMAIL_ONLY": 24,
+    "F_NO_PUBLIC_DIRECT_CONTACT": 139,
+    "E_CENTRAL_FALLBACK": 15,
+    "B_DIRECT_PHONE": 43,
+    "A_PUBLIC_MOBILE": 8,
+    "D_NAMED_MANAGEMENT_LINE": 13
+  },
+  "company_best_status_counts": {
+    "C_DIRECT_EMAIL_ONLY": 14,
+    "F_NO_PUBLIC_DIRECT_CONTACT": 59,
+    "B_DIRECT_PHONE": 28,
+    "E_CENTRAL_FALLBACK": 5,
+    "A_PUBLIC_MOBILE": 6,
+    "D_NAMED_MANAGEMENT_LINE": 6
+  },
+  "direct_reachable_A_to_C": 75,
+  "named_or_better_A_to_D": 88,
+  "unresolved_F": 139,
+  "generated_utc": "2026-08-31"
+}
