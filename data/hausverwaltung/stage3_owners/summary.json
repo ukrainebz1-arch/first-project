@@ -1,0 +1,31 @@
+{
+  "stage3_status": "FINAL",
+  "expected": 99,
+  "rows": 99,
+  "main": 90,
+  "secondary": 9,
+  "missing_management": 0,
+  "missing_immediate_owners": 0,
+  "missing_ultimate_control": 0,
+  "missing_primary_dm": 0,
+  "missing_sources": 0,
+  "unresolved_ownership": 0,
+  "research_complete": 99,
+  "confidence": {
+    "HIGH": 81,
+    "MEDIUM_HIGH": 18
+  },
+  "ownership_types": {
+    "PUBLIC_STATE": 7,
+    "CORPORATE_GROUP": 46,
+    "INDIVIDUAL_FAMILY_CONTROL": 18,
+    "RELIGIOUS_INSTITUTION": 1,
+    "PARTNER_OWNED": 14,
+    "MIXED": 6,
+    "SOLE_PROPRIETOR": 2,
+    "FOUNDATION_CONTROL": 4,
+    "PUBLIC_COMPANY": 1
+  },
+  "stage4_started": false,
+  "quality_note": "Curated registry/official-source Stage 3; deterministic/free-text parser outputs were not accepted as final without manual resolution."
+}
