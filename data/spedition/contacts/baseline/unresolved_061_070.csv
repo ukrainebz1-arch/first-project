@@ -1,0 +1,11 @@
+﻿no,company,person,owners,websites,baseline_status,best_phone,best_email,confidence,source_url,reason
+32,NEUFRA Speditions Gesellschaft m.b.H.,Sandra Hast,NEUFRA Speditionsgesellschaft mbH (Germany),,UNRESOLVED,,,,,
+32,NEUFRA Speditions Gesellschaft m.b.H.,Peter Reindl,NEUFRA Speditionsgesellschaft mbH (Germany),,UNRESOLVED,,,,,
+33,Petschl Werkstätten Betriebs GmbH,Nikolaus Glisic,Nikolaus Glisic; PETSCHL Österreich GmbH,,UNRESOLVED,,,,,
+33,Petschl Werkstätten Betriebs GmbH,Wolfgang Aigner,Nikolaus Glisic; PETSCHL Österreich GmbH,,UNRESOLVED,,,,,
+34,SETG Salzburger Eisenbahn TransportLogistik GmbH,Gunther Pitterka,Gunther Pitterka,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Maximilian Schachinger,Schachinger group / Maximilian Schachinger ultimate control,,E_CENTRAL_FALLBACK,+43 7221 707-0,,low,https://www.schachinger.com/impressum/,official_candidate_needs_external_validation
+35,Schachinger Logistik Holding GmbH,Günther Gfrerrer,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Ehrenfried Werderits,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Philipp Pracser,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+36,TFG Transfracht Internationale Gesellschaft für kombinierten Güterverkehr mbH,Thomas Hesse,DB Cargo AG,,E_CENTRAL_FALLBACK,+43 664 9624260,,low,https://www.transfracht.com/transfracht/Meta-Navi/Kontakt,official_candidate_needs_external_validation

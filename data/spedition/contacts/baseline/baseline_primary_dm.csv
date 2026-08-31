@@ -1,0 +1,243 @@
+﻿no,company,person,owners,websites,baseline_status,best_phone,best_email,confidence,source_url,reason
+1,CMA-CGM (Deutschland) GmbH Shipping Agency,Mirja Nibbe,CMA CGM group,,UNRESOLVED,,,,,
+2,DP World Logistics Austria GmbH,Rolf Mertins,Imperial Mobility International B.V.,,UNRESOLVED,,,,,
+2,DP World Logistics Austria GmbH,Chris Povey,Imperial Mobility International B.V.,,UNRESOLVED,,,,,
+3,Logistik Service GmbH,Christian Janecek,voestalpine Stahl GmbH,http://www.logserv.at/,E_CENTRAL_FALLBACK,+43 732 6598 4895,,low,https://www.logserv.at/Unternehmen/Zahlen-Daten-Fakten,official_candidate_needs_external_validation
+3,Logistik Service GmbH,Markus Schinko,voestalpine Stahl GmbH,http://www.logserv.at/,E_CENTRAL_FALLBACK,+43 732 6598 4895,,low,https://www.logserv.at/Unternehmen/Zahlen-Daten-Fakten,official_candidate_needs_external_validation
+4,Lagermax Logistics Austria GmbH,Michael Macheiner,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+4,Lagermax Logistics Austria GmbH,Christian Stoll,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+4,Lagermax Logistics Austria GmbH,Richard Pöschl,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+5,Gebrüder Weiss Gesellschaft m.b.H.,Wolfram Senger-Weiss,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+5,Gebrüder Weiss Gesellschaft m.b.H.,Peter Schafleitner,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+5,Gebrüder Weiss Gesellschaft m.b.H.,Jürgen Bauer,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+5,Gebrüder Weiss Gesellschaft m.b.H.,Alessandro Cacciola,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+6,DHL Express (Austria) GmbH,Roland Winischhofer,Deutsche Post Beteiligungen Holding GmbH,https://mydhl.express.dhl/,UNRESOLVED,,,,,
+6,DHL Express (Austria) GmbH,Kris David van Humbeeck,Deutsche Post Beteiligungen Holding GmbH,https://mydhl.express.dhl/,UNRESOLVED,,,,,
+7,Expeditors Speditionsges.m.b.H.,Clemens Reimer,"Expeditors International of Washington, Inc.",http://www.expeditors.com/,UNRESOLVED,,,,,
+7,Expeditors Speditionsges.m.b.H.,Daniel Roy Wall,"Expeditors International of Washington, Inc.",http://www.expeditors.com/,B_DIRECT_PHONE,000. 2005 226,,medium,https://www.expeditors.com/about-us/history,official_named_phone_sources=1
+8,G. Englmayer Spedition GmbH,Andreas Gaber,WIESINGER Privatstiftung,http://www.englmayer.at/,UNRESOLVED,,,,,
+8,G. Englmayer Spedition GmbH,Roman Schimps,WIESINGER Privatstiftung,http://www.englmayer.at/,UNRESOLVED,,,,,
+8,G. Englmayer Spedition GmbH,Robert Breitwieser,WIESINGER Privatstiftung,http://www.englmayer.at/,UNRESOLVED,,,,,
+8,G. Englmayer Spedition GmbH,Alexander Pöttinger,WIESINGER Privatstiftung,http://www.englmayer.at/,UNRESOLVED,,,,,
+9,Hödlmayr International GmbH,Johannes Alexander Hödlmayr,Hödlmayr-Privatstiftung; family minority stakes,http://www.hoedlmayr.com/,A_PUBLIC_MOBILE,+43 664 61 44 798,,high,https://www.hoedlmayr.com/news-presse/downloads-kontakt,official_mobile_sources=3
+9,Hödlmayr International GmbH,Robert Horvath,Hödlmayr-Privatstiftung; family minority stakes,http://www.hoedlmayr.com/,B_DIRECT_PHONE,+43 7262 660,,medium,https://www.hoedlmayr.com/unternehmen/hoedlmayr-geschaeftsfuehrung,official_named_phone_sources=1
+9,Hödlmayr International GmbH,Andreas Sundl,Hödlmayr-Privatstiftung; family minority stakes,http://www.hoedlmayr.com/,UNRESOLVED,,,,,
+10,Kühne + Nagel Gesellschaft m.b.H.,Franz Braunsberger,Kühne + Nagel Eastern Europe AG; Kühne + Nagel Management AG,http://www.kuehne-nagel.at/ | http://www.kuehne-nagel.com/,UNRESOLVED,,,,,
+10,Kühne + Nagel Gesellschaft m.b.H.,Martin Hafner,Kühne + Nagel Eastern Europe AG; Kühne + Nagel Management AG,http://www.kuehne-nagel.at/ | http://www.kuehne-nagel.com/,UNRESOLVED,,,,,
+11,Quick Service Logistics GmbH,Markus Bappert,Meyer Quick Service Logistics Verwaltungs GmbH,,UNRESOLVED,,,,,
+11,Quick Service Logistics GmbH,Nina Meyer,Meyer Quick Service Logistics Verwaltungs GmbH,,UNRESOLVED,,,,,
+11,Quick Service Logistics GmbH,Florian Entrich,Meyer Quick Service Logistics Verwaltungs GmbH,,UNRESOLVED,,,,,
+12,Raben Logistics Austria GmbH,Ewald Raben,Raben Group N.V.,,B_DIRECT_PHONE,+48 (61) 898 88 00,,medium,https://www.raben-group.com/imprint,official_named_phone_sources=1
+12,Raben Logistics Austria GmbH,Wojciech Mialik,Raben Group N.V.,,UNRESOLVED,,,,,
+13,Sovereign Speed Austria GmbH,Leo Then,Sovereign Speed Germany GmbH,http://www.sovereignspeed.com/,UNRESOLVED,,,,,
+14,Nothegger Transport Logistik GmbH,Karl Nothegger,Karl Nothegger; Nothegger Holding GmbH,http://www.nothegger.at/,UNRESOLVED,,,,,
+15,All Fresh Logistics GmbH,Reinhold Diess,Reinhold Diess,,UNRESOLVED,,,,,
+16,Berger Logistik GmbH,Tobias Ibrahim,Berger Transport GmbH; Red Bull GmbH,,UNRESOLVED,,,,,
+16,Berger Logistik GmbH,Matthias Synal,Berger Transport GmbH; Red Bull GmbH,,UNRESOLVED,,,,,
+17,cargo-partner GmbH,Martin Schenzel,Cargo-Partner Holdings GmbH,http://www.cargo-partner.com/,UNRESOLVED,,,,,
+18,DACHSER-Austria Gesellschaft m.b.H.,Alfred Koblmüller,DACHSER SE,,UNRESOLVED,,,,,
+18,DACHSER-Austria Gesellschaft m.b.H.,Michael Rauhofer,DACHSER SE,,UNRESOLVED,,,,,
+19,DHL Global Forwarding (Austria) GmbH,Christoph Wahl,DHL Global Forwarding International Holdings B.V.,http://www.dhl-freight.at/ | http://www.dhl.at/ | http://www.logistics.dhl/at-de | https://www.dhl.com/at-de/home/fracht.html,UNRESOLVED,,,,,
+19,DHL Global Forwarding (Austria) GmbH,Thomas Ziegler,DHL Global Forwarding International Holdings B.V.,http://www.dhl-freight.at/ | http://www.dhl.at/ | http://www.logistics.dhl/at-de | https://www.dhl.com/at-de/home/fracht.html,UNRESOLVED,,,,,
+20,Dipl. Kfm. Günther König Transportgesellschaft m.b.H.,Katharina König,Ownership not resolved in free public sources,,UNRESOLVED,,,,,
+21,FedEx Express Austria GmbH,Stefan Dries,FedEx Express International B.V.,,UNRESOLVED,,,,,
+21,FedEx Express Austria GmbH,Sven Kische,FedEx Express International B.V.,,UNRESOLVED,,,,,
+21,FedEx Express Austria GmbH,Charlotte Laureyssens,FedEx Express International B.V.,,UNRESOLVED,,,,,
+22,Fercam Austria GmbH,Hannes Baumgartner,FERCAM SB SRL,,UNRESOLVED,,,,,
+22,Fercam Austria GmbH,Christian Jarnig,FERCAM SB SRL,,UNRESOLVED,,,,,
+23,Fluckinger Transport GmbH,Andreas Fluckinger,Fluckinger Holding GmbH,,B_DIRECT_PHONE,+43 5224 53533,andreas.fluckinger@fluckinger.com,high,https://www.fluckinger.com/unternehmen/team,validated_contacts
+24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,ZEPTA Vermögensverwaltungs GmbH,,UNRESOLVED,,,,,
+24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,ZEPTA Vermögensverwaltungs GmbH,,UNRESOLVED,,,,,
+25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Friedrich Mayer; Peter Mayer,,B_DIRECT_PHONE,+43 3577 76076-330,mayer@mayer.at,high,https://mayer.at/kontakt/,validated_contacts
+25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Friedrich Mayer; Peter Mayer,,B_DIRECT_PHONE,+43 3577 76076-32,p.mayer@mayer.at,high,https://mayer.at/kontakt/,validated_contacts
+26,GLS Austria GmbH,Christian Schöninger,General Logistics Systems Germany GmbH & Co. OHG,,UNRESOLVED,,,,,
+26,GLS Austria GmbH,Moritz Eichhöfer,General Logistics Systems Germany GmbH & Co. OHG,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Rolf Hadolt,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Felix Hadolt,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Stefanie Sachiko Hadolt-Reimers,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+28,Hödlmayr Logistics GmbH,Helmut Zwirner,Hödlmayr International GmbH,,E_CENTRAL_FALLBACK,+43 7262 660,,low,https://www.hoedlmayr.com/unternehmen/standorte,official_candidate_needs_external_validation
+28,Hödlmayr Logistics GmbH,Markus Formann,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+28,Hödlmayr Logistics GmbH,Stefan Pargfrieder,Hödlmayr International GmbH,,E_CENTRAL_FALLBACK,+43 7262 660,,low,https://www.hoedlmayr.com/unternehmen/standorte,official_candidate_needs_external_validation
+29,Ontime Logistics Speditions GmbH,Sonja Schneckenreither,SAW-Beteiligungs GmbH,,UNRESOLVED,,,,,
+29,Ontime Logistics Speditions GmbH,Thomas Dobusch,SAW-Beteiligungs GmbH,,UNRESOLVED,,,,,
+30,Rudolph Logistik Österreich GmbH,Georg Weiß,ANCLA Logistik GmbH,,UNRESOLVED,,,,,
+30,Rudolph Logistik Österreich GmbH,Christoph Maas,ANCLA Logistik GmbH,,UNRESOLVED,,,,,
+30,Rudolph Logistik Österreich GmbH,Christoph Glatzl,ANCLA Logistik GmbH,,UNRESOLVED,,,,,
+31,Nagel Austria GmbH,Johannes Winterleitner,Nagel-Group Logistics SE,,UNRESOLVED,,,,,
+31,Nagel Austria GmbH,Markus Raffeiner,Nagel-Group Logistics SE,,UNRESOLVED,,,,,
+32,NEUFRA Speditions Gesellschaft m.b.H.,Wolfgang Hast,NEUFRA Speditionsgesellschaft mbH (Germany),,UNRESOLVED,,,,,
+32,NEUFRA Speditions Gesellschaft m.b.H.,Sandra Hast,NEUFRA Speditionsgesellschaft mbH (Germany),,UNRESOLVED,,,,,
+32,NEUFRA Speditions Gesellschaft m.b.H.,Peter Reindl,NEUFRA Speditionsgesellschaft mbH (Germany),,UNRESOLVED,,,,,
+33,Petschl Werkstätten Betriebs GmbH,Nikolaus Glisic,Nikolaus Glisic; PETSCHL Österreich GmbH,,UNRESOLVED,,,,,
+33,Petschl Werkstätten Betriebs GmbH,Wolfgang Aigner,Nikolaus Glisic; PETSCHL Österreich GmbH,,UNRESOLVED,,,,,
+34,SETG Salzburger Eisenbahn TransportLogistik GmbH,Gunther Pitterka,Gunther Pitterka,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Maximilian Schachinger,Schachinger group / Maximilian Schachinger ultimate control,,E_CENTRAL_FALLBACK,+43 7221 707-0,,low,https://www.schachinger.com/impressum/,official_candidate_needs_external_validation
+35,Schachinger Logistik Holding GmbH,Günther Gfrerrer,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Ehrenfried Werderits,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+35,Schachinger Logistik Holding GmbH,Philipp Pracser,Schachinger group / Maximilian Schachinger ultimate control,,UNRESOLVED,,,,,
+36,TFG Transfracht Internationale Gesellschaft für kombinierten Güterverkehr mbH,Frank Erschkat,DB Cargo AG,,C_DIRECT_EMAIL_ONLY,,frank.gedat@transfracht.com,high,https://www.transfracht.com/transfracht/Meta-Navi/Kontakt,official_email_sources=2
+36,TFG Transfracht Internationale Gesellschaft für kombinierten Güterverkehr mbH,Thomas Hesse,DB Cargo AG,,E_CENTRAL_FALLBACK,+43 664 9624260,,low,https://www.transfracht.com/transfracht/Meta-Navi/Kontakt,official_candidate_needs_external_validation
+36,TFG Transfracht Internationale Gesellschaft für kombinierten Güterverkehr mbH,Sören Kaminsky,DB Cargo AG,,E_CENTRAL_FALLBACK,+43 664 9624260,,low,https://www.transfracht.com/transfracht/Meta-Navi/Kontakt,official_candidate_needs_external_validation
+36,TFG Transfracht Internationale Gesellschaft für kombinierten Güterverkehr mbH,Rebecca Leitner,DB Cargo AG,,C_DIRECT_EMAIL_ONLY,,rebecca.leitner@transfracht.com,high,https://www.transfracht.com/transfracht/Meta-Navi/Kontakt,official_email_sources=2
+37,Trans-o-flex ThermoMed Austria GmbH,Eugen Günther,trans-o-flex ThermoMed GmbH,,UNRESOLVED,,,,,
+37,Trans-o-flex ThermoMed Austria GmbH,Thomas Handlos,trans-o-flex ThermoMed GmbH,,UNRESOLVED,,,,,
+37,Trans-o-flex ThermoMed Austria GmbH,Michael Löckener,trans-o-flex ThermoMed GmbH,,UNRESOLVED,,,,,
+38,TRANSDANUBIA Speditionsgesellschaft m.b.H.,Andreas Scherbaum,TRANSDANUBIA Holding GmbH,,UNRESOLVED,,,,,
+38,TRANSDANUBIA Speditionsgesellschaft m.b.H.,Friedrich Simlinger,TRANSDANUBIA Holding GmbH,,UNRESOLVED,,,,,
+38,TRANSDANUBIA Speditionsgesellschaft m.b.H.,Günter Lehner,TRANSDANUBIA Holding GmbH,,UNRESOLVED,,,,,
+39,Transped Europe GmbH,Thomas Schnaiter,Transped Holding GmbH; Markus Auer GmbH,,B_DIRECT_PHONE,+43 5332 210-67,,medium,https://www.transped.at/europe/impressum,official_named_phone_sources=1
+40,Transporte Schneckenreiter GmbH,Dieter Schneckenreiter,UCS Beteiligungen GmbH,,UNRESOLVED,,,,,
+41,VEGA International Car-Transport and Logistic-Trading Gesellschaft m.b.H.,Franz Blum,Franz Blum; Wolfgang Werner,,E_CENTRAL_FALLBACK,0043 662 43 62 80,,low,https://www.vegatrans.com/impressum,official_candidate_needs_external_validation
+41,VEGA International Car-Transport and Logistic-Trading Gesellschaft m.b.H.,Wolfgang Werner,Franz Blum; Wolfgang Werner,,E_CENTRAL_FALLBACK,0043 662 43 62 80,,low,https://www.vegatrans.com/impressum,official_candidate_needs_external_validation
+41,VEGA International Car-Transport and Logistic-Trading Gesellschaft m.b.H.,Peter Blum,Franz Blum; Wolfgang Werner,,E_CENTRAL_FALLBACK,0043 662 43 62 80,,low,https://www.vegatrans.com/impressum,official_candidate_needs_external_validation
+41,VEGA International Car-Transport and Logistic-Trading Gesellschaft m.b.H.,Thomas Mackinger,Franz Blum; Wolfgang Werner,,E_CENTRAL_FALLBACK,0043 662 43 62 80,,low,https://www.vegatrans.com/impressum,official_candidate_needs_external_validation
+42,Weiss Walter,Johann Luxbauer,Luxbauer Holding GmbH,,UNRESOLVED,,,,,
+43,E. Rossik Transport & Logistics GmbH,Erwin Rossik,Mladenco-Vladimir Rossik; Rossik Holding GmbH; Lukas Dolezal,,C_DIRECT_EMAIL_ONLY,,rossik@rossik.eu,high,https://www.rossik.eu/,official_email_sources=8
+43,E. Rossik Transport & Logistics GmbH,Mladenco-Vladimir Rossik,Mladenco-Vladimir Rossik; Rossik Holding GmbH; Lukas Dolezal,,C_DIRECT_EMAIL_ONLY,,rossik@rossik.eu,high,https://www.rossik.eu/,official_email_sources=8
+44,DSV Road Austria AG,Nico Puhl,DSV Road Holding A/S,,UNRESOLVED,,,,,
+45,Treu Speditionsgesellschaft m.b.H.,Alexander Müller,Alexander Müller,,UNRESOLVED,,,,,
+46,BGO Logistik & Spedition GmbH,Peter Morawetz,BGO Holding GmbH,,UNRESOLVED,,,,,
+46,BGO Logistik & Spedition GmbH,Mario Helfenschneider,BGO Holding GmbH,,UNRESOLVED,,,,,
+47,Kapeller Internationale Spedition GmbH,Thomas Hafner,Schneider & Cie. AG; Thomas Hafner; Thomas Zangl,,UNRESOLVED,,,,,
+48,DIZZBO GmbH,Peter Baumgartlinger,Current shareholders not established from free Austrian sources,,UNRESOLVED,,,,,
+48,DIZZBO GmbH,Robert Köbrunner,Current shareholders not established from free Austrian sources,,UNRESOLVED,,,,,
+49,I.L.G. Innovative Logistics Group GmbH,Peter Neuhuber,Wolfgang Klepatsch; Fr. Meyer’s Sohn KG; Rupert Schenz; PNP Immobilien GmbH,,UNRESOLVED,,,,,
+49,I.L.G. Innovative Logistics Group GmbH,Wolfgang Klepatsch,Wolfgang Klepatsch; Fr. Meyer’s Sohn KG; Rupert Schenz; PNP Immobilien GmbH,,UNRESOLVED,,,,,
+50,JERICH Austria GmbH,Herbert Friedrich Jerich,Jerich Privatstiftung; Herbert Jerich,,E_CENTRAL_FALLBACK,+43 3112 / 4000-0,office@jerich.com,low,https://www.jerich.com/,official_candidate_needs_external_validation
+51,Kerschner Transporte GmbH,Andreas Kerschner,Noerpel SE,,UNRESOLVED,,,,,
+52,Josef Poscharnegg GmbH,Sandra Poscharnegg,"PH Holding GmbH; ultimate: Sandra, Sabine, Ulrike Poscharnegg-Kriebernegg",http://www.poscharnegg.at/,B_DIRECT_PHONE,+43 3455 6011 100,,high,https://www.poscharnegg.at/ueber-uns/ansprechpersonen,validated_contacts
+52,Josef Poscharnegg GmbH,Sabine Poscharnegg,"PH Holding GmbH; ultimate: Sandra, Sabine, Ulrike Poscharnegg-Kriebernegg",http://www.poscharnegg.at/,UNRESOLVED,,,,,
+52,Josef Poscharnegg GmbH,Ulrike Poscharnegg-Kriebernegg,"PH Holding GmbH; ultimate: Sandra, Sabine, Ulrike Poscharnegg-Kriebernegg",http://www.poscharnegg.at/,UNRESOLVED,,,,,
+53,INNIGHT EXPRESS AUSTRIA GmbH,Barbara Dragosits,Innight Express Management GmbH,,UNRESOLVED,,,,,
+54,Paul Rudolf Gesellschaft m.b.H.,Paul Rudolf Bierbaumer,Rudolf Privatstiftung; Paul Rudolf; Katharina Haller,,UNRESOLVED,,,,,
+54,Paul Rudolf Gesellschaft m.b.H.,Katharina Haller,Rudolf Privatstiftung; Paul Rudolf; Katharina Haller,,UNRESOLVED,,,,,
+55,SWIETELSKY Baugesellschaft m.b.H.,Karl Kirchberger,Swietelsky AG,,UNRESOLVED,,,,,
+55,SWIETELSKY Baugesellschaft m.b.H.,Matthias Schauer,Swietelsky AG,,UNRESOLVED,,,,,
+56,Speditionsservice Ranshofen Gesellschaftm.b.H.,Adolf Winkelmeier,M.Preymesser Beteiligungs GmbH; AMAG service GmbH,,UNRESOLVED,,,,,
+56,Speditionsservice Ranshofen Gesellschaftm.b.H.,Rüdiger Pressler,M.Preymesser Beteiligungs GmbH; AMAG service GmbH,,UNRESOLVED,,,,,
+57,Tirolia Spedition Ges.m.b.H.,Michael Lukasser,Tirolia Holding GmbH; Michael Lukasser direct,,UNRESOLVED,,,,,
+58,TRA Logistik GmbH,Rupert Trawöger,TRA Holding GmbH,,UNRESOLVED,,,,,
+58,TRA Logistik GmbH,Artur Hovhannisyan,TRA Holding GmbH,,UNRESOLVED,,,,,
+59,UNITCARGO Speditionsges.m.b.H.,Davor Sertic,Davor Sertic,,E_CENTRAL_FALLBACK,,sales@unitcargo.at,low,https://unitcargo.at/impressum/,official_candidate_needs_external_validation
+60,W. Riedel Silo-Transportgesellschaft m.b.H.,Christian Soos,SR-Silotransport GmbH; Immo Immobilientreuhand; Manfred Adam,,UNRESOLVED,,,,,
+60,W. Riedel Silo-Transportgesellschaft m.b.H.,Robert Mausser,SR-Silotransport GmbH; Immo Immobilientreuhand; Manfred Adam,,UNRESOLVED,,,,,
+60,W. Riedel Silo-Transportgesellschaft m.b.H.,Alexander Waldmüller,SR-Silotransport GmbH; Immo Immobilientreuhand; Manfred Adam,,UNRESOLVED,,,,,
+61,Neuninger Logistik Service GmbH,Jürgen Neuninger,Jürgen Neuninger; Brigitte Neuninger,,UNRESOLVED,,,,,
+62,Condor - Speditions -,Transportgesellschaft m.b.H. + Co.,Mag. Andreas Gfrerer,Andreas Gfrerer; Ursula Gfrerer; Marion Handlos,UNRESOLVED,,,,,
+63,Franz Exenberger GmbH,Alexander Poindl,Alexander Poindl,,UNRESOLVED,,,,,
+64,ACS Logistics GmbH & Co KG,Thomas Sticht,ACS Holding GmbH,,UNRESOLVED,,,,,
+64,ACS Logistics GmbH & Co KG,Gerald Kleeberger,ACS Holding GmbH,,UNRESOLVED,,,,,
+64,ACS Logistics GmbH & Co KG,Ulrich Hartwig,ACS Holding GmbH,,UNRESOLVED,,,,,
+65,C.H. Robinson Austria GmbH,Roeland Steigerwald,C.H. Robinson group,,UNRESOLVED,,,,,
+65,C.H. Robinson Austria GmbH,Bastiaan Bleeker,C.H. Robinson group,,UNRESOLVED,,,,,
+65,C.H. Robinson Austria GmbH,Christopher Gerst,C.H. Robinson group,,UNRESOLVED,,,,,
+66,CEVA Air & Ocean Austria GmbH,Peter Püringer,CEVA Air & Ocean Austria GmbH,,UNRESOLVED,,,,,
+66,CEVA Air & Ocean Austria GmbH,Jörg Peter,CEVA Air & Ocean Austria GmbH,,UNRESOLVED,,,,,
+66,CEVA Air & Ocean Austria GmbH,Vincent Malhaire,CEVA Air & Ocean Austria GmbH,,UNRESOLVED,,,,,
+67,Ceva Logistics Austria GmbH,Norbert Baumann,Normeston Group Cyprus Limited,,UNRESOLVED,,,,,
+67,Ceva Logistics Austria GmbH,Roman Vašš,Normeston Group Cyprus Limited,,UNRESOLVED,,,,,
+68,DHL Freight - DHL Logistics (Austria) GmbH,Michael Rolle,Deutsche Post Beteiligungen Holding GmbH,,UNRESOLVED,,,,,
+68,DHL Freight - DHL Logistics (Austria) GmbH,Katrin Hölter,Deutsche Post Beteiligungen Holding GmbH,,UNRESOLVED,,,,,
+69,Hadolt Transport und Logistik GmbH,Katharina Hadolt,Katharina Hadolt,,UNRESOLVED,,,,,
+69,Hadolt Transport und Logistik GmbH,Rolf Hadolt,Katharina Hadolt,,UNRESOLVED,,,,,
+69,Hadolt Transport und Logistik GmbH,Felix Hadolt,Katharina Hadolt,,UNRESOLVED,,,,,
+70,Hapag-Lloyd (Austria) GmbH,Mark Biro,Hapag-Lloyd AG,,UNRESOLVED,,,,,
+70,Hapag-Lloyd (Austria) GmbH,Marc-Simon Vick,Hapag-Lloyd AG,,UNRESOLVED,,,,,
+71,Hellmann Worldwide Logistics GmbH,Piotr Zaleski,Hellmann Worldwide Logistics Limited,,UNRESOLVED,,,,,
+71,Hellmann Worldwide Logistics GmbH,Parthasarathy Rangachari,Hellmann Worldwide Logistics Limited,,UNRESOLVED,,,,,
+71,Hellmann Worldwide Logistics GmbH,Rainer Mittl,Hellmann Worldwide Logistics Limited,,UNRESOLVED,,,,,
+72,Hermes Logistik GmbH & Co KG,Patryk Hopenthaler,Hermes Zweite Beteiligungs-Verwaltungsgesellschaft mbH,,UNRESOLVED,,,,,
+72,Hermes Logistik GmbH & Co KG,Philip Weiskopf,Hermes Zweite Beteiligungs-Verwaltungsgesellschaft mbH,,UNRESOLVED,,,,,
+73,Hofmann & Neffe GmbH,Peter Hofmann,Hofmann Immobilien und Logistik GmbH,,UNRESOLVED,,,,,
+73,Hofmann & Neffe GmbH,Michael Hofmann,Hofmann Immobilien und Logistik GmbH,,UNRESOLVED,,,,,
+74,Hoyer Austria Internationale Fachspedition Gesellschaft m.b.H.,Axel Remplewski,Hoyer GmbH Internationale Fachspedition,,UNRESOLVED,,,,,
+74,Hoyer Austria Internationale Fachspedition Gesellschaft m.b.H.,Gedeon Tabanyi,Hoyer GmbH Internationale Fachspedition,,UNRESOLVED,,,,,
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Franz Feldgrill,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,C_DIRECT_EMAIL_ONLY,,ingrid.feldgrill@lagran.at,medium,https://www.lagran.at/,official_email_sources=1
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Manfred Auer,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,UNRESOLVED,,,,,
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Johannes Ramharter,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,UNRESOLVED,,,,,
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Ferdinand Feldgrill,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,C_DIRECT_EMAIL_ONLY,,ingrid.feldgrill@lagran.at,medium,https://www.lagran.at/,official_email_sources=1
+76,Müller Transporte Gesellschaft m.b.H.,Volker Auer,Lagermax Logistics Austria GmbH,,UNRESOLVED,,,,,
+77,KUNSTTRANS Spedition GmbH,Birgit Vikas,Kunsttrans Holding GmbH,,UNRESOLVED,,,,,
+77,KUNSTTRANS Spedition GmbH,Andreas Kratohwil,Kunsttrans Holding GmbH,,UNRESOLVED,,,,,
+78,L.T.W.-Transportgesellschaft mbH & Co KG,Norbert Wenzel,Elisabeth Leitner; Wenzel Holding GmbH,,UNRESOLVED,,,,,
+78,L.T.W.-Transportgesellschaft mbH & Co KG,Elisabeth Leitner,Elisabeth Leitner; Wenzel Holding GmbH,,UNRESOLVED,,,,,
+79,Maillog Richter & Weiner Ges.m.b.H.,Markus Richter,Markus Richter; Roland Weiner,,E_CENTRAL_FALLBACK,+43 2236 312 105,,low,https://www.maillog.at/,official_candidate_needs_external_validation
+79,Maillog Richter & Weiner Ges.m.b.H.,Roland Weiner,Markus Richter; Roland Weiner,,E_CENTRAL_FALLBACK,+43 2236 312 105,,low,https://www.maillog.at/,official_candidate_needs_external_validation
+80,MALCAMPO Transporte GmbH,Martin Cancola,Cancola Management Consulting GmbH; Martin Cancola direct,,UNRESOLVED,,,,,
+80,MALCAMPO Transporte GmbH,Ulla Cancola,Cancola Management Consulting GmbH; Martin Cancola direct,,UNRESOLVED,,,,,
+81,Platzer & Co. Internationale Transporte Gesellschaft m.b.H.,Markus Rolf Platzer,Markus Rolf Platzer; Markus Platzer,,UNRESOLVED,,,,,
+81,Platzer & Co. Internationale Transporte Gesellschaft m.b.H.,Markus Platzer,Markus Rolf Platzer; Markus Platzer,,UNRESOLVED,,,,,
+82,R & W Internationale Speditionsgesellschaft m.b.H.,Anton Wallinger,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+82,R & W Internationale Speditionsgesellschaft m.b.H.,Gerald Roider,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+82,R & W Internationale Speditionsgesellschaft m.b.H.,Roland Schmolz,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+83,R & W SPEDITION-LOGISTIC GMBH,Anton Wallinger,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+83,R & W SPEDITION-LOGISTIC GMBH,Gerald Roider,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+83,R & W SPEDITION-LOGISTIC GMBH,Roland Schmolz,Anton Wallinger; Gerald Roider; Roland Schmolz,,UNRESOLVED,,,,,
+84,ROLAND Internationale Spedition GmbH,Christian Gutjahr,Hera Logistics Holding GmbH; NHCG Beteiligungs GmbH,,C_DIRECT_EMAIL_ONLY,,christian.gutjahr@rolsped.com,high,https://www.rolsped.com/,official_email_sources=5
+84,ROLAND Internationale Spedition GmbH,Nikolaus Hirnschall,Hera Logistics Holding GmbH; NHCG Beteiligungs GmbH,,C_DIRECT_EMAIL_ONLY,,nikolaus.hirnschall@rolsped.com,high,https://www.rolsped.com/,official_email_sources=5
+85,Schneckenreither Internationale Spedition GmbH,Sonja Schneckenreither,SAW-Holding GmbH; Gerhard Roithner,,UNRESOLVED,,,,,
+85,Schneckenreither Internationale Spedition GmbH,Gerhard Gschwendtner,SAW-Holding GmbH; Gerhard Roithner,,UNRESOLVED,,,,,
+86,Spedition Böntner GmbH,Karl Böntner,BÖNTNER Holding GmbH,,UNRESOLVED,,,,,
+87,Spedition Engel Mayr GmbH,Valentin Peklar,VITAIRA AcquiCo 01 Austria GmbH,,UNRESOLVED,,,,,
+87,Spedition Engel Mayr GmbH,Peter Schneider,VITAIRA AcquiCo 01 Austria GmbH,,UNRESOLVED,,,,,
+88,Spedition Sobolak Internationale Transporte Ges.m.b.H.,Peter Sobolak,Peter Sobolak,,UNRESOLVED,,,,,
+88,Spedition Sobolak Internationale Transporte Ges.m.b.H.,Jutta Sobolak,Peter Sobolak,,UNRESOLVED,,,,,
+89,Spedition Lang GesmbH,Karin Lang,Karin Lang,,UNRESOLVED,,,,,
+90,Spedition MURNIG Kommanditgesellschaft,Brigitte Elke Murnig,Brigitte Elke Murnig (Komplementärin); Dr. Florian Walther (Kommanditist),,UNRESOLVED,,,,,
+91,STARK Internationale Transporte Gesellschaft m.b.H.,Christian Höllwarth,Intertrans Beteiligung GmbH,,UNRESOLVED,,,,,
+92,SUXESS LOGISTIC GmbH,Zsuzsanna Schenk,Zsuzsanna Schenk; HMG Holding GmbH,,UNRESOLVED,,,,,
+92,SUXESS LOGISTIC GmbH,Hüseyin Metin Öllinger,Zsuzsanna Schenk; HMG Holding GmbH,,UNRESOLVED,,,,,
+93,UPS SCS (Austria) Logistic GmbH,Susanne Klingler-Werner,UPS Logistics Group International B.V.,,UNRESOLVED,,,,,
+94,VOGTRANS Speditions- und Verpackungsgesellschaft m.b.H.,Andreas Pirschl,VOG Einfuhr und Großhandel AG,,UNRESOLVED,,,,,
+94,VOGTRANS Speditions- und Verpackungsgesellschaft m.b.H.,Matthias Ritzberger,VOG Einfuhr und Großhandel AG,,UNRESOLVED,,,,,
+95,Wolfsgruber Logistik GmbH,Franz Wolfsgruber,Wolfsgruber Holding GmbH; ultimate private owners Franz/Johann/Johann Franz Wolfsgruber,,E_CENTRAL_FALLBACK,+43 6133 5000,office@wolfsgruber.net,low,https://www.wolfsgruber.net,official_candidate_needs_external_validation
+95,Wolfsgruber Logistik GmbH,Johann Franz Wolfsgruber,Wolfsgruber Holding GmbH; ultimate private owners Franz/Johann/Johann Franz Wolfsgruber,,E_CENTRAL_FALLBACK,+43 6133 5000,office@wolfsgruber.net,low,https://www.wolfsgruber.net,official_candidate_needs_external_validation
+96,Zugvogel Speditions GmbH,Matthias Fischer,Zugvogel Holding GmbH,,E_CENTRAL_FALLBACK,+43 676 852 852 283,,low,https://www.zugvogel.cc/,official_candidate_needs_external_validation
+96,Zugvogel Speditions GmbH,Achim Obkircher,Zugvogel Holding GmbH,,E_CENTRAL_FALLBACK,+43 676 852 852 283,,low,https://www.zugvogel.cc/impressum/,official_candidate_needs_external_validation
+97,Rhenus Logistics Austria GmbH,Patrick Schäffer,Rhenus Beteiligungs GmbH,,UNRESOLVED,,,,,
+97,Rhenus Logistics Austria GmbH,Thomas Doblinger,Rhenus Beteiligungs GmbH,,UNRESOLVED,,,,,
+98,Lagermax Lagerhaus und Speditions Aktiengesellschaft,Thomas Baumgartner,Baumgartner Privatstiftung; Urs Meister; Alexander Friesz; Michou Friesz; Anja Rabitsch; Ingrid Friesz-Meraner; others,,UNRESOLVED,,,,,
+98,Lagermax Lagerhaus und Speditions Aktiengesellschaft,Alexander Friesz,Baumgartner Privatstiftung; Urs Meister; Alexander Friesz; Michou Friesz; Anja Rabitsch; Ingrid Friesz-Meraner; others,,E_CENTRAL_FALLBACK,,,low,https://www.lagermax.com/de-at/karriere/duale-akademie,official_candidate_needs_external_validation
+99,Augustin Quehenberger Group GmbH,Klaus Hrazdira,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+99,Augustin Quehenberger Group GmbH,Robert Hartmann,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+99,Augustin Quehenberger Group GmbH,Christian Fürstaller,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+100,LOG-IN Logistik GmbH,Klaus Hrazdira,CF Logistics GmbH,,UNRESOLVED,,,,,
+101,Quehenberger Air + Ocean GmbH,Rodolphe Schoettel,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+101,Quehenberger Air + Ocean GmbH,Klaus Hrazdira,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+101,Quehenberger Air + Ocean GmbH,Christian Fürstaller,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+102,Quehenberger Logistics GmbH,Christian Fürstaller,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+102,Quehenberger Logistics GmbH,Rodolphe Schoettel,AUGUSTIN QUEHENBERGER GROUP GMBH,,UNRESOLVED,,,,,
+103,Deufol Austria GmbH,Johannes Rieder,Deufol Austria Management GmbH,,UNRESOLVED,,,,,
+103,Deufol Austria GmbH,Jürgen Hillen,Deufol Austria Management GmbH,,UNRESOLVED,,,,,
+103,Deufol Austria GmbH,Ebrahem Al Kadari,Deufol Austria Management GmbH,,B_DIRECT_PHONE,+49 6122 50-00,,medium,https://www.deufol.com/en/imprint/,official_named_phone_sources=1
+104,Hillebrand Gori Austria GmbH,Mehmet Kalkan,Hillebrand Gori Group GmbH,,UNRESOLVED,,,,,
+104,Hillebrand Gori Austria GmbH,Søren Nymann,Hillebrand Gori Group GmbH,,UNRESOLVED,,,,,
+105,Hödlmayr High & Heavy GmbH,Helmut Zwirner,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+105,Hödlmayr High & Heavy GmbH,Markus Formann,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+105,Hödlmayr High & Heavy GmbH,Michael Wöckinger,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+105,Hödlmayr High & Heavy GmbH,Martin Steinkellner,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+106,TEK TRANSPORT s.r.o.,Martin Anthony Bittner,European Cargo Services S.A.,,UNRESOLVED,,,,,
+107,REICHHART Logistik Austria GmbH,Alexander Reichhart,Avallonis Beteiligungs GmbH,,B_DIRECT_PHONE,+49 8105 38 36 280,,medium-high,https://www.reichhart.eu/press.html,official_named_phone_sources=3
+108,Schachinger Logistik GmbH,Maximilian Schachinger,1-0-1 GmbH; Schachinger Familienprivatstiftung; Maximilian Schachinger,,E_CENTRAL_FALLBACK,+43 7221 707-0,,low,https://www.schachinger.com/impressum/,official_candidate_needs_external_validation
+108,Schachinger Logistik GmbH,Ehrenfried Werderits,1-0-1 GmbH; Schachinger Familienprivatstiftung; Maximilian Schachinger,,UNRESOLVED,,,,,
+108,Schachinger Logistik GmbH,Günther Gfrerrer,1-0-1 GmbH; Schachinger Familienprivatstiftung; Maximilian Schachinger,,UNRESOLVED,,,,,
+108,Schachinger Logistik GmbH,Andreas Pesenhofer,1-0-1 GmbH; Schachinger Familienprivatstiftung; Maximilian Schachinger,,UNRESOLVED,,,,,
+109,G. Englmayer Transport GmbH,Andreas Gaber,WIESINGER Privatstiftung,,UNRESOLVED,,,,,
+110,Gebrüder Weiss Paketdienst Gesellschaft m.b.H.,Andreas Winkelmayer,Gebrüder Weiss Gesellschaft m.b.H.; GW BeteiligungsGmbH,,UNRESOLVED,,,,,
+110,Gebrüder Weiss Paketdienst Gesellschaft m.b.H.,Daniel Neumann,Gebrüder Weiss Gesellschaft m.b.H.; GW BeteiligungsGmbH,,UNRESOLVED,,,,,
+110,Gebrüder Weiss Paketdienst Gesellschaft m.b.H.,Peter Schafleitner,Gebrüder Weiss Gesellschaft m.b.H.; GW BeteiligungsGmbH,,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+111,Gebrüder Weiss Transport Logistik GmbH,Alexander Wolf,Gebrüder Weiss Gesellschaft m.b.H.,,UNRESOLVED,,,,,
+111,Gebrüder Weiss Transport Logistik GmbH,Alexander Eberharter,Gebrüder Weiss Gesellschaft m.b.H.,,UNRESOLVED,,,,,
+112,SAW International GmbH,Sonja Schneckenreither,AJS Privatstiftung,,UNRESOLVED,,,,,
+112,SAW International GmbH,Hermann Hofstätter,AJS Privatstiftung,,UNRESOLVED,,,,,
+113,Wattaul Air Cargo Gesellschaft m.b.H.,Erwin Wattaul,GWH Gebrüder Wattaul Holding GmbH,,C_DIRECT_EMAIL_ONLY,,wattaul@wattaul.at,high,https://www.wattaul.com/,official_email_sources=2
+113,Wattaul Air Cargo Gesellschaft m.b.H.,Johann Wattaul,GWH Gebrüder Wattaul Holding GmbH,,C_DIRECT_EMAIL_ONLY,,wattaul@wattaul.at,high,https://www.wattaul.com/,official_email_sources=2
+114,Innofreight Speditions GmbH,Primoz Rauter,INNOFREIGHT Consulting & Logistics GmbH,,UNRESOLVED,,,,,
+114,Innofreight Speditions GmbH,Petr Valach,INNOFREIGHT Consulting & Logistics GmbH,,UNRESOLVED,,,,,
+115,Nippon Express Europe GmbH,Luca Ferrara,Nippon Express (Europe) GmbH,,UNRESOLVED,,,,,
+115,Nippon Express Europe GmbH,Toshihide Kishimoto,Nippon Express (Europe) GmbH,,UNRESOLVED,,,,,
+115,Nippon Express Europe GmbH,Christoph Stein,Nippon Express (Europe) GmbH,,UNRESOLVED,,,,,
+116,Hödlmayr Rail Logistics GmbH,Viktor Beer,Hödlmayr International GmbH,,UNRESOLVED,,,,,
+117,EUROTRANS Handelsgesellschaft m.b.H.,Werner Sitzmann,ERC Group GmbH; SHARK Holding GmbH,,UNRESOLVED,,,,,
+117,EUROTRANS Handelsgesellschaft m.b.H.,Richard Kühholzer,ERC Group GmbH; SHARK Holding GmbH,,UNRESOLVED,,,,,
+118,BÖNTNER Holding GmbH,Karl Böntner,BÖNTNER Holding GmbH,,UNRESOLVED,,,,,

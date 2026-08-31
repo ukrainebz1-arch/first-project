@@ -1,0 +1,11 @@
+﻿no,company,person,owners,websites,baseline_status,best_phone,best_email,confidence,source_url,reason
+22,Fercam Austria GmbH,Hannes Baumgartner,FERCAM SB SRL,,UNRESOLVED,,,,,
+22,Fercam Austria GmbH,Christian Jarnig,FERCAM SB SRL,,UNRESOLVED,,,,,
+24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,ZEPTA Vermögensverwaltungs GmbH,,UNRESOLVED,,,,,
+24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,ZEPTA Vermögensverwaltungs GmbH,,UNRESOLVED,,,,,
+26,GLS Austria GmbH,Christian Schöninger,General Logistics Systems Germany GmbH & Co. OHG,,UNRESOLVED,,,,,
+26,GLS Austria GmbH,Moritz Eichhöfer,General Logistics Systems Germany GmbH & Co. OHG,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Rolf Hadolt,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Felix Hadolt,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+27,Global Express Austria GmbH,Stefanie Sachiko Hadolt-Reimers,Rolf Hadolt; Stefanie Sachiko Hadolt-Reimers; Felix Hadolt,,UNRESOLVED,,,,,
+28,Hödlmayr Logistics GmbH,Helmut Zwirner,Hödlmayr International GmbH,,E_CENTRAL_FALLBACK,+43 7262 660,,low,https://www.hoedlmayr.com/unternehmen/standorte,official_candidate_needs_external_validation

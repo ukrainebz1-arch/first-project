@@ -1,0 +1,11 @@
+﻿no,company,person,owners,websites,baseline_status,best_phone,best_email,confidence,source_url,reason
+1,CMA-CGM (Deutschland) GmbH Shipping Agency,Mirja Nibbe,CMA CGM group,,UNRESOLVED,,,,,
+2,DP World Logistics Austria GmbH,Rolf Mertins,Imperial Mobility International B.V.,,UNRESOLVED,,,,,
+2,DP World Logistics Austria GmbH,Chris Povey,Imperial Mobility International B.V.,,UNRESOLVED,,,,,
+3,Logistik Service GmbH,Christian Janecek,voestalpine Stahl GmbH,http://www.logserv.at/,E_CENTRAL_FALLBACK,+43 732 6598 4895,,low,https://www.logserv.at/Unternehmen/Zahlen-Daten-Fakten,official_candidate_needs_external_validation
+3,Logistik Service GmbH,Markus Schinko,voestalpine Stahl GmbH,http://www.logserv.at/,E_CENTRAL_FALLBACK,+43 732 6598 4895,,low,https://www.logserv.at/Unternehmen/Zahlen-Daten-Fakten,official_candidate_needs_external_validation
+4,Lagermax Logistics Austria GmbH,Michael Macheiner,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+4,Lagermax Logistics Austria GmbH,Christian Stoll,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+4,Lagermax Logistics Austria GmbH,Richard Pöschl,Lagermax Lagerhaus und Speditions AG,http://www.lagermax.com/ | https://www.lagermax.com/de-at,UNRESOLVED,,,,,
+5,Gebrüder Weiss Gesellschaft m.b.H.,Wolfram Senger-Weiss,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation
+5,Gebrüder Weiss Gesellschaft m.b.H.,Peter Schafleitner,Gebrüder Weiss Holding AG; GW Immobilien GmbH,http://gw-world.com/ | http://www.gebr-weiss.com/ | http://www.gw-world.com/ | https://www.gw-world.com/de/gwmoveson/,E_CENTRAL_FALLBACK,+43.5574.696.0,,low,https://www.gw-world.com/imprint,official_candidate_needs_external_validation

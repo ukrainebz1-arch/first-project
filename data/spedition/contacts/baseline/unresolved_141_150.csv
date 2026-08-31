@@ -1,0 +1,11 @@
+﻿no,company,person,owners,websites,baseline_status,best_phone,best_email,confidence,source_url,reason
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Manfred Auer,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,UNRESOLVED,,,,,
+75,LAGRAN Lager- und Transport Ges.m.b.H.,Johannes Ramharter,LAGRAN Verwaltungs GmbH; Siegfried Schöffauer; Karin Schöffauer; Franz Feldgrill; others,,UNRESOLVED,,,,,
+76,Müller Transporte Gesellschaft m.b.H.,Volker Auer,Lagermax Logistics Austria GmbH,,UNRESOLVED,,,,,
+77,KUNSTTRANS Spedition GmbH,Birgit Vikas,Kunsttrans Holding GmbH,,UNRESOLVED,,,,,
+77,KUNSTTRANS Spedition GmbH,Andreas Kratohwil,Kunsttrans Holding GmbH,,UNRESOLVED,,,,,
+78,L.T.W.-Transportgesellschaft mbH & Co KG,Norbert Wenzel,Elisabeth Leitner; Wenzel Holding GmbH,,UNRESOLVED,,,,,
+78,L.T.W.-Transportgesellschaft mbH & Co KG,Elisabeth Leitner,Elisabeth Leitner; Wenzel Holding GmbH,,UNRESOLVED,,,,,
+79,Maillog Richter & Weiner Ges.m.b.H.,Markus Richter,Markus Richter; Roland Weiner,,E_CENTRAL_FALLBACK,+43 2236 312 105,,low,https://www.maillog.at/,official_candidate_needs_external_validation
+79,Maillog Richter & Weiner Ges.m.b.H.,Roland Weiner,Markus Richter; Roland Weiner,,E_CENTRAL_FALLBACK,+43 2236 312 105,,low,https://www.maillog.at/,official_candidate_needs_external_validation
+80,MALCAMPO Transporte GmbH,Martin Cancola,Cancola Management Consulting GmbH; Martin Cancola direct,,UNRESOLVED,,,,,
