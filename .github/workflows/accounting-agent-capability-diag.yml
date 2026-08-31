@@ -13,7 +13,7 @@ permissions:
 jobs:
   test-agent:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,11 +33,11 @@ jobs:
           import csv
           rows=list(csv.DictReader(open('agent_input/candidate_universe.csv',encoding='utf-8-sig')))
           hit=[r for r in rows if r['group_key']=='domain:iwth.at']
-          assert len(hit)==1, len(hit)
+          assert len(hit)==1
           with open('agent_input/iwth.csv','w',encoding='utf-8-sig',newline='') as f:
               w=csv.DictWriter(f,fieldnames=list(hit[0].keys()));w.writeheader();w.writerows(hit)
           PY
-      - name: Install Ollama and Qwen
+      - name: Install Ollama and Qwen 1.7B
         run: |
           curl -fsSL https://ollama.com/install.sh | sh
           pkill ollama || true
@@ -46,13 +46,15 @@ jobs:
             curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break
             sleep 1
           done
-          ollama pull qwen3:4b-instruct
-      - name: Run optimized local research agent on IWTH
+          ollama pull qwen3:1.7b
+      - name: Run local 1.7B agent and critic on IWTH
         run: |
+          date -u +%s > /tmp/start
           python scripts/accounting_stage2_local_agent_worker.py \
             --input-csv agent_input/iwth.csv \
             --output-jsonl test_out/iwth.jsonl \
-            --model qwen3:4b-instruct
+            --model qwen3:1.7b
+          echo "elapsed_seconds=$(( $(date -u +%s) - $(cat /tmp/start) ))"
           cat test_out/iwth.jsonl
       - name: Deterministic gate
         run: python scripts/accounting_stage2_agent_validate.py chunk --input-csv agent_input/iwth.csv --result-jsonl test_out/iwth.jsonl
