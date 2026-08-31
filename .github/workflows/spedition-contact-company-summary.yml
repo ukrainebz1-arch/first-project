@@ -1,0 +1,55 @@
+name: Spedition contact company summary
+on:
+  push:
+    paths:
+      - '.github/workflows/spedition-contact-company-summary.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build company coverage summary
+        run: |
+          python - <<'PY'
+          import csv
+          from collections import defaultdict, Counter
+          src='data/spedition/contacts/final_contacts.csv'
+          rows=list(csv.DictReader(open(src,encoding='utf-8-sig',newline='')))
+          pri={'A_PUBLIC_MOBILE':0,'B_DIRECT_PHONE':1,'C_DIRECT_EMAIL_ONLY':2,'D_NAMED_MANAGEMENT_LINE':3,'E_CENTRAL_FALLBACK':4,'F_NO_PUBLIC_DIRECT_CONTACT_FOUND':5}
+          by=defaultdict(list)
+          for r in rows: by[r['company']].append(r)
+          company_rows=[]
+          counts=Counter()
+          for company, rs in sorted(by.items()):
+            best=min((r['status'] for r in rs), key=lambda s: pri.get(s,99))
+            direct=sum(r['status'] in {'A_PUBLIC_MOBILE','B_DIRECT_PHONE','C_DIRECT_EMAIL_ONLY','D_NAMED_MANAGEMENT_LINE'} for r in rs)
+            fallback=sum(r['status']=='E_CENTRAL_FALLBACK' for r in rs)
+            none=sum(r['status']=='F_NO_PUBLIC_DIRECT_CONTACT_FOUND' for r in rs)
+            category='DIRECT_COVERED' if direct else ('FALLBACK_ONLY' if fallback else 'NO_PUBLIC_ROUTE')
+            counts[category]+=1
+            counts['BEST_'+best]+=1
+            company_rows.append({'company':company,'company_status':category,'best_person_status':best,'decision_makers':len(rs),'direct_named_contacts':direct,'fallback_only_people':fallback,'no_route_people':none})
+          out='data/spedition/contacts/company_coverage.csv'
+          fields=['company','company_status','best_person_status','decision_makers','direct_named_contacts','fallback_only_people','no_route_people']
+          with open(out,'w',encoding='utf-8-sig',newline='') as f:
+            w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(company_rows)
+          summ='data/spedition/contacts/company_coverage_summary.csv'
+          with open(summ,'w',encoding='utf-8-sig',newline='') as f:
+            w=csv.writer(f); w.writerow(['metric','count'])
+            w.writerow(['TOTAL_COMPANIES',len(by)])
+            w.writerow(['DIRECT_COVERED_COMPANIES',counts['DIRECT_COVERED']])
+            w.writerow(['FALLBACK_ONLY_COMPANIES',counts['FALLBACK_ONLY']])
+            w.writerow(['NO_PUBLIC_ROUTE_COMPANIES',counts['NO_PUBLIC_ROUTE']])
+            for s in pri: w.writerow(['BEST_'+s,counts['BEST_'+s]])
+          print('companies',len(by),'direct',counts['DIRECT_COVERED'],'fallback',counts['FALLBACK_ONLY'],'none',counts['NO_PUBLIC_ROUTE'])
+          PY
+      - name: Persist summary
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/company_coverage.csv data/spedition/contacts/company_coverage_summary.csv
+          git commit -m 'Add Spedition company-level contact coverage summary' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
