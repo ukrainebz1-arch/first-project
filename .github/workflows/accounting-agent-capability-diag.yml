@@ -29,10 +29,13 @@ jobs:
             sleep 1
           done
           ollama pull qwen3:4b-instruct
+          curl -fsS http://127.0.0.1:11434/api/tags | grep -q 'qwen3:4b-instruct'
+          curl -fsS http://127.0.0.1:11434/v1/models | grep -q 'qwen3:4b-instruct'
       - name: Test local-model subagent plus web
         env:
-          COPILOT_PROVIDER_BASE_URL: http://127.0.0.1:11434
+          COPILOT_PROVIDER_BASE_URL: http://127.0.0.1:11434/v1
           COPILOT_PROVIDER_TYPE: openai
+          COPILOT_PROVIDER_API_KEY: ollama
           COPILOT_MODEL: qwen3:4b-instruct
         run: |
           copilot -p "Use the task tool to launch one general-purpose subagent. The subagent must research IWTH Steuerberatung in Austria on the public web, open its official team page, and determine whether the official site supports at least 50 staff. After the subagent reports back, reply with exactly LOCAL_SUBAGENT_WEB_OK if it successfully used public web evidence; otherwise reply FAILED. Do not modify files or run shell commands." \
