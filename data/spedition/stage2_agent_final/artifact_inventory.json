@@ -1,0 +1,1445 @@
+{
+  "total_artifacts_seen": 517,
+  "relevant": [
+    {
+      "id": 9763775208,
+      "name": "spedition-stage2-signal-index",
+      "size_in_bytes": 868960,
+      "created_at": "2026-08-31T15:17:54Z",
+      "updated_at": "2026-08-31T15:17:54Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33407606184,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "56dd2188d05901fa9ade635b0a5804ae14fdf543"
+      }
+    },
+    {
+      "id": 9763654571,
+      "name": "spedition-stage2-signal-index",
+      "size_in_bytes": 868960,
+      "created_at": "2026-08-31T15:14:45Z",
+      "updated_at": "2026-08-31T15:14:45Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33407294681,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "8cb3243a4829270433dd3752a57d497b0e71543c"
+      }
+    },
+    {
+      "id": 9763605496,
+      "name": "spedition-stage2-signal-index",
+      "size_in_bytes": 692558,
+      "created_at": "2026-08-31T15:13:26Z",
+      "updated_at": "2026-08-31T15:13:26Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33407172646,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "55f1d1ccf49af2c500c8425e8de057ff3c0e797d"
+      }
+    },
+    {
+      "id": 9757189279,
+      "name": "accounting-stage2-agent-result-15",
+      "size_in_bytes": 3498,
+      "created_at": "2026-08-31T12:09:38Z",
+      "updated_at": "2026-08-31T12:09:38Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9757150008,
+      "name": "accounting-stage2-agent-result-14",
+      "size_in_bytes": 5246,
+      "created_at": "2026-08-31T12:08:20Z",
+      "updated_at": "2026-08-31T12:08:20Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9757088731,
+      "name": "accounting-stage2-agent-result-12",
+      "size_in_bytes": 4519,
+      "created_at": "2026-08-31T12:06:12Z",
+      "updated_at": "2026-08-31T12:06:12Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9757012174,
+      "name": "accounting-stage2-agent-result-8",
+      "size_in_bytes": 4421,
+      "created_at": "2026-08-31T12:03:36Z",
+      "updated_at": "2026-08-31T12:03:36Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756991029,
+      "name": "accounting-stage2-agent-result-13",
+      "size_in_bytes": 3202,
+      "created_at": "2026-08-31T12:02:52Z",
+      "updated_at": "2026-08-31T12:02:52Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756966547,
+      "name": "accounting-stage2-agent-result-11",
+      "size_in_bytes": 3321,
+      "created_at": "2026-08-31T12:02:01Z",
+      "updated_at": "2026-08-31T12:02:01Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756964937,
+      "name": "accounting-stage2-agent-result-10",
+      "size_in_bytes": 4321,
+      "created_at": "2026-08-31T12:01:58Z",
+      "updated_at": "2026-08-31T12:01:58Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756958613,
+      "name": "accounting-stage2-agent-verified-final",
+      "size_in_bytes": 637600,
+      "created_at": "2026-08-31T12:01:44Z",
+      "updated_at": "2026-08-31T12:01:44Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756950542,
+      "name": "accounting-stage2-agent-result-14",
+      "size_in_bytes": 6603,
+      "created_at": "2026-08-31T12:01:27Z",
+      "updated_at": "2026-08-31T12:01:27Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756920724,
+      "name": "accounting-stage2-agent-result-12",
+      "size_in_bytes": 4457,
+      "created_at": "2026-08-31T12:00:27Z",
+      "updated_at": "2026-08-31T12:00:27Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756916782,
+      "name": "accounting-stage2-agent-result-9",
+      "size_in_bytes": 2433,
+      "created_at": "2026-08-31T12:00:18Z",
+      "updated_at": "2026-08-31T12:00:18Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756916154,
+      "name": "accounting-stage2-agent-result-2",
+      "size_in_bytes": 4435,
+      "created_at": "2026-08-31T12:00:17Z",
+      "updated_at": "2026-08-31T12:00:17Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756881832,
+      "name": "accounting-stage2-agent-result-15",
+      "size_in_bytes": 3975,
+      "created_at": "2026-08-31T11:59:04Z",
+      "updated_at": "2026-08-31T11:59:04Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756857147,
+      "name": "accounting-stage2-agent-result-13",
+      "size_in_bytes": 3755,
+      "created_at": "2026-08-31T11:58:13Z",
+      "updated_at": "2026-08-31T11:58:13Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756833864,
+      "name": "accounting-stage2-agent-result-10",
+      "size_in_bytes": 5575,
+      "created_at": "2026-08-31T11:57:24Z",
+      "updated_at": "2026-08-31T11:57:24Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756832957,
+      "name": "accounting-stage2-agent-result-11",
+      "size_in_bytes": 4045,
+      "created_at": "2026-08-31T11:57:22Z",
+      "updated_at": "2026-08-31T11:57:22Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756810511,
+      "name": "accounting-stage2-agent-result-6",
+      "size_in_bytes": 5361,
+      "created_at": "2026-08-31T11:56:37Z",
+      "updated_at": "2026-08-31T11:56:37Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756774463,
+      "name": "accounting-stage2-agent-result-3",
+      "size_in_bytes": 3649,
+      "created_at": "2026-08-31T11:55:25Z",
+      "updated_at": "2026-08-31T11:55:25Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756760632,
+      "name": "accounting-stage2-agent-result-4",
+      "size_in_bytes": 4304,
+      "created_at": "2026-08-31T11:54:59Z",
+      "updated_at": "2026-08-31T11:54:59Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756724723,
+      "name": "accounting-stage2-agent-result-9",
+      "size_in_bytes": 2956,
+      "created_at": "2026-08-31T11:53:49Z",
+      "updated_at": "2026-08-31T11:53:49Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756717064,
+      "name": "accounting-stage2-agent-result-0",
+      "size_in_bytes": 5089,
+      "created_at": "2026-08-31T11:53:33Z",
+      "updated_at": "2026-08-31T11:53:33Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756685731,
+      "name": "accounting-stage2-agent-result-7",
+      "size_in_bytes": 3114,
+      "created_at": "2026-08-31T11:52:29Z",
+      "updated_at": "2026-08-31T11:52:29Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756635876,
+      "name": "accounting-stage2-agent-result-1",
+      "size_in_bytes": 2946,
+      "created_at": "2026-08-31T11:50:46Z",
+      "updated_at": "2026-08-31T11:50:46Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756622934,
+      "name": "accounting-stage2-agent-result-5",
+      "size_in_bytes": 2671,
+      "created_at": "2026-08-31T11:50:21Z",
+      "updated_at": "2026-08-31T11:50:21Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756619366,
+      "name": "accounting-stage2-agent-result-8",
+      "size_in_bytes": 5310,
+      "created_at": "2026-08-31T11:50:14Z",
+      "updated_at": "2026-08-31T11:50:14Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756595403,
+      "name": "accounting-stage2-agent-result-2",
+      "size_in_bytes": 6078,
+      "created_at": "2026-08-31T11:49:25Z",
+      "updated_at": "2026-08-31T11:49:25Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756571088,
+      "name": "accounting-stage2-agent-result-3",
+      "size_in_bytes": 4903,
+      "created_at": "2026-08-31T11:48:34Z",
+      "updated_at": "2026-08-31T11:48:34Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756559709,
+      "name": "accounting-stage2-agent-result-4",
+      "size_in_bytes": 4567,
+      "created_at": "2026-08-31T11:48:11Z",
+      "updated_at": "2026-08-31T11:48:11Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756524511,
+      "name": "accounting-stage2-agent-result-0",
+      "size_in_bytes": 4881,
+      "created_at": "2026-08-31T11:46:59Z",
+      "updated_at": "2026-08-31T11:46:59Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756505721,
+      "name": "accounting-stage2-agent-result-6",
+      "size_in_bytes": 6378,
+      "created_at": "2026-08-31T11:46:20Z",
+      "updated_at": "2026-08-31T11:46:20Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756483731,
+      "name": "accounting-stage2-agent-result-7",
+      "size_in_bytes": 4233,
+      "created_at": "2026-08-31T11:45:34Z",
+      "updated_at": "2026-08-31T11:45:34Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756447485,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 511274,
+      "created_at": "2026-08-31T11:44:17Z",
+      "updated_at": "2026-08-31T11:44:17Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33388343483,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8"
+      }
+    },
+    {
+      "id": 9756437755,
+      "name": "accounting-stage2-agent-result-1",
+      "size_in_bytes": 3331,
+      "created_at": "2026-08-31T11:43:57Z",
+      "updated_at": "2026-08-31T11:43:57Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756394456,
+      "name": "accounting-stage2-agent-result-5",
+      "size_in_bytes": 3023,
+      "created_at": "2026-08-31T11:42:26Z",
+      "updated_at": "2026-08-31T11:42:26Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9756199534,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 511274,
+      "created_at": "2026-08-31T11:35:43Z",
+      "updated_at": "2026-08-31T11:35:43Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33387687688,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "38a5c72120d099c62c3ce52e7b23dfd654eedf5c"
+      }
+    },
+    {
+      "id": 9755672319,
+      "name": "spedition-stage2-search-evidence-final",
+      "size_in_bytes": 1762401,
+      "created_at": "2026-08-31T11:17:17Z",
+      "updated_at": "2026-08-31T11:17:17Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755662969,
+      "name": "spedition-stage2-search-30",
+      "size_in_bytes": 56367,
+      "created_at": "2026-08-31T11:16:58Z",
+      "updated_at": "2026-08-31T11:16:58Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755662207,
+      "name": "spedition-stage2-search-31",
+      "size_in_bytes": 54407,
+      "created_at": "2026-08-31T11:16:56Z",
+      "updated_at": "2026-08-31T11:16:56Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755660361,
+      "name": "spedition-stage2-search-28",
+      "size_in_bytes": 54659,
+      "created_at": "2026-08-31T11:16:53Z",
+      "updated_at": "2026-08-31T11:16:53Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755657660,
+      "name": "spedition-stage2-search-27",
+      "size_in_bytes": 53603,
+      "created_at": "2026-08-31T11:16:47Z",
+      "updated_at": "2026-08-31T11:16:47Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755655170,
+      "name": "spedition-stage2-search-29",
+      "size_in_bytes": 51408,
+      "created_at": "2026-08-31T11:16:41Z",
+      "updated_at": "2026-08-31T11:16:41Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755654920,
+      "name": "spedition-stage2-search-26",
+      "size_in_bytes": 57949,
+      "created_at": "2026-08-31T11:16:41Z",
+      "updated_at": "2026-08-31T11:16:41Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755651909,
+      "name": "spedition-stage2-search-24",
+      "size_in_bytes": 57670,
+      "created_at": "2026-08-31T11:16:35Z",
+      "updated_at": "2026-08-31T11:16:35Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755649829,
+      "name": "spedition-stage2-search-25",
+      "size_in_bytes": 53604,
+      "created_at": "2026-08-31T11:16:30Z",
+      "updated_at": "2026-08-31T11:16:30Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755646717,
+      "name": "spedition-stage2-search-23",
+      "size_in_bytes": 50833,
+      "created_at": "2026-08-31T11:16:24Z",
+      "updated_at": "2026-08-31T11:16:24Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755644773,
+      "name": "spedition-stage2-search-22",
+      "size_in_bytes": 52610,
+      "created_at": "2026-08-31T11:16:19Z",
+      "updated_at": "2026-08-31T11:16:19Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755640323,
+      "name": "spedition-stage2-search-19",
+      "size_in_bytes": 53828,
+      "created_at": "2026-08-31T11:16:10Z",
+      "updated_at": "2026-08-31T11:16:10Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755640165,
+      "name": "spedition-stage2-search-20",
+      "size_in_bytes": 52952,
+      "created_at": "2026-08-31T11:16:10Z",
+      "updated_at": "2026-08-31T11:16:10Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755638915,
+      "name": "spedition-stage2-search-21",
+      "size_in_bytes": 55449,
+      "created_at": "2026-08-31T11:16:07Z",
+      "updated_at": "2026-08-31T11:16:07Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755638378,
+      "name": "spedition-stage2-search-18",
+      "size_in_bytes": 53451,
+      "created_at": "2026-08-31T11:16:06Z",
+      "updated_at": "2026-08-31T11:16:06Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755634642,
+      "name": "spedition-stage2-search-17",
+      "size_in_bytes": 57911,
+      "created_at": "2026-08-31T11:15:58Z",
+      "updated_at": "2026-08-31T11:15:58Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755633277,
+      "name": "spedition-stage2-search-16",
+      "size_in_bytes": 57383,
+      "created_at": "2026-08-31T11:15:55Z",
+      "updated_at": "2026-08-31T11:15:55Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755627441,
+      "name": "spedition-stage2-search-15",
+      "size_in_bytes": 54652,
+      "created_at": "2026-08-31T11:15:43Z",
+      "updated_at": "2026-08-31T11:15:43Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755626878,
+      "name": "spedition-stage2-search-9",
+      "size_in_bytes": 60957,
+      "created_at": "2026-08-31T11:15:42Z",
+      "updated_at": "2026-08-31T11:15:42Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755623947,
+      "name": "spedition-stage2-search-13",
+      "size_in_bytes": 57986,
+      "created_at": "2026-08-31T11:15:36Z",
+      "updated_at": "2026-08-31T11:15:36Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755623675,
+      "name": "spedition-stage2-search-14",
+      "size_in_bytes": 58953,
+      "created_at": "2026-08-31T11:15:35Z",
+      "updated_at": "2026-08-31T11:15:35Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755620383,
+      "name": "spedition-stage2-search-8",
+      "size_in_bytes": 53645,
+      "created_at": "2026-08-31T11:15:28Z",
+      "updated_at": "2026-08-31T11:15:28Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755619322,
+      "name": "spedition-stage2-search-12",
+      "size_in_bytes": 56642,
+      "created_at": "2026-08-31T11:15:26Z",
+      "updated_at": "2026-08-31T11:15:26Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755618721,
+      "name": "spedition-stage2-search-11",
+      "size_in_bytes": 56839,
+      "created_at": "2026-08-31T11:15:25Z",
+      "updated_at": "2026-08-31T11:15:25Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755618465,
+      "name": "spedition-stage2-search-10",
+      "size_in_bytes": 57598,
+      "created_at": "2026-08-31T11:15:25Z",
+      "updated_at": "2026-08-31T11:15:25Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755606961,
+      "name": "spedition-stage2-search-4",
+      "size_in_bytes": 57725,
+      "created_at": "2026-08-31T11:15:01Z",
+      "updated_at": "2026-08-31T11:15:01Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755606901,
+      "name": "spedition-stage2-search-2",
+      "size_in_bytes": 57337,
+      "created_at": "2026-08-31T11:15:01Z",
+      "updated_at": "2026-08-31T11:15:01Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755605065,
+      "name": "spedition-stage2-search-3",
+      "size_in_bytes": 57718,
+      "created_at": "2026-08-31T11:14:56Z",
+      "updated_at": "2026-08-31T11:14:56Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755604618,
+      "name": "spedition-stage2-search-6",
+      "size_in_bytes": 57602,
+      "created_at": "2026-08-31T11:14:55Z",
+      "updated_at": "2026-08-31T11:14:55Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755603953,
+      "name": "spedition-stage2-search-0",
+      "size_in_bytes": 53762,
+      "created_at": "2026-08-31T11:14:54Z",
+      "updated_at": "2026-08-31T11:14:54Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755602713,
+      "name": "spedition-stage2-search-5",
+      "size_in_bytes": 57921,
+      "created_at": "2026-08-31T11:14:51Z",
+      "updated_at": "2026-08-31T11:14:51Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755602561,
+      "name": "spedition-stage2-search-1",
+      "size_in_bytes": 59435,
+      "created_at": "2026-08-31T11:14:51Z",
+      "updated_at": "2026-08-31T11:14:51Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9755602541,
+      "name": "spedition-stage2-search-7",
+      "size_in_bytes": 59224,
+      "created_at": "2026-08-31T11:14:51Z",
+      "updated_at": "2026-08-31T11:14:51Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33386033325,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "574596c8c91650edecab3ba87a34783b3e38dcdc"
+      }
+    },
+    {
+      "id": 9752721307,
+      "name": "spedition-stage2-agent-input",
+      "size_in_bytes": 288090,
+      "created_at": "2026-08-31T09:34:11Z",
+      "updated_at": "2026-08-31T09:34:11Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33378312719,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "6452de11bb24f1c08ef501a254055aeca61a0e64"
+      }
+    },
+    {
+      "id": 9751466113,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 170533,
+      "created_at": "2026-08-31T08:51:45Z",
+      "updated_at": "2026-08-31T08:51:45Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33374870008,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "9bb014175e6aa00dca1cfe2e976e4bc81648ba81"
+      }
+    },
+    {
+      "id": 9751447620,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 185737,
+      "created_at": "2026-08-31T08:51:05Z",
+      "updated_at": "2026-08-31T08:51:05Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33374818353,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "391d6afaa1acab8e50646193d270b6d34ea14bfe"
+      }
+    },
+    {
+      "id": 9751422915,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 185737,
+      "created_at": "2026-08-31T08:50:13Z",
+      "updated_at": "2026-08-31T08:50:13Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33374753022,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "889cd34c2cb83f663edb566f41841a200640193a"
+      }
+    },
+    {
+      "id": 9751406493,
+      "name": "accounting-stage2-agent-input",
+      "size_in_bytes": 185737,
+      "created_at": "2026-08-31T08:49:38Z",
+      "updated_at": "2026-08-31T08:49:38Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33374710047,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "432fed52eed877710f2f5764a5f14d4bc9fb1872"
+      }
+    },
+    {
+      "id": 9749822381,
+      "name": "spedition-contact-final-csvs",
+      "size_in_bytes": 68096,
+      "created_at": "2026-08-31T07:54:22Z",
+      "updated_at": "2026-08-31T07:54:22Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33370428996,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e4511fd2e3de8bb141cd87160abd94c944e5cb19"
+      }
+    },
+    {
+      "id": 9749802285,
+      "name": "hausverwaltung-size-stage2",
+      "size_in_bytes": 576098,
+      "created_at": "2026-08-31T07:53:36Z",
+      "updated_at": "2026-08-31T07:53:36Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33367060352,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "62e1960280a3baa580cb8fad4f0c817d49fc4968"
+      }
+    },
+    {
+      "id": 9749695210,
+      "name": "spedition-contact-final-csvs",
+      "size_in_bytes": 66500,
+      "created_at": "2026-08-31T07:49:39Z",
+      "updated_at": "2026-08-31T07:49:39Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33370083821,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "64ffde599f355f9a74c356f311f0a205d474a2f6"
+      }
+    },
+    {
+      "id": 9749688588,
+      "name": "spedition-contact-final-csvs",
+      "size_in_bytes": 65108,
+      "created_at": "2026-08-31T07:49:24Z",
+      "updated_at": "2026-08-31T07:49:24Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33370062353,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "426b5c7e17d66edd66d51f3b9d0bf747186b6e3c"
+      }
+    },
+    {
+      "id": 9749559873,
+      "name": "spedition-contact-final-csvs",
+      "size_in_bytes": 65108,
+      "created_at": "2026-08-31T07:44:25Z",
+      "updated_at": "2026-08-31T07:44:25Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33369692306,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "8f4c41fa014fdb620730680a470eb5df78f534db"
+      }
+    },
+    {
+      "id": 9730739219,
+      "name": "spedition-contact-049_060",
+      "size_in_bytes": 5126,
+      "created_at": "2026-08-30T10:35:45Z",
+      "updated_at": "2026-08-30T10:35:45Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730699127,
+      "name": "spedition-contact-085_096",
+      "size_in_bytes": 5081,
+      "created_at": "2026-08-30T10:32:29Z",
+      "updated_at": "2026-08-30T10:32:29Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730662228,
+      "name": "spedition-contact-001_012",
+      "size_in_bytes": 26597,
+      "created_at": "2026-08-30T10:29:34Z",
+      "updated_at": "2026-08-30T10:29:34Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730654233,
+      "name": "spedition-contact-061_072",
+      "size_in_bytes": 222,
+      "created_at": "2026-08-30T10:28:53Z",
+      "updated_at": "2026-08-30T10:28:53Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730587926,
+      "name": "spedition-contact-109_118",
+      "size_in_bytes": 1941,
+      "created_at": "2026-08-30T10:23:29Z",
+      "updated_at": "2026-08-30T10:23:29Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730562053,
+      "name": "spedition-contact-037_048",
+      "size_in_bytes": 9699,
+      "created_at": "2026-08-30T10:21:31Z",
+      "updated_at": "2026-08-30T10:21:31Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730556530,
+      "name": "spedition-contact-097_108",
+      "size_in_bytes": 18801,
+      "created_at": "2026-08-30T10:21:05Z",
+      "updated_at": "2026-08-30T10:21:05Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730529308,
+      "name": "spedition-contact-025_036",
+      "size_in_bytes": 18063,
+      "created_at": "2026-08-30T10:19:00Z",
+      "updated_at": "2026-08-30T10:19:00Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9730485321,
+      "name": "spedition-contact-073_084",
+      "size_in_bytes": 23950,
+      "created_at": "2026-08-30T10:15:39Z",
+      "updated_at": "2026-08-30T10:15:39Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33305712657,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e0f946a6902bc2e7d0e5c04dccdbbb20d6b6a5a2"
+      }
+    },
+    {
+      "id": 9728512289,
+      "name": "spediteur-karriere-enrichment",
+      "size_in_bytes": 33314,
+      "created_at": "2026-08-30T07:38:44Z",
+      "updated_at": "2026-08-30T07:38:44Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33299054043,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "4a7a908599f09911bb48d9bc8a54d77b802728f4"
+      }
+    },
+    {
+      "id": 9728386734,
+      "name": "spediteur-website-enrichment",
+      "size_in_bytes": 26779,
+      "created_at": "2026-08-30T07:28:06Z",
+      "updated_at": "2026-08-30T07:28:06Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33299176040,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "2eb55b69e1a5fd049473a94443fc3c0ec3f69256"
+      }
+    },
+    {
+      "id": 9728372603,
+      "name": "spediteur-wko-profile-enrichment",
+      "size_in_bytes": 57050,
+      "created_at": "2026-08-30T07:26:54Z",
+      "updated_at": "2026-08-30T07:26:54Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33299152899,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "0f7c1687de168e9e24b77d2e487664986af48ec0"
+      }
+    },
+    {
+      "id": 9728187321,
+      "name": "wko-spediteur-validated",
+      "size_in_bytes": 236481,
+      "created_at": "2026-08-30T07:10:53Z",
+      "updated_at": "2026-08-30T07:10:53Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33298295541,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "e88410b8032f9687a3a8ce65e7d32b9b43ea4f1d"
+      }
+    },
+    {
+      "id": 9728084782,
+      "name": "wko-spediteur-full",
+      "size_in_bytes": 15997,
+      "created_at": "2026-08-30T07:01:45Z",
+      "updated_at": "2026-08-30T07:01:45Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33298048624,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "76b9d7cf6de9b0572fcfb09a1160c5a9247c99d1"
+      }
+    },
+    {
+      "id": 9728012431,
+      "name": "wko-spedition-output",
+      "size_in_bytes": 3871,
+      "created_at": "2026-08-30T06:54:53Z",
+      "updated_at": "2026-08-30T06:54:53Z",
+      "expired": false,
+      "workflow_run": {
+        "id": 33297951946,
+        "repository_id": 1166789402,
+        "head_repository_id": 1166789402,
+        "head_branch": "main",
+        "head_sha": "dd72f5e4b9a9d73dcc758fc20daec9adb517c055"
+      }
+    }
+  ]
+}
