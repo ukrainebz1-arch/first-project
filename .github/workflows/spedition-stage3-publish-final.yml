@@ -1,0 +1,67 @@
+name: Spedition Stage 3 publish final bundle
+
+on:
+  push:
+    paths:
+      - 'data/spedition/stage3_bundle.zip'
+      - '.github/workflows/spedition-stage3-publish-final.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack final Stage 3 bundle
+        run: |
+          unzip -o data/spedition/stage3_bundle.zip -d .
+
+      - name: Validate final Stage 3 outputs
+        run: |
+          python - <<'PY'
+          import csv, json
+          from pathlib import Path
+          root = Path('data/spedition/stage3_decision_makers')
+          required = [
+              'all_accounts_decision_makers.csv',
+              'primary_decision_makers.csv',
+              'all_people.csv',
+              'direct_contacts.csv',
+              'ownership_structure.csv',
+              'unresolved_people.csv',
+              'no_direct_contact.csv',
+              'summary.json',
+              'README.md',
+              'Speditionen_Oesterreich_Stage3_Decision_Makers.xlsx',
+          ]
+          missing=[n for n in required if not (root/n).exists()]
+          assert not missing, f'Missing outputs: {missing}'
+          with open(root/'primary_decision_makers.csv', encoding='utf-8-sig', newline='') as f:
+              rows=list(csv.DictReader(f))
+          assert len(rows)==138, len(rows)
+          assert len({r['economic_account_key'] for r in rows})==138
+          assert all(r['primary_decision_maker'].strip() for r in rows)
+          with open(root/'summary.json', encoding='utf-8') as f:
+              s=json.load(f)
+          assert s['total_stage2_economic_accounts']==138
+          assert s['accounts_with_identified_primary_decision_maker']==138
+          assert s['unresolved_decision_makers']==0
+          assert Path('data/spedition/stage2_agent_final/final_economic_accounts.csv').exists()
+          assert Path('data/spedition/stage2_agent_final/final_economic_accounts.jsonl').exists()
+          print(json.dumps(s, indent=2))
+          PY
+
+      - name: Commit final Stage 3 source of truth
+        run: |
+          rm data/spedition/stage3_bundle.zip
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/stage3_decision_makers
+          git add data/spedition/stage2_agent_final/final_economic_accounts.csv
+          git add data/spedition/stage2_agent_final/final_economic_accounts.jsonl
+          git add -A data/spedition/stage3_bundle.zip
+          git commit -m 'Complete Spedition Stage 3 decision-maker research'
+          git push
