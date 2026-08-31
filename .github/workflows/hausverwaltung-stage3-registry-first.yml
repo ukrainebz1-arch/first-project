@@ -1,0 +1,134 @@
+name: Hausverwaltung Stage 3 registry first
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hausverwaltung-stage3-registry-first.yml'
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build 99-company Stage 3 universe
+        run: |
+          python - <<'PY'
+          import csv,os,json
+          main=list(csv.DictReader(open('data/hausverwaltung/stage3_work/main_targets_compact.tsv',encoding='utf-8'),delimiter='\t'))
+          sec=[('APCOA Austria GmbH','https://www.apcoa.at/'),('Erste Group Immorent GmbH','https://www.erstegroupimmorent.com/'),('Salinen Immobilien Gesellschaft m.b.H.','http://www.salinen.com/'),('Bank Austria Real Invest Asset Management GmbH',''),('Reinberg & Partner Immobilienberatung GmbH',''),('UBM Development AG','http://www.ubm.at/'),('WEGRAZ Gesellschaft für Stadterneuerung und Assanierung m.b.H.','http://www.wegraz.at/'),('Wohnraumwerk Bauträger- und Projektentwicklungs GmbH',''),('Oberbank Infrastruktur Management GmbH','')]
+          fields=['no','company_name','group_name','group_key','website','wko_url','process_fit_class','size_class','stage3_scope']
+          rows=[]
+          for r in main:
+              x={k:r.get(k,'') for k in fields};x['stage3_scope']='MAIN';rows.append(x)
+          for name,site in sec:
+              rows.append({'no':len(rows)+1,'company_name':name,'group_name':name,'group_key':name,'website':site,'wko_url':'','process_fit_class':'SECONDARY_PROCESS_TARGET','size_class':'SECONDARY','stage3_scope':'SECONDARY'})
+          os.makedirs('stage3_registry_input',exist_ok=True)
+          with open('stage3_registry_input/targets_99.tsv','w',encoding='utf-8',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,delimiter='\t');w.writeheader();w.writerows(rows)
+          json.dump({'total':len(rows),'main':90,'secondary':9},open('stage3_registry_input/manifest.json','w'),indent=2)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-registry-input
+          path: stage3_registry_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage3-registry-input
+          path: stage3_registry_input
+      - run: pip install requests beautifulsoup4
+      - name: Registry-first research
+        env:
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          S=$((CHUNK*5)); E=$((S+5)); if [ "$E" -gt 99 ]; then E=99; fi
+          mkdir -p stage3_registry_out
+          python scripts/hausverwaltung_stage3_registry_worker.py --input stage3_registry_input/targets_99.tsv --output "stage3_registry_out/chunk_${CHUNK}.jsonl" --start "$S" --end "$E"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-registry-${{ matrix.chunk }}
+          path: stage3_registry_out/*.jsonl
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage3-registry-input
+          path: stage3_registry_input
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hausverwaltung-stage3-registry-*
+          path: stage3_registry_results
+          merge-multiple: true
+      - name: Merge and build audit queue
+        run: |
+          python - <<'PY'
+          import glob,json,csv,os,collections
+          objs=[]
+          for p in glob.glob('stage3_registry_results/*.jsonl'):
+              for line in open(p,encoding='utf-8'):
+                  if line.strip():objs.append(json.loads(line))
+          objs.sort(key=lambda x:int(x.get('no',9999)))
+          os.makedirs('data/hausverwaltung/stage3_registry_first',exist_ok=True)
+          with open('data/hausverwaltung/stage3_registry_first/registry_research_raw.jsonl','w',encoding='utf-8') as f:
+              for o in objs:f.write(json.dumps(o,ensure_ascii=False)+'\n')
+          fields=['no','company_name','group_name','group_key','stage3_scope','process_fit_class','size_class','management','immediate_owners','ownership_pct','ultimate_control','ownership_type','primary_dm','primary_dm_role','confidence','source_urls','review_status']
+          rows=[];audit=[]
+          for o in objs:
+              mg='; '.join(f"{x.get('name','')} [{x.get('role','')}]" for x in o.get('management',[]));owners='; '.join(x.get('name','') for x in o.get('owners',[]));pct='; '.join(f"{x.get('name','')}={x.get('share_pct')}%" for x in o.get('owners',[]) if x.get('share_pct') is not None);ult='; '.join(x.get('name','') for x in o.get('ultimate_control',[]));pdm='; '.join(x.get('name','') for x in o.get('primary_decision_makers',[]));prole='; '.join(x.get('role','') for x in o.get('primary_decision_makers',[]));sources=' | '.join(o.get('source_urls',[]))
+              status='OK' if mg and owners and ult and pdm and sources and o.get('confidence') in {'HIGH','MEDIUM_HIGH'} else 'MANUAL_REVIEW'
+              r={'no':o.get('no'),'company_name':o.get('company_name'),'group_name':o.get('group_name'),'group_key':o.get('group_key'),'stage3_scope':o.get('stage3_scope'),'process_fit_class':o.get('process_fit_class'),'size_class':o.get('size_class'),'management':mg,'immediate_owners':owners,'ownership_pct':pct,'ultimate_control':ult,'ownership_type':o.get('ownership_type'),'primary_dm':pdm,'primary_dm_role':prole,'confidence':o.get('confidence'),'source_urls':sources,'review_status':status};rows.append(r)
+              if status!='OK':audit.append(r)
+          with open('data/hausverwaltung/stage3_registry_first/registry_master.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
+          with open('data/hausverwaltung/stage3_registry_first/manual_review_queue.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(audit)
+          summary={'expected':99,'rows':len(rows),'ok':sum(r['review_status']=='OK' for r in rows),'manual_review':len(audit),'main':sum(r['stage3_scope']=='MAIN' for r in rows),'secondary':sum(r['stage3_scope']=='SECONDARY' for r in rows),'confidence':dict(collections.Counter(r['confidence'] for r in rows)),'ownership_types':dict(collections.Counter(r['ownership_type'] for r in rows))}
+          json.dump(summary,open('data/hausverwaltung/stage3_registry_first/summary.json','w'),ensure_ascii=False,indent=2)
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          PY
+      - name: Persist registry-first checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage3_registry_first
+          git commit -m 'Persist Hausverwaltung Stage 3 registry-first research' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-registry-final
+          path: data/hausverwaltung/stage3_registry_first/*
+          retention-days: 30
