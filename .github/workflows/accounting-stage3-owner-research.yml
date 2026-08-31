@@ -26,6 +26,11 @@ jobs:
           python scripts/accounting_stage2_economic_dedup.py \
             --input data/accounting/stage2_agent_verified/stage2_agent_verified_all.csv \
             --output-dir stage2_economic
+      - name: Market completeness and high-count sanity gate
+        run: |
+          python scripts/accounting_stage2_sanity_gate.py \
+            --input stage2_economic/stage2_economic_groups_all.csv \
+            --output stage2_economic/sanity_report.json
       - name: Build Stage 3 target chunks
         run: |
           python scripts/accounting_stage3_prepare.py \
@@ -33,6 +38,7 @@ jobs:
             --likely stage2_economic/stage2_still_likely_20plus_economic.csv \
             --output-dir stage3_input --chunks 16
           cp stage2_economic/economic_dedup_summary.json stage3_input/economic_dedup_summary.json
+          cp stage2_economic/sanity_report.json stage3_input/stage2_sanity_report.json
       - uses: actions/upload-artifact@v4
         with:
           name: accounting-stage3-input
@@ -114,6 +120,7 @@ jobs:
           cp stage3_results/*.jsonl data/accounting/stage3_owners/raw/
           cp stage3_input/manifest.json data/accounting/stage3_owners/input_manifest.json
           cp stage3_input/economic_dedup_summary.json data/accounting/stage3_owners/economic_dedup_summary.json
+          cp stage3_input/stage2_sanity_report.json data/accounting/stage3_owners/stage2_sanity_report.json
       - name: Persist Stage 3 checkpoint
         run: |
           git config user.name 'github-actions[bot]'
