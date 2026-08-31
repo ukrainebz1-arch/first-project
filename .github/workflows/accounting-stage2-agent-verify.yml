@@ -110,3 +110,55 @@ jobs:
           name: accounting-stage2-agent-result-${{ matrix.chunk }}
           path: agent_out/*.jsonl
           retention-days: 30
+
+  merge:
+    if: ${{ false }}
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download original Stage 2 checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p source
+          gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
+          unzip -o /tmp/ksw-qualified.zip -d source
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: accounting-stage2-agent-result-*
+          path: agent_results
+          merge-multiple: true
+      - name: Merge and validate all agent results
+        run: |
+          rm -rf data/accounting/stage2_agent_verified
+          mkdir -p data/accounting/stage2_agent_verified/raw
+          python scripts/accounting_stage2_agent_validate.py merge \
+            --original-csv source/ksw_all_groups_qualified.csv \
+            --results-dir agent_results \
+            --output-dir data/accounting/stage2_agent_verified
+          cp agent_results/*.jsonl data/accounting/stage2_agent_verified/raw/
+      - name: Write progress checkpoint
+        run: |
+          python scripts/accounting_stage2_agent_progress.py \
+            --summary data/accounting/stage2_agent_verified/summary.json \
+            --output data/accounting/stage2_agent_verified/PROGRESS.md \
+            --run-id "${{ github.run_id }}"
+      - name: Persist Stage 2.5 checkpoint to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/accounting/stage2_agent_verified
+          git commit -m 'Persist accounting Stage 2.5 agent verification'
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage2-agent-verified-final
+          path: data/accounting/stage2_agent_verified/*
+          retention-days: 30
