@@ -1,0 +1,12 @@
+{
+  "wko_shortlist_rows": 29,
+  "wko_only_candidates": 25,
+  "excluded_as_ksw_domain_duplicates": 4,
+  "chunks": 4,
+  "chunk_sizes": [
+    7,
+    6,
+    6,
+    6
+  ]
+}
