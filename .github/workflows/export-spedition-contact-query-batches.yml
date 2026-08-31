@@ -1,0 +1,40 @@
+name: Export Spedition contact query batches
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/export-spedition-contact-query-batches.yml'
+permissions:
+  contents: write
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export compact batches
+        run: |
+          python - <<'PY'
+          import csv,os
+          src=list(csv.DictReader(open('data/spedition/contacts/targets.csv',encoding='utf-8-sig')))
+          outdir='data/spedition/contacts/query_batches';os.makedirs(outdir,exist_ok=True)
+          for st in range(0,len(src),10):
+            rows=src[st:st+10]
+            p=f'{outdir}/targets_{st+1:03d}_{st+len(rows):03d}.csv'
+            with open(p,'w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=['no','company','primary_dm','owners','websites','wko_url'])
+              w.writeheader()
+              for r in rows:w.writerow({k:r.get(k,'') for k in w.fieldnames})
+            print(p)
+          PY
+      - name: Persist batches
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/query_batches
+          git commit -m 'Checkpoint compact Spedition contact query batches' || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; git pull origin main --no-rebase || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
