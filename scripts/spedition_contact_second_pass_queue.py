@@ -1,3 +1,4 @@
+# Generates one owner/primary-DM target per company still at F after the first merge.
 import csv,os,re,unicodedata
 BASE='data/spedition/contacts/final'
 def read(p):
