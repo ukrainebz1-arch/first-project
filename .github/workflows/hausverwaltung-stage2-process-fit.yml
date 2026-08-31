@@ -1,0 +1,27 @@
+name: Hausverwaltung Stage2 process fit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/hausverwaltung_stage2_process_fit.py'
+      - '.github/workflows/hausverwaltung-stage2-process-fit.yml'
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reclassify by process fit
+        run: python scripts/hausverwaltung_stage2_process_fit.py
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first/adjacent_process_review_final_2026-08-31.tsv data/hausverwaltung/size_agent_first/sales_targets_process_fit_2026-08-31.csv data/hausverwaltung/size_agent_first/secondary_process_targets_2026-08-31.csv data/hausverwaltung/size_agent_first/summary_process_fit_final_2026-08-31.json
+          git commit -m 'Finalize Hausverwaltung Stage2 process-fit sales pool' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
