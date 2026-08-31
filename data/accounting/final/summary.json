@@ -1,0 +1,22 @@
+{
+  "all_corporate_groups": 2780,
+  "final_targets_confirmed_or_likely": 473,
+  "priority_30_200": 93,
+  "secondary_20_plus": 74,
+  "enterprise_200_plus": 25,
+  "likely_20_plus": 281,
+  "with_primary_dm": 156,
+  "with_direct_phone": 58,
+  "with_personal_email": 69,
+  "with_phone_including_fallback": 97,
+  "with_email_including_fallback": 99,
+  "size_bucket_counts": {
+    "100_199": 12,
+    "200_PLUS": 25,
+    "20_29": 2,
+    "30_49": 50,
+    "50_99": 31,
+    "CONFIRMED_20_PLUS_UNBOUNDED": 72,
+    "LIKELY_20_PLUS": 281
+  }
+}
