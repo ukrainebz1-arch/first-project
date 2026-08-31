@@ -1,0 +1,186 @@
+name: Accounting Stage 2.5 agent verification
+
+on:
+  push:
+    paths:
+      - '.github/workflows/accounting-stage2-agent-verify.yml'
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download existing KSW qualification checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p source agent_input
+          gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
+          unzip -o /tmp/ksw-qualified.zip -d source
+          test -f source/ksw_all_groups_qualified.csv
+      - name: Build Stage 2.5 agent batches
+        run: |
+          python scripts/accounting_stage2_agent_prepare.py \
+            --input source/ksw_all_groups_qualified.csv \
+            --output-dir agent_input \
+            --chunks 32
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage2-agent-input
+          path: agent_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      copilot-requests: write
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: accounting-stage2-agent-input
+          path: agent_input
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Prepare lead-agent prompt
+        env:
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          export INPUT_CHUNK="agent_input/chunk_${C}.csv"
+          export OUTPUT_JSONL="agent_out/chunk_${C}.jsonl"
+          mkdir -p agent_out
+          python - <<'PY'
+          import os
+          p=open('prompts/accounting_stage2_agent_prompt.md',encoding='utf-8').read()
+          p=p.replace('__INPUT_CHUNK__',os.environ['INPUT_CHUNK']).replace('__OUTPUT_JSONL__',os.environ['OUTPUT_JSONL'])
+          open('/tmp/accounting-agent-prompt.md','w',encoding='utf-8').write(p)
+          PY
+      - name: Run lead research agent with four subagents
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          copilot -p "$(cat /tmp/accounting-agent-prompt.md)" \
+            -s --no-ask-user --allow-all-urls \
+            --allow-tool='read' --allow-tool='write' --deny-tool='shell'
+          test -s "agent_out/chunk_${C}.jsonl"
+      - name: Validate agent output; repair once if necessary
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          INPUT="agent_input/chunk_${C}.csv"
+          OUTPUT="agent_out/chunk_${C}.jsonl"
+          if ! python scripts/accounting_stage2_agent_validate.py chunk --input-csv "$INPUT" --result-jsonl "$OUTPUT" > /tmp/validation.txt 2>&1; then
+            cat /tmp/validation.txt
+            copilot -p "The research JSONL at $OUTPUT failed deterministic validation. Read $INPUT, $OUTPUT, and /tmp/validation.txt. Fix ONLY $OUTPUT so it contains exactly one valid JSON object per input row and obeys the schema/verdict/scope requirements. Do not redo research unless needed to fix unsupported verdicts. Do not run shell commands." \
+              -s --no-ask-user --allow-all-urls \
+              --allow-tool='read' --allow-tool='write' --deny-tool='shell'
+            python scripts/accounting_stage2_agent_validate.py chunk --input-csv "$INPUT" --result-jsonl "$OUTPUT"
+          else
+            cat /tmp/validation.txt
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage2-agent-result-${{ matrix.chunk }}
+          path: agent_out/*.jsonl
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download original Stage 2 checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p source
+          gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
+          unzip -o /tmp/ksw-qualified.zip -d source
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: accounting-stage2-agent-result-*
+          path: agent_results
+          merge-multiple: true
+      - name: Merge and deterministically validate all agent results
+        run: |
+          rm -rf data/accounting/stage2_agent_verified
+          mkdir -p data/accounting/stage2_agent_verified/raw
+          python scripts/accounting_stage2_agent_validate.py merge \
+            --original-csv source/ksw_all_groups_qualified.csv \
+            --results-dir agent_results \
+            --output-dir data/accounting/stage2_agent_verified
+          cp agent_results/*.jsonl data/accounting/stage2_agent_verified/raw/
+      - name: Write progress checkpoint
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json,os
+          p='data/accounting/stage2_agent_verified/summary.json'
+          s=json.load(open(p,encoding='utf-8'))
+          text=f'''# Accounting / Steuerberatung — Stage 2.5 agent verification
+
+Source Stage 2 artifact: `9731550965`
+Agent workflow run: `{os.environ.get("RUN_ID")}`
+
+This checkpoint re-researched every prior size candidate with Copilot lead research agents and web-research subagents. Deterministic code is used only to batch inputs, validate the JSON schema, reject impossible scope/count combinations, and merge outputs.
+
+## Result
+
+- Candidates expected: {s["candidate_expected"]}
+- Valid agent results: {s["agent_results_valid"]}
+- Stage 3 confirmed targets: {s["stage3_confirmed_targets"]}
+- Still likely 20+: {s["still_likely_20plus"]}
+- Below 20: {s["below_20"]}
+- Unresolved: {s["unresolved"]}
+
+Verdict counts: `{json.dumps(s["verdict_counts"], ensure_ascii=False)}`
+
+Raw per-company agent evidence is preserved under `raw/`. `stage3_size_verified_targets.csv` is the size-verified hand-off into owner / decision-maker research.
+'''
+          open('data/accounting/stage2_agent_verified/PROGRESS.md','w',encoding='utf-8').write(text)
+          PY
+      - name: Persist Stage 2.5 checkpoint to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/accounting/stage2_agent_verified
+          git commit -m 'Persist accounting Stage 2.5 agent verification'
+          git push
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage2-agent-verified-final
+          path: data/accounting/stage2_agent_verified/*
+          retention-days: 30
