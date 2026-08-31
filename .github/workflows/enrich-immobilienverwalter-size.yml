@@ -1,0 +1,166 @@
+name: Enrich Immobilienverwalter company size
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'prepare_immobilienverwalter_size_input.py'
+      - 'classify_immobilienverwalter_size.py'
+      - '.github/workflows/enrich-immobilienverwalter-size.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build canonical Hausverwaltung universe and adapter input
+        run: python prepare_immobilienverwalter_size_input.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iv-size-input
+          path: iv_size_input/
+          if-no-files-found: error
+          retention-days: 7
+
+  karriere:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-input
+          path: work/input
+      - run: pip install requests beautifulsoup4 rapidfuzz
+      - name: Run existing karriere.at employer enrichment
+        env:
+          WKO_CSV: work/input/iv_size_input.csv
+          OUTDIR: work/karriere
+        run: python enrich_spediteur_karriere.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iv-size-karriere
+          path: work/karriere/
+          if-no-files-found: error
+          retention-days: 7
+
+  websites:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-input
+          path: work/input
+      - run: pip install requests beautifulsoup4
+      - name: Run existing official-website employee enrichment
+        env:
+          WKO_CSV: work/input/iv_size_input.csv
+          OUTDIR: work/website
+        run: python enrich_spediteur_websites.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iv-size-websites
+          path: work/website/
+          if-no-files-found: error
+          retention-days: 7
+
+  wko_profiles:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-input
+          path: work/input
+      - run: pip install requests beautifulsoup4
+      - name: Run existing WKO profile employee enrichment
+        env:
+          WKO_CSV: work/input/iv_size_input.csv
+          OUTDIR: work/wko
+        run: python enrich_spediteur_wko_profiles.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iv-size-wko-profiles
+          path: work/wko/
+          if-no-files-found: error
+          retention-days: 7
+
+  merge_and_checkpoint:
+    needs: [prepare, karriere, websites, wko_profiles]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-input
+          path: work/input
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-karriere
+          path: work/karriere
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-websites
+          path: work/website
+      - uses: actions/download-artifact@v4
+        with:
+          name: iv-size-wko-profiles
+          path: work/wko
+      - name: Merge evidence and build conservative preliminary classification
+        env:
+          MASTER_CSV: work/input/company_master.csv
+          KARRIERE_CSV: work/karriere/karriere_matches.csv
+          WEBSITE_CSV: work/website/website_employee_mentions.csv
+          WKO_PROFILE_CSV: work/wko/wko_profile_employee_mentions.csv
+          OUTDIR: data/hausverwaltung/size
+        run: python classify_immobilienverwalter_size.py
+      - name: Persist raw enrichment checkpoints
+        run: |
+          cp work/input/prepare_summary.json data/hausverwaltung/size/prepare_summary.json
+          cp work/karriere/karriere_matches.csv data/hausverwaltung/size/karriere_matches.csv
+          cp work/karriere/karriere_summary.json data/hausverwaltung/size/karriere_summary.json
+          cp work/website/website_employee_mentions.csv data/hausverwaltung/size/website_employee_mentions.csv
+          cp work/website/summary.json data/hausverwaltung/size/website_summary.json
+          cp work/wko/wko_profile_employee_mentions.csv data/hausverwaltung/size/wko_profile_employee_mentions.csv
+          cp work/wko/summary.json data/hausverwaltung/size/wko_profile_summary.json
+      - name: Commit stage-2 checkpoint to GitHub
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size/
+          git commit -m 'Checkpoint Hausverwaltung size enrichment' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-stage2
+          path: data/hausverwaltung/size/
+          if-no-files-found: error
+          retention-days: 7
