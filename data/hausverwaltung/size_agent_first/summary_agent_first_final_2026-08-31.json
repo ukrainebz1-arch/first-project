@@ -1,20 +1,23 @@
 {
   "total_canonical_companies": 1780,
   "class_counts": {
-    "A_CORE_30_PLUS_DIRECT": 21,
-    "B_CORE_30_PLUS_GROUP": 11,
+    "A_CORE_30_PLUS_DIRECT": 19,
+    "B_CORE_30_PLUS_GROUP": 9,
     "C_CORE_20_PLUS_RANGE": 9,
-    "D_CORE_RECALL_11_30": 27,
+    "D_CORE_RECALL_11_30": 25,
     "EXCLUDE_DUPLICATE": 5,
-    "EXCLUDE_NON_CORE": 38,
-    "EXCLUDE_SMALL": 45,
-    "E_ADJACENT_30_PLUS": 38,
+    "EXCLUDE_NON_CORE": 41,
+    "EXCLUDE_SMALL": 46,
+    "E_ADJACENT_30_PLUS": 40,
     "U_NOT_PROVEN": 1586
   },
-  "core_sales_target_legal_entities": 68,
-  "core_sales_target_outreach_groups": 68,
-  "adjacent_30plus_legal_entities": 38,
-  "adjacent_30plus_groups": 38,
+  "core_sales_target_legal_entities": 62,
+  "core_sales_target_outreach_groups": 62,
+  "adjacent_30plus_legal_entities": 40,
+  "adjacent_30plus_groups": 40,
   "core_definition": "A direct 30+ OR B group 30+ OR C direct 20+ range OR D agent-first recall 11-30/credible operational team; optimized for sales recall, not statistical purity",
+  "final_audit_cases_closed": 7,
+  "unresolved_core_baseline_rows": 0,
+  "stage2_status": "FINAL",
   "stage3_started": false
 }
