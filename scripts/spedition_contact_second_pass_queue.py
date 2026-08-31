@@ -1,13 +1,15 @@
-# Generates one owner/primary-DM target per company still at F after the first merge.
-import csv,os,re,unicodedata
+# Generates one owner/primary-DM target only for companies whose best company-level status is still F.
+import csv,os,re,unicodedata,glob
 BASE='data/spedition/contacts/final'
 def read(p):
  with open(p,encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
 def fold(s):return ''.join(c for c in unicodedata.normalize('NFKD',s or '') if not unicodedata.combining(c)).lower()
 rows=read(f'{BASE}/final_contacts.csv')
+company=read(f'{BASE}/company_summary.csv')
+needs={r['no'] for r in company if r['best_status'].startswith('F_')}
 by={}
 for r in rows:
- if not r['status'].startswith('F_'):continue
+ if r['no'] not in needs or not r['status'].startswith('F_'):continue
  by.setdefault(r['no'],[]).append(r)
 queue=[]
 for no,rs in sorted(by.items(),key=lambda kv:int(kv[0])):
@@ -20,6 +22,7 @@ for no,rs in sorted(by.items(),key=lambda kv:int(kv[0])):
  r=rs[0]
  queue.append({'no':r['no'],'company':r['company'],'person':r['person'],'owners':r.get('owners',''),'central_phone':r.get('central_phone_fallback',''),'central_email':r.get('central_email_fallback',''),'websites':r.get('websites',''),'wko_url':r.get('wko_url','')})
 out='data/spedition/contacts/second_pass';os.makedirs(out,exist_ok=True)
+for old in glob.glob(f'{out}/queue_*.csv'): os.remove(old)
 fields=list(queue[0]) if queue else ['no','company','person']
 with open(f'{out}/queue.csv','w',encoding='utf-8-sig',newline='') as f:w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(queue)
 for st in range(0,len(queue),10):
