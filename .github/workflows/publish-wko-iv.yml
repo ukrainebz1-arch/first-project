@@ -1,0 +1,35 @@
+name: Publish WKO Immobilienverwalter CSV
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-wko-iv.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download completed artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p published
+          gh run download 33298895060 -n wko-immobilienverwalter-austria-complete -D published
+          find published -maxdepth 2 -type f -print
+      - name: Publish CSV and summary into repo
+        run: |
+          mkdir -p data/wko-immobilienverwalter
+          cp published/wko_immobilienverwalter_austria_unique.csv data/wko-immobilienverwalter/
+          cp published/wko_immobilienverwalter_austria_raw_by_state.csv data/wko-immobilienverwalter/
+          cp published/summary.json data/wko-immobilienverwalter/
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/wko-immobilienverwalter
+          git commit -m 'Publish complete WKO Immobilienverwalter dataset' || exit 0
+          git push
