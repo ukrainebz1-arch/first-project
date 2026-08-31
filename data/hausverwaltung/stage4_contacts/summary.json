@@ -1,0 +1,42 @@
+{
+  "stage4_status": "MACHINE_DISCOVERY_COMPLETE_MANUAL_REVIEW_PENDING",
+  "expected": 99,
+  "rows": 99,
+  "machine_research_complete": 99,
+  "manual_review_complete": 0,
+  "missing_primary_dm": 0,
+  "missing_contact_classification": 0,
+  "missing_sources": 0,
+  "overall": {
+    "rows": 99,
+    "with_public_mobile": 2,
+    "with_direct_dial": 0,
+    "with_person_bound_phone": 2,
+    "with_verified_personal_email": 5,
+    "with_inferred_personal_email": 0,
+    "only_fallback": 33,
+    "no_public_contact": 58
+  },
+  "MAIN": {
+    "rows": 90,
+    "with_public_mobile": 2,
+    "with_direct_dial": 0,
+    "with_person_bound_phone": 2,
+    "with_verified_personal_email": 5,
+    "with_inferred_personal_email": 0,
+    "only_fallback": 33,
+    "no_public_contact": 49
+  },
+  "SECONDARY": {
+    "rows": 9,
+    "with_public_mobile": 0,
+    "with_direct_dial": 0,
+    "with_person_bound_phone": 0,
+    "with_verified_personal_email": 0,
+    "with_inferred_personal_email": 0,
+    "only_fallback": 0,
+    "no_public_contact": 9
+  },
+  "quality_gate_passed": false,
+  "final_master_written": false
+}
