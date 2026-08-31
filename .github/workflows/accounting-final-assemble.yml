@@ -1,0 +1,56 @@
+name: Accounting final dataset assembly
+
+on:
+  workflow_run:
+    workflows: ["Accounting Stage 4 direct contacts"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  assemble:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sync latest checkpoints and download original KSW universe
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git pull --ff-only origin main
+          mkdir -p source
+          gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
+          unzip -o /tmp/ksw-qualified.zip -d source >/dev/null
+          test -f source/ksw_all_groups_qualified.csv
+          test -f data/accounting/stage2_agent_verified/stage2_agent_verified_all.csv
+          test -f data/accounting/stage3_owners/targets.csv
+          test -f data/accounting/contacts/final_prospect_dataset.csv
+      - name: Assemble complete final dataset
+        run: |
+          rm -rf data/accounting/final
+          python scripts/accounting_final_assemble.py \
+            --original source/ksw_all_groups_qualified.csv \
+            --stage2 data/accounting/stage2_agent_verified/stage2_agent_verified_all.csv \
+            --stage3 data/accounting/stage3_owners/targets.csv \
+            --contacts data/accounting/contacts/final_prospect_dataset.csv \
+            --output-dir data/accounting/final
+      - name: Persist final Accounting pipeline
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/accounting/final
+          git commit -m 'Persist final Accounting AI prospect dataset' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-austria-ai-prospects-final
+          path: data/accounting/final/*
+          retention-days: 30
