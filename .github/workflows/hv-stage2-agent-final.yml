@@ -1,0 +1,26 @@
+name: Final Hausverwaltung Stage2 agent-first
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/hausverwaltung_stage2_agent_final.py'
+      - '.github/workflows/hv-stage2-agent-final.yml'
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Build final Stage2 dataset
+        run: python scripts/hausverwaltung_stage2_agent_final.py
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first
+          git commit -m 'Finalize Hausverwaltung Stage2 agent-first size universe' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
