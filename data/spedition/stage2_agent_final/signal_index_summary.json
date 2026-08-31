@@ -1,6 +1,7 @@
 {
   "rows": 1072,
-  "with_relevant_hits": 359,
-  "with_strong_31plus_signal": 1,
-  "with_any_employee_signal": 3
+  "with_relevant_hits": 372,
+  "with_employee_keyword_hit": 39,
+  "with_employee_number_hit": 14,
+  "top300_rows": 300
 }
