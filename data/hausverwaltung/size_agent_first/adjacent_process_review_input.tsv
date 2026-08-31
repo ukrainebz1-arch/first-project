@@ -1,0 +1,41 @@
+company_name	states_seen	wko_standort_count	website	size_class_strict_v2	decision_reason	agent_evidence_url	confidence
+APCOA Austria GmbH	wien	1	http://www.apcoa.at/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+at home FM Services GmbH	wien	1		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+BOE Gebäudemanagement Gesellschaft m.b.H.	tirol | wien	2	http://www.boe-parking.at/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+CBRE GmbH	wien	1	http://www.cbre.at/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+Erste Group Immorent GmbH	wien	1	https://www.erstegroupimmorent.com/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+GBG Gebäude- und Baumanagement Graz GmbH	steiermark	1	http://www.gbg.graz.at/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+International Campus Austria GmbH	wien	1		A_TARGET_30_PLUS	final agent audit: 101-500 employer, but student-housing development/operator platform rather than classic external Hausverwaltung	https://www.karriere.at/f/international-campus-austria	high
+McArthurGlen Management Gesellschaft m.b.H.	burgenland | salzburg	2		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+Porsche Immobilien Gesellschaft m.b.H.	salzburg	1		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+REIWAG Facility Services GmbH	wien	1	http://www.reiwag.com/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+SEE.HAUS Weiden Betriebs GmbH	burgenland	1		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+SES Center Management GmbH	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | wien	8		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+Supernova Invest GmbH	steiermark	1		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+UBM Development AG	tirol | wien	2	http://www.ubm.at/	A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+WSE Wiener Standortentwicklung GmbH	wien	1		A_TARGET_30_PLUS	30+ scale confirmed but business is adjacent/internal/FM/development/commercial rather than classic external Hausverwaltung		high
+Bundesimmobiliengesellschaft m.b.H.	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | vorarlberg | wien	21	http://www.big.at/	B_LIKELY_30_PLUS_GROUP	large state real-estate operator; not classic private external Hausverwaltung		high
+ista Österreich GmbH	wien	1	http://www.ista.at/	B_LIKELY_30_PLUS_GROUP	large adjacent/internal/FM/commercial property operator		high
+Realverwaltung GmbH	kärnten	1	http://stefan.rutter@rutter.at/	B_LIKELY_30_PLUS_GROUP	large adjacent/internal/FM/commercial property operator		high
+Salinen Immobilien Gesellschaft m.b.H.	oberösterreich	1	http://www.salinen.com/	B_LIKELY_30_PLUS_GROUP	final agent audit: property entity inside the 580-employee Salinen group; internal/group real-estate operation rather than classic external Hausverwaltung	https://www.salinen.com/de/unternehmen/salinen-gruppe/salinen-austria-ag/	high
+STRABAG Property and Facility Services GmbH	wien	1	http://www.strabag-pfs.at/	B_LIKELY_30_PLUS_GROUP	large adjacent/internal/FM/commercial property operator		high
+Bank Austria Real Invest Asset Management GmbH	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+FLE GmbH	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+GSA Wohnbauträger GmbH	oberösterreich	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+KIBB Immobilien GmbH	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+Reinberg & Partner Immobilienberatung GmbH	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+Reischauer Consulting GmbH	oberösterreich	1	https://www.reischauer.at/	C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+U.M. Bau AG	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+VIVIR Holding GmbH	oberösterreich	1	http://www.vivir-holding.at/	C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+WEGRAZ Gesellschaft für Stadterneuerung und Assanierung m.b.H.	steiermark	1	http://www.wegraz.at/	C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+Wohnraumwerk Bauträger- und Projektentwicklungs GmbH	steiermark	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+Zurich Immobilien Liegenschaftsverwaltungs-GesmbH	wien	1		C_BORDERLINE_20_30	borderline employer signal but business is asset/development/internal/advisory rather than target Hausverwaltung		high
+AI Immobilienverwertung GmbH.	oberösterreich | wien	2	http://www.apk.at/aiig	U_NOT_PROVEN	group/internal real-estate operation; adjacent rather than core Hausverwaltung		high
+CBRE GWS Austria GmbH	tirol | wien	2		U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
+GRAWE Immo AG	steiermark	1	http://www.gwimmo.at/	U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
+Oberbank Infrastruktur Management GmbH	oberösterreich	1		U_NOT_PROVEN	group/internal real-estate operation; adjacent rather than core Hausverwaltung		high
+PFG Liegenschaftsbewirtschaftungs GmbH &Co KG	salzburg | wien	2		U_NOT_PROVEN	group/internal real-estate operation; adjacent rather than core Hausverwaltung		high
+PRISMA Zentrum für Standort- und Regionalentwicklung GmbH	salzburg | tirol | vorarlberg	3	https://www.prisma-zentrum.com/	U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
+Stadt Wien - Wiener Wohnen Kundenservice GmbH	wien	3		U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
+Unibail-Rodamco Austria Verwaltungs GmbH	niederösterreich | wien	2		U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
+ÖBB-Immobilienmanagement Gesellschaft mbH	kärnten | niederösterreich | oberösterreich | salzburg | steiermark | tirol | wien	8		U_NOT_PROVEN	agent review confirmed scale but target is internal/public/FM/development/commercial rather than classic external Hausverwaltung		high
