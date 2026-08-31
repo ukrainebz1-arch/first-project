@@ -23,14 +23,19 @@ jobs:
         run: |
           mkdir -p source agent_input
           gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
-          unzip -o /tmp/ksw-qualified.zip -d source
+          unzip -o /tmp/ksw-qualified.zip -d source >/dev/null
           test -f source/ksw_all_groups_qualified.csv
-      - name: Build Stage 2.5 agent batches
+      - name: Build expanded Stage 2.5 audit universe
         run: |
           python scripts/accounting_stage2_agent_prepare.py \
             --input source/ksw_all_groups_qualified.csv \
             --output-dir agent_input \
             --chunks 16
+          python - <<'PY'
+          import json
+          m=json.load(open('agent_input/manifest.json'))
+          assert m['candidate_rows']==823, m
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: accounting-stage2-agent-input
@@ -40,20 +45,14 @@ jobs:
   research:
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    permissions:
-      contents: read
-      copilot-requests: write
+    timeout-minutes: 90
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix:
         chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -61,49 +60,25 @@ jobs:
         with:
           name: accounting-stage2-agent-input
           path: agent_input
-      - name: Install Copilot CLI
-        run: npm install -g @github/copilot
-      - name: Prepare lead-agent prompt
+      - name: Install research dependencies
+        run: pip install requests beautifulsoup4
+      - name: Run public-web evidence research worker
         env:
           CHUNK: ${{ matrix.chunk }}
         run: |
           C=$(printf '%02d' "$CHUNK")
-          export INPUT_CHUNK="agent_input/chunk_${C}.csv"
-          export OUTPUT_JSONL="agent_out/chunk_${C}.jsonl"
           mkdir -p agent_out
-          python - <<'PY'
-          import os
-          p=open('prompts/accounting_stage2_agent_prompt.md',encoding='utf-8').read()
-          p=p.replace('__INPUT_CHUNK__',os.environ['INPUT_CHUNK']).replace('__OUTPUT_JSONL__',os.environ['OUTPUT_JSONL'])
-          open('/tmp/accounting-agent-prompt.md','w',encoding='utf-8').write(p)
-          PY
-      - name: Run lead research agent with four subagents
+          python scripts/accounting_stage2_evidence_worker.py \
+            --input-csv "agent_input/chunk_${C}.csv" \
+            --output-jsonl "agent_out/chunk_${C}.jsonl"
+      - name: Deterministic quality gate
         env:
-          GITHUB_TOKEN: ${{ github.token }}
           CHUNK: ${{ matrix.chunk }}
         run: |
           C=$(printf '%02d' "$CHUNK")
-          copilot -p "$(cat /tmp/accounting-agent-prompt.md)" \
-            -s --no-ask-user --allow-all-urls \
-            --allow-tool='read' --allow-tool='write' --deny-tool='shell'
-          test -s "agent_out/chunk_${C}.jsonl"
-      - name: Validate agent output and repair once
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          CHUNK: ${{ matrix.chunk }}
-        run: |
-          C=$(printf '%02d' "$CHUNK")
-          INPUT="agent_input/chunk_${C}.csv"
-          OUTPUT="agent_out/chunk_${C}.jsonl"
-          if ! python scripts/accounting_stage2_agent_validate.py chunk --input-csv "$INPUT" --result-jsonl "$OUTPUT" > /tmp/validation.txt 2>&1; then
-            cat /tmp/validation.txt
-            copilot -p "The research JSONL at $OUTPUT failed deterministic validation. Read $INPUT, $OUTPUT, and /tmp/validation.txt. Fix ONLY $OUTPUT so it contains exactly one valid JSON object per input row and obeys the schema/verdict/scope requirements. Do not redo research unless needed to fix unsupported verdicts. Do not run shell commands." \
-              -s --no-ask-user --allow-all-urls \
-              --allow-tool='read' --allow-tool='write' --deny-tool='shell'
-            python scripts/accounting_stage2_agent_validate.py chunk --input-csv "$INPUT" --result-jsonl "$OUTPUT"
-          else
-            cat /tmp/validation.txt
-          fi
+          python scripts/accounting_stage2_agent_validate.py chunk \
+            --input-csv "agent_input/chunk_${C}.csv" \
+            --result-jsonl "agent_out/chunk_${C}.jsonl"
       - uses: actions/upload-artifact@v4
         with:
           name: accounting-stage2-agent-result-${{ matrix.chunk }}
@@ -118,27 +93,34 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Download original Stage 2 checkpoint
+      - name: Download original Stage 2 checkpoint and prepared universe
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p source
+          mkdir -p source agent_input
           gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw-qualified.zip
-          unzip -o /tmp/ksw-qualified.zip -d source
+          unzip -o /tmp/ksw-qualified.zip -d source >/dev/null
+      - uses: actions/download-artifact@v4
+        with:
+          name: accounting-stage2-agent-input
+          path: agent_input
       - uses: actions/download-artifact@v4
         with:
           pattern: accounting-stage2-agent-result-*
           path: agent_results
           merge-multiple: true
-      - name: Merge and validate all agent results
+      - name: Merge and validate all 823 audit results
         run: |
           rm -rf data/accounting/stage2_agent_verified
           mkdir -p data/accounting/stage2_agent_verified/raw
           python scripts/accounting_stage2_agent_validate.py merge \
             --original-csv source/ksw_all_groups_qualified.csv \
+            --candidate-csv agent_input/candidate_universe.csv \
             --results-dir agent_results \
             --output-dir data/accounting/stage2_agent_verified
           cp agent_results/*.jsonl data/accounting/stage2_agent_verified/raw/
@@ -152,9 +134,10 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
           git add data/accounting/stage2_agent_verified
-          git commit -m 'Persist accounting Stage 2.5 agent verification'
-          git push
+          git commit -m 'Persist accounting Stage 2.5 full evidence audit' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
       - uses: actions/upload-artifact@v4
         with:
           name: accounting-stage2-agent-verified-final
