@@ -1,0 +1,50 @@
+name: Spedition external direct-contact v2 smoke
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/spedition_contact_external_search_v2.py'
+      - '.github/workflows/spedition-contact-external-v2-smoke.yml'
+permissions:
+  contents: write
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - name: Run known-positive smoke range
+        run: |
+          mkdir -p data/spedition/contacts/external_v2_chunks
+          python scripts/spedition_contact_external_search_v2.py \
+            --start 23 --end 25 \
+            --include-validated \
+            --out data/spedition/contacts/external_v2_chunks/smoke_023_025.csv \
+            --progress-out data/spedition/contacts/external_v2_chunks/smoke_023_025_progress.csv
+      - name: Require at least one extracted contact
+        run: |
+          python - <<'PY'
+          import csv
+          p='data/spedition/contacts/external_v2_chunks/smoke_023_025.csv'
+          rows=list(csv.DictReader(open(p,encoding='utf-8-sig')))
+          print('SMOKE_HITS',len(rows))
+          if not rows: raise SystemExit('v2 smoke produced zero evidence hits')
+          for r in rows[:20]: print(r['company'],r['person'],r['contact_class'],r['contact'],r['method'],r['source_url'])
+          PY
+      - name: Persist smoke checkpoint
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/external_v2_chunks/smoke_023_025.csv data/spedition/contacts/external_v2_chunks/smoke_023_025_progress.csv || true
+          git commit -m 'Checkpoint Spedition external v2 smoke 023_025' || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; git pull origin main --no-rebase || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
