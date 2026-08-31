@@ -1,0 +1,41 @@
+name: WKO Hausverwalter Wien Only
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wko-hausverwalter-wien-only.yml'
+
+jobs:
+  wien:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.54.0 beautifulsoup4==4.12.3
+      - run: python -m playwright install --with-deps chromium
+      - name: Scrape Wien with fresh-process retries
+        env:
+          TERM_NAME: hausverwalter
+          STATE_NAME: wien
+          STATE_SLUG: wien
+          OUT_DIR: part
+        run: |
+          ok=0
+          for attempt in 1 2 3 4; do
+            echo "fresh Wien attempt $attempt"
+            rm -rf part && mkdir -p part
+            if python wko_playwright_state.py; then ok=1; break; fi
+            sleep 25
+          done
+          test "$ok" = 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hv-cover-wien-final
+          path: part/
+          if-no-files-found: error
+          retention-days: 7
