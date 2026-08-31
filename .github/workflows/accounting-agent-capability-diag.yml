@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: read
-  copilot-requests: write
 
 jobs:
   test-agent:
@@ -21,12 +20,56 @@ jobs:
           node-version: '22'
       - name: Install Copilot CLI
         run: npm install -g @github/copilot
-      - name: Test auto fallback after quota exhaustion
+      - name: Probe OpenAI BYOK
+        continue-on-error: true
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          copilot -p "Use the task tool to launch one general-purpose subagent. The subagent must research IWTH Steuerberatung in Austria on the public web, open its official team page, and determine whether the official site supports at least 50 staff. After the subagent reports back, reply with exactly AUTO_SUBAGENT_WEB_OK if it successfully used web evidence; otherwise reply FAILED. Do not modify files or run shell commands." \
-            -s --no-ask-user --allow-all-urls --model auto \
-            --deny-tool='shell' --deny-tool='write' > /tmp/copilot.txt
-          cat /tmp/copilot.txt
-          grep -q 'AUTO_SUBAGENT_WEB_OK' /tmp/copilot.txt
+          if [ -z "$OPENAI_KEY" ]; then
+            echo "OPENAI_SECRET_MISSING"
+            exit 1
+          fi
+          COPILOT_PROVIDER_BASE_URL=https://api.openai.com/v1 \
+          COPILOT_PROVIDER_TYPE=openai \
+          COPILOT_PROVIDER_API_KEY="$OPENAI_KEY" \
+          COPILOT_MODEL=gpt-5-mini \
+          copilot -p "Reply exactly OPENAI_BYOK_OK. Do not use tools." -s --no-ask-user \
+            --deny-tool='shell' --deny-tool='write' > /tmp/openai.txt
+          cat /tmp/openai.txt
+          grep -q 'OPENAI_BYOK_OK' /tmp/openai.txt
+      - name: Probe Anthropic BYOK
+        continue-on-error: true
+        env:
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_KEY" ]; then
+            echo "ANTHROPIC_SECRET_MISSING"
+            exit 1
+          fi
+          COPILOT_PROVIDER_BASE_URL=https://api.anthropic.com \
+          COPILOT_PROVIDER_TYPE=anthropic \
+          COPILOT_PROVIDER_API_KEY="$ANTHROPIC_KEY" \
+          COPILOT_MODEL=claude-haiku-4-5 \
+          copilot -p "Reply exactly ANTHROPIC_BYOK_OK. Do not use tools." -s --no-ask-user \
+            --deny-tool='shell' --deny-tool='write' > /tmp/anthropic.txt
+          cat /tmp/anthropic.txt
+          grep -q 'ANTHROPIC_BYOK_OK' /tmp/anthropic.txt
+      - name: Probe xAI-compatible BYOK
+        continue-on-error: true
+        env:
+          XAI_KEY: ${{ secrets.XAI_API_KEY }}
+        run: |
+          if [ -z "$XAI_KEY" ]; then
+            echo "XAI_SECRET_MISSING"
+            exit 1
+          fi
+          COPILOT_PROVIDER_BASE_URL=https://api.x.ai/v1 \
+          COPILOT_PROVIDER_TYPE=openai \
+          COPILOT_PROVIDER_API_KEY="$XAI_KEY" \
+          COPILOT_MODEL=grok-4-fast-reasoning \
+          copilot -p "Reply exactly XAI_BYOK_OK. Do not use tools." -s --no-ask-user \
+            --deny-tool='shell' --deny-tool='write' > /tmp/xai.txt
+          cat /tmp/xai.txt
+          grep -q 'XAI_BYOK_OK' /tmp/xai.txt
+      - name: Finish probe
+        run: echo "BYOK_PROBE_DONE"
