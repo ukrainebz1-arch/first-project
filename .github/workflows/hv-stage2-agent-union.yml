@@ -1,0 +1,52 @@
+name: Build Hausverwaltung Stage2 agent union
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hv-stage2-agent-union.yml'
+permissions:
+  contents: write
+jobs:
+  union:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Build union
+        run: |
+          python - <<'PY'
+          import csv, os, re, json, unicodedata
+          def key(s):
+              s=unicodedata.normalize('NFKD',s or '').encode('ascii','ignore').decode().lower()
+              s=s.replace('&',' und ')
+              return re.sub(r'[^a-z0-9]+',' ',s).strip()
+          m=list(csv.DictReader(open('data/hausverwaltung/size_strict_v2/manual_review_queue_v2.csv',encoding='utf-8-sig',newline='')))
+          r=list(csv.DictReader(open('data/hausverwaltung/size_recall_audit/sales_recall_candidate_queue_2026-08-31.csv',encoding='utf-8-sig',newline='')))
+          d={}
+          for x in m:
+              k=key(x['company_name']); d[k]={'company_name':x['company_name'],'in_manual':'yes','strict_class':x.get('size_class_strict_v2',''),'standort_count':x.get('wko_standort_count',''),'states_seen':x.get('states_seen',''),'website':x.get('website',''),'in_recall':'no','recall_priority':'','recall_score':'','recall_reason':''}
+          for x in r:
+              k=key(x['company_name'])
+              if k not in d: d[k]={'company_name':x['company_name'],'in_manual':'no','strict_class':'U_NOT_PROVEN','standort_count':x.get('standort_count',''),'states_seen':x.get('states_seen',''),'website':x.get('website',''),'in_recall':'yes','recall_priority':x.get('priority',''),'recall_score':x.get('recall_score',''),'recall_reason':x.get('recall_reason','')}
+              else:
+                  d[k]['in_recall']='yes'; d[k]['recall_priority']=x.get('priority',''); d[k]['recall_score']=x.get('recall_score',''); d[k]['recall_reason']=x.get('recall_reason','')
+          rows=list(d.values())
+          rows.sort(key=lambda x:(0 if x['in_recall']=='yes' else 1, -(int(x['recall_score'] or 0)), x['company_name'].lower()))
+          outdir='data/hausverwaltung/size_agent_first'; os.makedirs(outdir,exist_ok=True)
+          fields=['no','company_name','in_manual','in_recall','strict_class','standort_count','states_seen','website','recall_priority','recall_score','recall_reason']
+          with open(f'{outdir}/agent_review_union.tsv','w',encoding='utf-8',newline='') as f:
+              f.write('\t'.join(fields)+'\n')
+              for i,x in enumerate(rows,1): f.write('\t'.join([str(i)]+[(x.get(z,'') or '').replace('\t',' ').replace('\n',' ') for z in fields[1:]])+'\n')
+          summary={'manual_rows':len(m),'recall_rows':len(r),'union_rows':len(rows),'recall_only':sum(x['in_manual']=='no' for x in rows)}
+          json.dump(summary,open(f'{outdir}/agent_review_union_summary.json','w'),ensure_ascii=False,indent=2)
+          print(summary)
+          PY
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first
+          git commit -m 'Checkpoint Hausverwaltung Stage2 agent review union' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
