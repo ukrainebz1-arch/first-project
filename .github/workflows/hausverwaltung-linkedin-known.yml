@@ -1,0 +1,33 @@
+name: Hausverwaltung LinkedIn Known Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hausverwaltung_linkedin_size.py'
+      - '.github/workflows/hausverwaltung-linkedin-known.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4
+      - name: Test known companies
+        run: |
+          python scripts/hausverwaltung_linkedin_size.py --start 88 --end 88 --out smoke/arev.csv
+          python scripts/hausverwaltung_linkedin_size.py --start 172 --end 172 --out smoke/brichard.csv
+          python scripts/hausverwaltung_linkedin_size.py --start 464 --end 464 --out smoke/rustler.csv
+          python scripts/hausverwaltung_linkedin_size.py --start 677 --end 677 --out smoke/ig.csv
+          cat smoke/*.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-linkedin-known
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
