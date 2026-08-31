@@ -108,7 +108,6 @@ jobs:
           for p in sorted(glob.glob('results/*.csv')):
               rows+=list(csv.DictReader(open(p,encoding='utf-8-sig')))
           rows.sort(key=lambda r:r.get('group_name','').lower())
-          # Final defensive gate: regulatory/threshold prose must never become company headcount.
           neg=re.compile(r'(?i)(?:nicht mehr als|höchstens|hoechstens|maximal|bis zu)\s+\d{1,4}\s+(?:mitarbeiter|mitarbeitende|beschäftigte|beschaeftigte)|arbeitgeber.{0,120}\d{1,4}.{0,40}(?:mitarbeiter|arbeitnehmer)')
           for r in rows:
               if r.get('agent_verdict','').startswith('CONFIRMED') and neg.search((r.get('agent_source_facts') or '')+' '+(r.get('old_evidence_snippet') or '')):
@@ -139,9 +138,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git pull --rebase origin main
           git add data/accounting/wko_supplement
           git commit -m 'Persist re-audited WKO accounting supplement' || true
+          git pull --rebase origin main
           for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
       - uses: actions/upload-artifact@v4
         with:
