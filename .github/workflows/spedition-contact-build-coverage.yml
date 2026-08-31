@@ -1,0 +1,34 @@
+name: Build Spedition contact coverage
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/spedition_contact_build_coverage.py'
+      - 'data/spedition/contacts/validated_contacts.csv'
+      - 'data/spedition/contacts/official_best_contacts.csv'
+      - 'data/spedition/contacts/external_chunks/manual_web_*.csv'
+      - '.github/workflows/spedition-contact-build-coverage.yml'
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build coverage
+        run: python scripts/spedition_contact_build_coverage.py
+      - name: Persist coverage
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/contacts/coverage_interim.csv data/spedition/contacts/coverage_status_summary.csv
+          git commit -m 'Update Spedition contact coverage status' || exit 0
+          for n in 1 2 3 4 5; do
+            git pull --rebase origin main || true
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
