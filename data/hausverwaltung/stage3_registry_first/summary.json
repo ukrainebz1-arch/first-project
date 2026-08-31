@@ -1,0 +1,16 @@
+{
+  "expected": 99,
+  "rows": 99,
+  "ok": 0,
+  "manual_review": 99,
+  "main": 90,
+  "secondary": 9,
+  "confidence": {
+    "MEDIUM_HIGH": 17,
+    "LOW": 82
+  },
+  "ownership_types": {
+    "UNRESOLVED": 98,
+    "INDIVIDUAL_FAMILY_CONTROL": 1
+  }
+}
