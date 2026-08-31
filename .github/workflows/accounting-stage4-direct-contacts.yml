@@ -51,13 +51,13 @@ jobs:
           path: stage4_input
       - name: Install contact research dependencies
         run: pip install requests beautifulsoup4
-      - name: Search person-specific public contacts
+      - name: Search hardened person-specific public contacts
         env:
           CHUNK: ${{ matrix.chunk }}
         run: |
           C=$(printf '%02d' "$CHUNK")
           mkdir -p stage4_out
-          python scripts/accounting_stage4_contact_worker.py \
+          python scripts/accounting_stage4_contact_worker_v2.py \
             --input-csv "stage4_input/chunk_${C}.csv" \
             --output-csv "stage4_out/chunk_${C}.csv"
       - uses: actions/upload-artifact@v4
