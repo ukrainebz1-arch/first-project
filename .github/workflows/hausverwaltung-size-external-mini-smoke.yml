@@ -1,0 +1,26 @@
+name: Hausverwaltung External Size Mini Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hausverwaltung-size-external-mini-smoke.yml'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - run: python scripts/hausverwaltung_size_external_search.py --start 1 --end 5 --out smoke/evidence.csv --progress-out smoke/progress.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-external-mini-smoke
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
