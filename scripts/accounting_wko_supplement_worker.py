@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import argparse,csv,os,re,time,random
-from urllib.parse import urlparse,urljoin,quote_plus,unquote
+from urllib.parse import urlparse,urljoin
 import requests
 from bs4 import BeautifulSoup
 
@@ -8,7 +8,7 @@ UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/139 Safari/537.36'
 H={'User-Agent':UA,'Accept-Language':'de-AT,de;q=0.9,en;q=0.7'}
 SERVICE=('bilanzbuchhaltung','buchhaltung','personalverrechnung','lohnverrechnung','payroll','accounting','jahresabschluss','bibu','rechnungswesen','kostenrechnung')
 UNRELATED=('pharma','werkzeug','agrar','forst','rehabilitation','bildung','apotheken','veterinär','veterinaer','softwarehaus','maschinenbau','holzindustrie')
-BAD=('jahr','jahre','partner','standort','standorte','büro','buero','filiale','mandant','kunde','klient','umsatz','euro','eur','million','max.','maximal','bis zu')
+BAD=('jahr','jahre','partner','standort','standorte','büro','buero','filiale','mandant','kunde','klient','umsatz','euro','eur','million','max.','maximal','bis zu','nicht mehr als','höchstens','hoechstens','arbeitgeber','arbeitnehmer','auva','zuschuss','entgeltfortzahlung','steuerfreiheit','zulage','grenzwert','schwellenwert','förderung','foerderung','gesetz','gesetzlich','kmu-definition')
 EMP=r'(?:mitarbeiter(?:innen)?|mitarbeiter:innen|mitarbeitende|besch[aä]ftigte|kolleg(?:innen|en)|employees)'
 PATS=[
  re.compile(r'(?i)(?:wir\s+)?(?:besch[aä]ftigen|z[aä]hlen|umfassen|haben|sind)\s+(?:derzeit\s+)?(rund|ca\.?|circa|etwa|über|mehr\s+als|knapp)?\s*(\d{1,4})\+?\s+'+EMP),
@@ -31,7 +31,7 @@ def counts(t):
     out=[]
     for p in PATS:
         for m in p.finditer(t):
-            n=int(m.group(2));ctx=t[max(0,m.start()-120):min(len(t),m.end()+180)];cl=ctx.lower()
+            n=int(m.group(2));ctx=t[max(0,m.start()-170):min(len(t),m.end()+230)];cl=ctx.lower()
             if 5<=n<=10000 and not 1900<=n<=2100 and not any(x in cl for x in BAD):out.append((n,bool(m.group(1)),ctx))
     return out
 def service_score(t,name):
@@ -65,14 +65,13 @@ def make(row,verdict,lo,hi,scope,conf,summary,url='',fact='',relevance='RELEVANT
     r=dict(row);r.update({'agent_verdict':verdict,'agent_employee_low':'' if lo is None else lo,'agent_employee_high':'' if hi is None else hi,'agent_count_scope':scope,'agent_confidence':conf,'agent_research_summary':summary,'agent_source_urls':url,'agent_source_facts':fact,'agent_review_note':relevance,'agent_researcher_consensus':'SINGLE','accounting_relevance':relevance});return r
 def main_one(row):
     pages,profiles,emails,jobs=crawl(row);combined=' '.join(t for _,t in pages);sh,bad=service_score(combined,row.get('group_name','')+' '+row.get('member_entities',''))
-    # Must actually be an accounting/bookkeeping/payroll business, not just a giant WKO-listed employer.
     if sh<2 or (bad>=2 and sh<4):
         return make(row,'UNRESOLVED',None,None,'UNKNOWN','HIGH',f'Excluded from the accounting supplement: official public site does not establish a primary bookkeeping/accounting/payroll business (service signals={sh}, unrelated-sector signals={bad}).',relevance='NOT_RELEVANT_ACCOUNTING_FIRM')
     vals=[]
     for u,t in pages:
         for n,approx,ctx in counts(t):vals.append((n,approx,u,ctx,bool(WHOLE.search(t))))
     if vals:
-        n,approx,u,ctx,whole=max(vals,key=lambda x:x[0]);fact=f'Official accounting-firm page states {n} employees in context: {ctx[:320]}'
+        n,approx,u,ctx,whole=max(vals,key=lambda x:x[0]);fact=f'Official accounting-firm page states {n} employees in context: {ctx[:420]}'
         if n>=30:return make(row,'CONFIRMED_30_PLUS',n,None,'AUSTRIA_GROUP' if int(float(row.get('legal_entities_count') or 1))>1 else 'AUSTRIA_LEGAL_ENTITY','HIGH',f'Fresh official-site evidence proves the relevant bookkeeping/accounting business has at least {n} employees.',u,fact)
         if n>=20:
             if whole and not approx:return make(row,'CONFIRMED_20_29',n,n,'AUSTRIA_LEGAL_ENTITY','HIGH',f'Fresh official whole-team statement gives {n} employees.',u,fact)
