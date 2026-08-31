@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '.github/workflows/accounting-wko-supplement-audit.yml'
+      - 'scripts/accounting_wko_supplement_worker.py'
+      - 'scripts/accounting_wko_supplement_prepare.py'
   workflow_dispatch:
 
 jobs:
@@ -101,11 +103,22 @@ jobs:
           rm -rf data/accounting/wko_supplement
           mkdir -p data/accounting/wko_supplement/raw
           python - <<'PY'
-          import csv,glob,json,os
+          import csv,glob,json,os,re
           rows=[]
           for p in sorted(glob.glob('results/*.csv')):
               rows+=list(csv.DictReader(open(p,encoding='utf-8-sig')))
           rows.sort(key=lambda r:r.get('group_name','').lower())
+          # Final defensive gate: regulatory/threshold prose must never become company headcount.
+          neg=re.compile(r'(?i)(?:nicht mehr als|höchstens|hoechstens|maximal|bis zu)\s+\d{1,4}\s+(?:mitarbeiter|mitarbeitende|beschäftigte|beschaeftigte)|arbeitgeber.{0,120}\d{1,4}.{0,40}(?:mitarbeiter|arbeitnehmer)')
+          for r in rows:
+              if r.get('agent_verdict','').startswith('CONFIRMED') and neg.search((r.get('agent_source_facts') or '')+' '+(r.get('old_evidence_snippet') or '')):
+                  r['agent_verdict']='UNRESOLVED'
+                  r['agent_employee_low']=''
+                  r['agent_employee_high']=''
+                  r['agent_count_scope']='UNKNOWN'
+                  r['agent_confidence']='LOW'
+                  r['agent_research_summary']='Regulatory/threshold wording detected; no safe company-specific 20+ employee proof.'
+                  r['agent_review_note']='REGULATORY_HEADCOUNT_FALSE_POSITIVE_BLOCKED'
           fields=list(rows[0].keys()) if rows else []
           def write(name,rs):
               with open('data/accounting/wko_supplement/'+name,'w',encoding='utf-8-sig',newline='') as f:
@@ -116,7 +129,7 @@ jobs:
           likely=[r for r in rows if r.get('agent_verdict')=='LIKELY_20_PLUS']
           write('confirmed_targets.csv',confirmed);write('likely_targets.csv',likely);write('final_targets.csv',confirmed+likely)
           rejected=[r for r in rows if r.get('accounting_relevance')!='RELEVANT_ACCOUNTING_FIRM'];write('false_positives_not_accounting.csv',rejected)
-          s={'reaudited':len(rows),'confirmed':len(confirmed),'likely':len(likely),'not_relevant_false_positives':len(rejected),'unresolved_relevant':sum(r.get('accounting_relevance')=='RELEVANT_ACCOUNTING_FIRM' and r.get('agent_verdict')=='UNRESOLVED' for r in rows)}
+          s={'reaudited':len(rows),'confirmed':len(confirmed),'likely':len(likely),'not_relevant_false_positives':len(rejected),'unresolved_relevant':sum(r.get('accounting_relevance')=='RELEVANT_ACCOUNTING_FIRM' and r.get('agent_verdict')=='UNRESOLVED' for r in rows),'regulatory_headcount_blocked':sum(r.get('agent_review_note')=='REGULATORY_HEADCOUNT_FALSE_POSITIVE_BLOCKED' for r in rows)}
           json.dump(s,open('data/accounting/wko_supplement/summary.json','w',encoding='utf-8'),ensure_ascii=False,indent=2);print(json.dumps(s,ensure_ascii=False,indent=2))
           PY
           cp input/manifest.json data/accounting/wko_supplement/input_manifest.json
