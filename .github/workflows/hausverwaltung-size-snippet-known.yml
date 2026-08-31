@@ -1,0 +1,31 @@
+name: Hausverwaltung Size Snippet Known Targets
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hausverwaltung-size-snippet-known.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - name: Test known strict 30plus companies
+        run: |
+          python scripts/hausverwaltung_size_external_snippets.py --start 88 --end 88 --out smoke/evidence.csv --progress-out smoke/progress.csv
+          python scripts/hausverwaltung_size_external_snippets.py --start 172 --end 172 --out smoke/evidence.csv --progress-out smoke/progress.csv
+          python scripts/hausverwaltung_size_external_snippets.py --start 464 --end 464 --out smoke/evidence.csv --progress-out smoke/progress.csv
+          python scripts/hausverwaltung_size_external_snippets.py --start 677 --end 677 --out smoke/evidence.csv --progress-out smoke/progress.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-snippet-known
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
