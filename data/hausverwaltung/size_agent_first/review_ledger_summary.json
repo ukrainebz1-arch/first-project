@@ -1,0 +1,9 @@
+{
+  "review_rows": 133,
+  "strict_counts": {
+    "A_TARGET_30_PLUS": 37,
+    "B_LIKELY_30_PLUS_GROUP": 10,
+    "C_BORDERLINE_20_30": 43,
+    "U_NOT_PROVEN": 43
+  }
+}
