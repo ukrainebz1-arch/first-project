@@ -1,0 +1,77 @@
+name: Hausverwaltung Strict Size Checkpoint
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'classify_hausverwaltung_size_strict.py'
+      - '.github/workflows/hausverwaltung-size-strict-checkpoint.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  strict:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download canonical size input from completed Stage-2 run
+        uses: actions/download-artifact@v4
+        with:
+          name: iv-size-input
+          path: work/input
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33367060352
+      - name: Download official website evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: iv-size-websites
+          path: work/website
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33367060352
+      - name: Download WKO profile evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: iv-size-wko-profiles
+          path: work/wko
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33367060352
+      - name: Download parallel karriere evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: iv-size-karriere-parallel
+          path: work/karriere
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33368407892
+      - name: Build strict screening
+        env:
+          MASTER_CSV: work/input/company_master.csv
+          KARRIERE_CSV: work/karriere/karriere_matches.csv
+          WEBSITE_CSV: work/website/website_employee_mentions.csv
+          WKO_PROFILE_CSV: work/wko/wko_profile_employee_mentions.csv
+          OUTDIR: data/hausverwaltung/size_strict
+        run: python classify_hausverwaltung_size_strict.py
+      - name: Persist strict checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_strict/
+          git commit -m 'Checkpoint strict Hausverwaltung size screening' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-strict
+          path: data/hausverwaltung/size_strict/
+          if-no-files-found: error
+          retention-days: 7
