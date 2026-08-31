@@ -1,0 +1,59 @@
+name: Hausverwaltung Stage 4 curated agent review
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hausverwaltung-stage4-curate.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: hausverwaltung-stage4-curate
+  cancel-in-progress: false
+
+jobs:
+  curate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply 99-row agent/manual review layer
+        run: |
+          python scripts/hausverwaltung_stage4_curate.py \
+            --input data/hausverwaltung/stage4_contacts/manual_overrides.csv \
+            --output /tmp/manual_overrides_curated.csv
+          python scripts/hausverwaltung_stage4_postcurate_fixes.py \
+            --input /tmp/manual_overrides_curated.csv \
+            --output data/hausverwaltung/stage4_contacts/manual_overrides.csv
+      - name: Validate curated override shape before publishing
+        run: |
+          python - <<'PY'
+          import csv
+          p='data/hausverwaltung/stage4_contacts/manual_overrides.csv'
+          with open(p,encoding='utf-8-sig',newline='') as f: rows=list(csv.DictReader(f))
+          assert len(rows)==99, len(rows)
+          assert sum(r.get('manual_reviewed')=='yes' for r in rows)==99
+          assert all((r.get('contact_confidence') or '') in {'HIGH','MEDIUM_HIGH','MEDIUM'} for r in rows)
+          pmv=next(r for r in rows if r['no']=='20')
+          assert pmv['override_personal_email']=='f.hoermann@pmv.at'
+          assert pmv['override_email_verified']=='yes'
+          print('rows=99 manual_reviewed=99 PMV_fix=ok')
+          PY
+      - name: Persist curated review to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage4_contacts/manual_overrides.csv
+          git commit -m 'Apply Hausverwaltung Stage 4 curated agent review' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage4-curated-overrides
+          path: data/hausverwaltung/stage4_contacts/manual_overrides.csv
+          retention-days: 30
