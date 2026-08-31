@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - 'data/accounting/wko_supplement/summary.json'
+      - '.github/workflows/accounting-stage3-owner-research.yml'
   workflow_dispatch:
 
 jobs:
