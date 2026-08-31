@@ -1,0 +1,28 @@
+name: Kompass Real Estate Index Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'crawl_kompass_realestate_index.py'
+      - '.github/workflows/kompass-realestate-index-smoke.yml'
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.54.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python crawl_kompass_realestate_index.py --start-page 1 --end-page 3 --out smoke/kompass_realestate_index.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kompass-realestate-index-smoke
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
