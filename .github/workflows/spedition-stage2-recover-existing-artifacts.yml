@@ -1,0 +1,109 @@
+name: Spedition Stage 2 recover existing artifacts
+
+on:
+  push:
+    paths:
+      - '.github/workflows/spedition-stage2-recover-existing-artifacts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild deterministic candidate universe
+        uses: actions/download-artifact@v4
+        with:
+          name: wko-spediteur-validated
+          path: wko_input
+          github-token: ${{ github.token }}
+          repository: ukrainebz1-arch/first-project
+          run-id: 33298295541
+      - name: Prepare same 32 chunks
+        run: |
+          rm -rf /tmp/stage2_input /tmp/stage2_results
+          python scripts/spedition_stage2_agent_prepare.py \
+            --wko wko_input/wko_spediteur_standorte.csv \
+            --core-targets data/spedition/contacts/targets.csv \
+            --output-dir /tmp/stage2_input \
+            --chunks 32
+          cat /tmp/stage2_input/manifest.json
+      - name: Download newest existing result artifact for every chunk
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, urllib.request, zipfile, io, time
+          repo=os.environ['REPO']; token=os.environ['GH_TOKEN']
+          headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}
+          arts=[]
+          for page in range(1,20):
+              u=f'https://api.github.com/repos/{repo}/actions/artifacts?per_page=100&page={page}'
+              req=urllib.request.Request(u,headers=headers)
+              with urllib.request.urlopen(req) as r: data=json.load(r)
+              batch=data.get('artifacts',[]); arts.extend(batch)
+              if len(batch)<100: break
+          wanted={f'spedition-stage2-agent-result-{i}':None for i in range(32)}
+          for a in sorted(arts,key=lambda x:x.get('created_at',''),reverse=True):
+              n=a.get('name')
+              if n in wanted and wanted[n] is None and not a.get('expired'):
+                  wanted[n]=a
+          inv=[]; out=pathlib.Path('/tmp/stage2_results'); out.mkdir(parents=True,exist_ok=True)
+          missing=[]
+          for i in range(32):
+              n=f'spedition-stage2-agent-result-{i}'; a=wanted[n]
+              if not a:
+                  missing.append(n); continue
+              inv.append({k:a.get(k) for k in ('id','name','created_at','updated_at','expired','size_in_bytes','workflow_run')})
+              req=urllib.request.Request(a['archive_download_url'],headers=headers)
+              with urllib.request.urlopen(req) as r: b=r.read()
+              z=zipfile.ZipFile(io.BytesIO(b))
+              names=z.namelist()
+              j=[x for x in names if x.endswith('.jsonl')]
+              if not j: raise SystemExit(f'No JSONL in {n}: {names}')
+              # Copy the JSONL to the deterministic chunk filename expected by merge.
+              data=z.read(j[0])
+              (out/f'chunk_{i:02d}.jsonl').write_bytes(data)
+          pathlib.Path('/tmp/artifact_inventory.json').write_text(json.dumps({'selected':inv,'missing':missing},indent=2),encoding='utf-8')
+          print(pathlib.Path('/tmp/artifact_inventory.json').read_text())
+          if missing: raise SystemExit('Missing existing artifacts: '+', '.join(missing))
+          PY
+      - name: Validate and merge existing results only
+        run: |
+          rm -rf data/spedition/stage2_agent_final/recovered_review
+          mkdir -p data/spedition/stage2_agent_final/recovered_review/raw
+          for i in $(seq 0 31); do
+            c=$(printf '%02d' "$i")
+            python scripts/spedition_stage2_agent_validate.py chunk \
+              --input-csv "/tmp/stage2_input/chunk_${c}.csv" \
+              --result-jsonl "/tmp/stage2_results/chunk_${c}.jsonl"
+          done
+          python scripts/spedition_stage2_agent_validate.py merge \
+            --candidate-csv /tmp/stage2_input/candidate_universe.csv \
+            --results-dir /tmp/stage2_results \
+            --output-dir data/spedition/stage2_agent_final/recovered_review
+          cp /tmp/stage2_input/manifest.json data/spedition/stage2_agent_final/recovered_review/input_manifest.json
+          cp /tmp/artifact_inventory.json data/spedition/stage2_agent_final/recovered_review/artifact_inventory.json
+          cp /tmp/stage2_results/*.jsonl data/spedition/stage2_agent_final/recovered_review/raw/
+      - name: Commit recovered aggregate to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/stage2_agent_final/recovered_review
+          git commit -m 'Recover completed Spedition Stage 2 agent checkpoints' || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
