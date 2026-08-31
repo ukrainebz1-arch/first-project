@@ -9,18 +9,17 @@ on:
 permissions:
   contents: read
   actions: read
+  models: read
 
 jobs:
   test-agent:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install Python research dependencies
-        run: pip install requests beautifulsoup4
       - name: Download Stage 2 checkpoint and make IWTH test input
         env:
           GH_TOKEN: ${{ github.token }}
@@ -34,27 +33,34 @@ jobs:
           rows=list(csv.DictReader(open('agent_input/candidate_universe.csv',encoding='utf-8-sig')))
           hit=[r for r in rows if r['group_key']=='domain:iwth.at']
           assert len(hit)==1
-          with open('agent_input/iwth.csv','w',encoding='utf-8-sig',newline='') as f:
-              w=csv.DictWriter(f,fieldnames=list(hit[0].keys()));w.writeheader();w.writerows(hit)
+          r=hit[0]
+          prompt=f'''You verify Austrian Steuerberatung company size. Return ONLY JSON with keys verdict, employee_low, employee_high, count_scope, confidence, note. Prior fields are hypotheses. Global/network headcount does not prove Austria. LinkedIn 11-50 alone does not prove 20+. Prefer UNRESOLVED over guessing. Company: {r['group_name']}. Website: {r.get('websites','')}. Prior status: {r.get('prior_status','')}. Prior evidence: {r.get('official_employee_evidence','')} | {r.get('search_employee_evidence','')} | {r.get('search_size_ranges','')} | team profiles={r.get('site_team_profiles','')} | team emails={r.get('site_team_emails','')}.'''
+          open('/tmp/prompt.txt','w',encoding='utf-8').write(prompt)
           PY
-      - name: Install Ollama and Qwen 1.7B
+      - name: Call GitHub Models
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          curl -fsSL https://ollama.com/install.sh | sh
-          pkill ollama || true
-          OLLAMA_CONTEXT_LENGTH=8192 nohup ollama serve >/tmp/ollama.log 2>&1 &
-          for i in {1..40}; do
-            curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break
-            sleep 1
-          done
-          ollama pull qwen3:1.7b
-      - name: Run local 1.7B agent and critic on IWTH
-        run: |
-          date -u +%s > /tmp/start
-          python scripts/accounting_stage2_local_agent_worker.py \
-            --input-csv agent_input/iwth.csv \
-            --output-jsonl test_out/iwth.jsonl \
-            --model qwen3:1.7b
-          echo "elapsed_seconds=$(( $(date -u +%s) - $(cat /tmp/start) ))"
-          cat test_out/iwth.jsonl
-      - name: Deterministic gate
-        run: python scripts/accounting_stage2_agent_validate.py chunk --input-csv agent_input/iwth.csv --result-jsonl test_out/iwth.jsonl
+          python - <<'PY'
+          import json, os, urllib.request
+          prompt=open('/tmp/prompt.txt',encoding='utf-8').read()
+          body=json.dumps({
+            'model':'openai/gpt-4o',
+            'messages':[{'role':'system','content':'You are a rigorous Austrian B2B research analyst. Return only valid JSON.'},{'role':'user','content':prompt}],
+            'temperature':0,
+            'max_tokens':500
+          }).encode()
+          req=urllib.request.Request('https://models.github.ai/inference/chat/completions',data=body,method='POST',headers={
+            'Authorization':'Bearer '+os.environ['GITHUB_TOKEN'],
+            'Content-Type':'application/json',
+            'Accept':'application/vnd.github+json'
+          })
+          with urllib.request.urlopen(req,timeout=60) as r:
+            data=json.load(r)
+          print(json.dumps(data,ensure_ascii=False,indent=2))
+          content=data['choices'][0]['message']['content']
+          json.loads(content)
+          open('test_out/github_models_iwth.json','w',encoding='utf-8').write(content)
+          PY
+      - name: Show result
+        run: cat test_out/github_models_iwth.json
