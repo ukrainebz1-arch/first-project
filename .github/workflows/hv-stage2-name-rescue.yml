@@ -1,0 +1,44 @@
+name: Hausverwaltung Stage2 housing-name rescue
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hv-stage2-name-rescue.yml'
+permissions:
+  contents: write
+jobs:
+  rescue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Extract likely housing operators
+        run: |
+          python - <<'PY'
+          import csv,re,os,unicodedata
+          src='data/hausverwaltung/size_strict_v2/size_screening_strict_v2.csv'
+          rows=list(csv.DictReader(open(src,encoding='utf-8-sig',newline='')))
+          pats=['gemeinn','siedlungs','wohnungsgenoss','wohnbau','bauvereinigung','wohnungsanlagen','wohnungsges','wohnungs-','wohngenoss','mietergenoss','heimbau','bau- und wohn','bau und wohn','wohnservice','liegenschaftsverwaltung','hausverwaltung']
+          out=[]
+          for r in rows:
+              if r.get('size_class_strict_v2')!='U_NOT_PROVEN': continue
+              n=(r.get('company_name') or '').lower()
+              hit=[p for p in pats if p in n]
+              if hit:
+                  out.append({'company_name':r.get('company_name',''),'website':r.get('website',''),'standort_count':r.get('wko_standort_count',''),'states_seen':r.get('states_seen',''),'name_signals':' | '.join(hit)})
+          os.makedirs('data/hausverwaltung/size_agent_first',exist_ok=True)
+          fields=['company_name','website','standort_count','states_seen','name_signals']
+          with open('data/hausverwaltung/size_agent_first/housing_name_rescue.tsv','w',encoding='utf-8') as f:
+              f.write('\t'.join(fields)+'\n')
+              for x in out:f.write('\t'.join(str(x[k]).replace('\t',' ').replace('\n',' ') for k in fields)+'\n')
+          print('RESCUE',len(out))
+          PY
+      - name: Persist
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first/housing_name_rescue.tsv
+          git commit -m 'Checkpoint Hausverwaltung housing-name rescue queue' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
