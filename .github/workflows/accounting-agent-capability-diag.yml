@@ -21,12 +21,12 @@ jobs:
           node-version: '22'
       - name: Install Copilot CLI
         run: npm install -g @github/copilot
-      - name: Test included model after quota exhaustion
+      - name: Test auto fallback after quota exhaustion
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          copilot -p "Use the task tool to launch one general-purpose subagent. The subagent must research IWTH Steuerberatung in Austria on the public web, open its official team page, and determine whether the official site supports at least 50 staff. After the subagent reports back, reply with exactly INCLUDED_SUBAGENT_WEB_OK if it successfully used web evidence; otherwise reply FAILED. Do not modify files or run shell commands." \
-            -s --no-ask-user --allow-all-urls --model gpt-4o \
+          copilot -p "Use the task tool to launch one general-purpose subagent. The subagent must research IWTH Steuerberatung in Austria on the public web, open its official team page, and determine whether the official site supports at least 50 staff. After the subagent reports back, reply with exactly AUTO_SUBAGENT_WEB_OK if it successfully used web evidence; otherwise reply FAILED. Do not modify files or run shell commands." \
+            -s --no-ask-user --allow-all-urls --model auto \
             --deny-tool='shell' --deny-tool='write' > /tmp/copilot.txt
           cat /tmp/copilot.txt
-          grep -q 'INCLUDED_SUBAGENT_WEB_OK' /tmp/copilot.txt
+          grep -q 'AUTO_SUBAGENT_WEB_OK' /tmp/copilot.txt
