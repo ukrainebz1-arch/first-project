@@ -62,4 +62,4 @@ jobs:
             data/hausverwaltung/stage4_contacts/README.md
           retention-days: 30
 
-# rerun marker: contact-priority audit passed for Rosenberger mobile promotion
+# rerun marker: phone-deep audit applied on 2026-08-31
