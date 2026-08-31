@@ -1,0 +1,15 @@
+{
+  "expected": 173,
+  "seen": 173,
+  "valid": 173,
+  "missing": 0,
+  "invalid": 0,
+  "ownership_types": {
+    "PARTNER_OWNED": 91,
+    "UNRESOLVED": 73,
+    "INDIVIDUAL_FAMILY_CONTROL": 8,
+    "CORPORATE_GROUP": 1
+  },
+  "missing_keys": [],
+  "errors": []
+}

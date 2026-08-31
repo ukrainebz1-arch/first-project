@@ -1,0 +1,370 @@
+{
+  "input_audited_groups": 823,
+  "economic_groups": 757,
+  "merged_groups_removed": 66,
+  "merged_components": 56,
+  "confirmed_economic_targets": 171,
+  "likely_economic_targets": 267,
+  "merge_domains": [
+    {
+      "domain": "accurata.at",
+      "a": "domain:accurata.at",
+      "b": "domain:acura.at"
+    },
+    {
+      "domain": "artus.at",
+      "a": "domain:artus.at",
+      "b": "domain:wegenstein-partner.at"
+    },
+    {
+      "domain": "eca-klagenfurt.at",
+      "a": "domain:eca-klagenfurt.at",
+      "b": "domain:eca-kp.at"
+    },
+    {
+      "domain": "amp1.at",
+      "a": "domain:amp1.at",
+      "b": "domain:eca-leoben.at"
+    },
+    {
+      "domain": "stauder-kempf-partner.at",
+      "a": "domain:stauder-kempf-partner.at",
+      "b": "domain:stauder-schuchter-kempf.at"
+    },
+    {
+      "domain": "nwt.at",
+      "a": "domain:nwt.at",
+      "b": "domain:prosenz.at"
+    },
+    {
+      "domain": "stingl.com",
+      "a": "domain:stingl.com",
+      "b": "domain:tax-point.at"
+    },
+    {
+      "domain": "stb-pilwachs.com",
+      "a": "domain:citytax.at",
+      "b": "domain:stb-pilwachs.com"
+    },
+    {
+      "domain": "stauder-schuchter-kempf.at",
+      "a": "domain:bdo.at",
+      "b": "domain:stauder-schuchter-kempf.at"
+    },
+    {
+      "domain": "kanzlei-haas.at",
+      "a": "domain:kanzlei-haas.at",
+      "b": "domain:steuerviertel.at"
+    },
+    {
+      "domain": "steuerviertel.at",
+      "a": "domain:kanzlei-haas.at",
+      "b": "domain:steuerviertel.at"
+    },
+    {
+      "domain": "zobl-bauer.at",
+      "a": "domain:audit-salzburg.at",
+      "b": "domain:zobl-bauer.at"
+    },
+    {
+      "domain": "steuer-service.at",
+      "a": "domain:bbw-wp.at",
+      "b": "domain:steuer-service.at"
+    },
+    {
+      "domain": "beco.at",
+      "a": "domain:beco,at",
+      "b": "domain:beco.at"
+    },
+    {
+      "domain": "grossek.at",
+      "a": "domain:bgundp.com",
+      "b": "domain:grossek.at"
+    },
+    {
+      "domain": "tu-eisenstadt.at",
+      "a": "domain:treuhand-union.com",
+      "b": "domain:tu-eisenstadt.at"
+    },
+    {
+      "domain": "countit.at",
+      "a": "domain:countit.at",
+      "b": "domain:gsp.at"
+    },
+    {
+      "domain": "kindt.at",
+      "a": "domain:countit.at",
+      "b": "domain:kindt.at"
+    },
+    {
+      "domain": "reisinger-kornprat.at",
+      "a": "domain:reisinger-kornprat.at",
+      "b": "domain:reisinger.at"
+    },
+    {
+      "domain": "reisinger.at",
+      "a": "domain:reisinger-kornprat.at",
+      "b": "domain:reisinger.at"
+    },
+    {
+      "domain": "eca-altenmarkt.at",
+      "a": "domain:eca-altenmarkt.at",
+      "b": "domain:prodinger.at"
+    },
+    {
+      "domain": "innsbruck.eca.at",
+      "a": "domain:innsbruck.eca.at",
+      "b": "domain:thp-kanzlei.at"
+    },
+    {
+      "domain": "eca-pichler.at",
+      "a": "domain:eca-pichler.at",
+      "b": "domain:prodinger.at"
+    },
+    {
+      "domain": "fusseis.at",
+      "a": "domain:fusseis.at",
+      "b": "domain:wwww.pogacar.at"
+    },
+    {
+      "domain": "steuerservice.at",
+      "a": "domain:steuerservice.at",
+      "b": "domain:steuerviertel.at"
+    },
+    {
+      "domain": "grantthornton.at",
+      "a": "domain:grantthornton.at",
+      "b": "domain:grantthornton.com"
+    },
+    {
+      "domain": "medplan.at",
+      "a": "domain:huebner.at",
+      "b": "domain:medplan.at"
+    },
+    {
+      "domain": "priklopil.at",
+      "a": "domain:priklopil.at",
+      "b": "domain:steuerplusrecht.at"
+    },
+    {
+      "domain": "kth.at",
+      "a": "domain:freshtax.at",
+      "b": "domain:kth.at"
+    },
+    {
+      "domain": "leitnerleitner.com",
+      "a": "domain:ey.com",
+      "b": "domain:leitnerleitner.com"
+    },
+    {
+      "domain": "app-tax.at",
+      "a": "domain:app-tax.at",
+      "b": "domain:poeschl-partner.at"
+    },
+    {
+      "domain": "rauch-steuerberatung.at",
+      "a": "domain:rauch-steuerberatung.at",
+      "b": "domain:tyrodat.at"
+    },
+    {
+      "domain": "meindl.at",
+      "a": "domain:amp1.at",
+      "b": "domain:meindl.at"
+    },
+    {
+      "domain": "gerstgrasser.at",
+      "a": "domain:bdo.at",
+      "b": "domain:gerstgrasser.at"
+    },
+    {
+      "domain": "coneo.at",
+      "a": "domain:coneo.at",
+      "b": "domain:confida.at"
+    },
+    {
+      "domain": "salzburg.aerzte-steuerberatung.at",
+      "a": "domain:aerzte-steuerberatung.at",
+      "b": "domain:salzburg.aerzte-steuerberatung.at"
+    },
+    {
+      "domain": "http",
+      "a": "domain:http",
+      "b": "domain:rplusp.at"
+    },
+    {
+      "domain": "woeber.at",
+      "a": "domain:woeber-dirmhirn.at",
+      "b": "domain:woeber.at"
+    },
+    {
+      "domain": "bup.at",
+      "a": "domain:baldinger-partner.at",
+      "b": "domain:bup.at"
+    },
+    {
+      "domain": "baldinger-partner.at",
+      "a": "domain:baldinger-partner.at",
+      "b": "domain:bup.at"
+    },
+    {
+      "domain": "erharter.at",
+      "a": "domain:erharter.at",
+      "b": "domain:hlbintercontrol.at"
+    },
+    {
+      "domain": "wt-kelemen.at",
+      "a": "domain:fidas.at",
+      "b": "domain:wt-kelemen.at"
+    },
+    {
+      "domain": "forvismazars.com",
+      "a": "domain:forvismazars.com",
+      "b": "domain:mazars.at"
+    },
+    {
+      "domain": "msct.at",
+      "a": "domain:forvismazars.com",
+      "b": "domain:msct.at"
+    },
+    {
+      "domain": "steuerklar.at",
+      "a": "domain:fa-steuerberatung.at",
+      "b": "domain:steuerklar.at"
+    },
+    {
+      "domain": "bf-consulting.at",
+      "a": "domain:bakertillyaustria.at",
+      "b": "domain:bf-consulting.at"
+    },
+    {
+      "domain": "geyer.at",
+      "a": "domain:geyer.at",
+      "b": "domain:hew.at"
+    },
+    {
+      "domain": "moorestephens-kroiss.at",
+      "a": "domain:moorestephens-kroiss.at",
+      "b": "domain:moorestephens.at"
+    },
+    {
+      "domain": "hlbintercontrol.at",
+      "a": "domain:hlb.at",
+      "b": "domain:hlbintercontrol.at"
+    },
+    {
+      "domain": "hfp.at",
+      "a": "domain:hfp.at",
+      "b": "domain:hlbintercontrol.at"
+    },
+    {
+      "domain": "hlb.at",
+      "a": "domain:hlb.at",
+      "b": "domain:hlbintercontrol.at"
+    },
+    {
+      "domain": "lowtax.at",
+      "a": "domain:illmerpartner.at",
+      "b": "domain:lowtax.at"
+    },
+    {
+      "domain": "bubla.at",
+      "a": "domain:bubla.at",
+      "b": "domain:klaudia-strasser.at"
+    },
+    {
+      "domain": "moore-wels.at",
+      "a": "domain:economy.co.at",
+      "b": "domain:moore-wels.at"
+    },
+    {
+      "domain": "niedermayer.co.at",
+      "a": "domain:denk-ferdin.at",
+      "b": "domain:niedermayer.co.at"
+    },
+    {
+      "domain": "pfister.co.at",
+      "a": "domain:pfister.co.at",
+      "b": "domain:pfister.col.at"
+    },
+    {
+      "domain": "pkf-roesslhuber.at",
+      "a": "domain:pkf-roesslhuber.at",
+      "b": "domain:wals-treuhand.eu"
+    },
+    {
+      "domain": "boehm-partner.co.at",
+      "a": "domain:boehm-partner.co.at",
+      "b": "domain:poettinger-partner.at"
+    },
+    {
+      "domain": "raml-partner.at",
+      "a": "domain:medi-tax.at",
+      "b": "domain:raml-partner.at"
+    },
+    {
+      "domain": "stwt.at",
+      "a": "domain:steirische-wt.at",
+      "b": "domain:stwt.at"
+    },
+    {
+      "domain": "styricon.at",
+      "a": "domain:steirische-wt.at",
+      "b": "domain:styricon.at"
+    },
+    {
+      "domain": "tischbein.at",
+      "a": "domain:bgr-steuerberater.at",
+      "b": "domain:tischbein.at"
+    },
+    {
+      "domain": "tpa-group.com",
+      "a": "domain:tpa-group.at",
+      "b": "domain:tpa-group.com"
+    },
+    {
+      "domain": "crowe-vanas.at",
+      "a": "domain:crowe-vanas.at",
+      "b": "domain:virteos.at"
+    },
+    {
+      "domain": "zangrando.at",
+      "a": "domain:jaklitsch.at",
+      "b": "domain:zangrando.at"
+    },
+    {
+      "domain": "communitas.at",
+      "a": "domain:communitas.at",
+      "b": "domain:kanzlei-heinrich.at"
+    },
+    {
+      "domain": "eospartner.at",
+      "a": "domain:eospartner.at",
+      "b": "domain:europatreuhand.at"
+    },
+    {
+      "domain": "europatreuhand.at",
+      "a": "domain:eospartner.at",
+      "b": "domain:europatreuhand.at"
+    },
+    {
+      "domain": "gct.at",
+      "a": "domain:gct-beratungszentrum.at",
+      "b": "domain:gct.at"
+    },
+    {
+      "domain": "gct-beratungszentrum.at",
+      "a": "domain:gct-beratungszentrum.at",
+      "b": "domain:gct.at"
+    },
+    {
+      "domain": "erfolg-steuern.at",
+      "a": "domain:erfolg-steuern.at",
+      "b": "domain:steuerberatung-glawischnig.at"
+    },
+    {
+      "domain": "mcberatungsgruppe.com",
+      "a": "domain:mcberatungsgruppe.com",
+      "b": "domain:mctax.at"
+    }
+  ]
+}

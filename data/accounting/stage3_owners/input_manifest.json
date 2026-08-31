@@ -1,0 +1,29 @@
+{
+  "targets": 173,
+  "confirmed": 173,
+  "likely": 0,
+  "source_counts": {
+    "ksw_confirmed": 171,
+    "ksw_likely": 0,
+    "wko_supplement": 2
+  },
+  "chunks": 16,
+  "chunk_sizes": [
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    11,
+    10,
+    10,
+    10
+  ]
+}

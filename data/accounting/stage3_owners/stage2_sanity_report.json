@@ -1,0 +1,719 @@
+{
+  "economic_groups": 757,
+  "confirmed_30_plus": 102,
+  "confirmed_20_plus_total": 171,
+  "likely_20_plus": 267,
+  "suspicious_high_counts": [
+    {
+      "group_key": "domain:steuerberatung-huber.at",
+      "name": "Huber & Huber Steuerberatungs und Wirtschaftsprüfungs GmbH",
+      "employee_low": 3000,
+      "reason": "very_high_count_non_big4_or_lbg"
+    },
+    {
+      "group_key": "entity:huber hoeller steuerberatungs og",
+      "name": "Huber & Höller Steuerberatungs OG",
+      "employee_low": 3000,
+      "reason": "very_high_count_non_big4_or_lbg"
+    },
+    {
+      "group_key": "domain:hr-steuerberatung.at",
+      "name": "Huber & Rosenthal Steuerberatung KG",
+      "employee_low": 3000,
+      "reason": "very_high_count_non_big4_or_lbg"
+    },
+    {
+      "group_key": "domain:huber-stodolak.at",
+      "name": "Huber & Stodolak-Tengg Wirtschaftsprüfungs- und Steuerberatungsgesellschaft m.b.H.",
+      "employee_low": 3000,
+      "reason": "very_high_count_non_big4_or_lbg"
+    }
+  ],
+  "known_firm_checks": [
+    {
+      "term": "ARTUS",
+      "matches": [
+        {
+          "name": "ARTUS Steuerberatung GmbH",
+          "verdict": "CONFIRMED_20_PLUS",
+          "low": "21"
+        }
+      ]
+    },
+    {
+      "term": "RTG",
+      "matches": [
+        {
+          "name": "MOORE RTG Wirtschaftsprüfung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "40"
+        },
+        {
+          "name": "RTG Kleinwalsertal Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "40"
+        },
+        {
+          "name": "RTG Zettinig Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "40"
+        },
+        {
+          "name": "MOORE RTG Wirtschaftsprüfung GmbH & Co KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "RTG Services GmbH Steuerberatung",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "KPS",
+      "matches": [
+        {
+          "name": "KPS Wirtschaftsprüfung & Sachverständigen GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "60"
+        }
+      ]
+    },
+    {
+      "term": "CONTAX",
+      "matches": [
+        {
+          "name": "CONTAX Wirtschaftstreuhandgesellschaft mbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "ECOVIS",
+      "matches": [
+        {
+          "name": "DG Wirtschaftsprüfungs- und Steuerberatungsgesellschaft m.b.H.",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "ECOVIS Austria Wirtschaftsprüfungs- und Steuerberatungsgesellschaft m.b.H.",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "ECOVIS Niederösterreich Steuerberatungsgesellschaft mbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "L & G Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Gneist",
+      "matches": [
+        {
+          "name": "Gneist Consulting Team Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "RSM",
+      "matches": [
+        {
+          "name": "RSM Austria Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "45"
+        }
+      ]
+    },
+    {
+      "term": "Steuer & Service",
+      "matches": [
+        {
+          "name": "BBW Wirtschaftsprüfungs- und Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "50"
+        }
+      ]
+    },
+    {
+      "term": "Schweitzer",
+      "matches": [
+        {
+          "name": "Schweitzer + Partner Steuerberatungsges.m.b.H.",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "Steuerviertel",
+      "matches": [
+        {
+          "name": "Steuerviertel Steuerberatungs GmbH & Co KG",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "70"
+        }
+      ]
+    },
+    {
+      "term": "Accurata",
+      "matches": [
+        {
+          "name": "ACCURATA Wirtschaftsprüfung GmbH",
+          "verdict": "CONFIRMED_20_PLUS",
+          "low": "25"
+        },
+        {
+          "name": "ACCURATA advice Wirtschaftsprüfung und Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Geyer",
+      "matches": [
+        {
+          "name": "GEYER & GEYER Wirtschaftstreuhand GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "HEW",
+      "matches": [
+        {
+          "name": "GEYER & GEYER Wirtschaftstreuhand GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Nintschew & Partner Steuer- und Wirtschaftsberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Nintschew & Partner Steuer- und Wirtschaftsberatung GmbH & Co KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Nintschew FlexCo",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "FP Steuer",
+      "matches": [
+        {
+          "name": "Erharter Wirtschaftstreuhand SteuerberatungsgmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "fp steuerberatung gmbh & co kg",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "AWT",
+      "matches": [
+        {
+          "name": "AWT TreuhandPartner Steuerberater GmbH & Co KG",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "Gerstgrasser",
+      "matches": [
+        {
+          "name": "GERSTGRASSER Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "GSV",
+      "matches": [
+        {
+          "name": "NWT Wirtschaftsprüfung & Steuerberatung GmbH",
+          "verdict": "CONFIRMED_20_PLUS",
+          "low": "28"
+        },
+        {
+          "name": "Corax Steuerberatung und Beteiligungsverwaltung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "GSV Tax Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Keplinger Beteiligungsverwaltungs- und Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "S&K GSV Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Writzmann",
+      "matches": [
+        {
+          "name": "Writzmann & Partner GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "EOS",
+      "matches": [
+        {
+          "name": "Pichler Wirtschaftsprüfung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "KMB",
+      "matches": [
+        {
+          "name": "KMB Steuerberatung Frummel & Partner GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "KMB Steuerberatung Rudorfer & Partner GmbH & Co KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "zobl",
+      "matches": [
+        {
+          "name": "zobl.bauer. St. Johann Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "180"
+        }
+      ]
+    },
+    {
+      "term": "Prodinger",
+      "matches": [
+        {
+          "name": "ECA CGV Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "36"
+        },
+        {
+          "name": "Mag. Lukas Prodinger Steuerberatungs-KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "APP",
+      "matches": [
+        {
+          "name": "NiWo Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "34"
+        },
+        {
+          "name": "Gratt Sappl Steuerberatung GmbH",
+          "verdict": "CONFIRMED_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "CtC Cappel Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Kappler Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Kappler Wagner Hohenwallner & Partner Steuerberatungs-OG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Knapp-Consult Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "FUSSEIS",
+      "matches": [
+        {
+          "name": "FUSSEIS Wirtschaftsprüfungs- und Steuerberatungsgesellschaft m.b.H.",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "65"
+        }
+      ]
+    },
+    {
+      "term": "Grazer Treuhand",
+      "matches": [
+        {
+          "name": "Grazer Treuhand Steuerberatung GmbH & Partner KG",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "Schneider",
+      "matches": [
+        {
+          "name": "Schneider & Partner Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Schneider Consulting Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Schneider Wirtschaftsprüfung und Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "SchneideR'S Steuerberatungs-KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "LLP",
+      "matches": [
+        {
+          "name": "LLP Wirtschaftsprüfung und Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Pfeiffer Hiebl",
+      "matches": [
+        {
+          "name": "Pfeiffer Hiebl Steuerberatungs GmbH & Co KG",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "142"
+        },
+        {
+          "name": "Pfeiffer Hiebl Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Gaun",
+      "matches": [
+        {
+          "name": "Gaun Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "MOORE",
+      "matches": [
+        {
+          "name": "BG&P Holding GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "80"
+        },
+        {
+          "name": "MOORE RTG Wirtschaftsprüfung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "40"
+        },
+        {
+          "name": "Treuhand HG 8 Wirtschaftsprüfungs GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "30"
+        },
+        {
+          "name": "WS Wirtschaftsprüfungs- und Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_20_PLUS",
+          "low": "28"
+        },
+        {
+          "name": "GHR Wirtschaftsprüfung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "MOORE connect Steuerberatung Wirtschaftsmediation GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "Raml",
+      "matches": [
+        {
+          "name": "Raml und Partner Steuerberatung Rohrbach GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    },
+    {
+      "term": "LBG",
+      "matches": [
+        {
+          "name": "LBG Niederösterreich Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "600"
+        }
+      ]
+    },
+    {
+      "term": "TPA",
+      "matches": [
+        {
+          "name": "TPA Regio Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Leonhart TPA Steuerberatung GmbH & Co KG",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "TPA Gmünd Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "EY",
+      "matches": [
+        {
+          "name": "GEYER & GEYER Wirtschaftstreuhand GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "GRWT-Wirtschaftsprüfung und Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Beyreuther & Sobotka Wirtschaftstreuhandgesellschaft m.b.H.",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Breyner Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Eybl Steuerberatungs GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "KEY-TAX Wirtschaftstreuhand GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Ernst & Young",
+      "matches": [
+        {
+          "name": "LeitnerLeitner GmbH Wirtschaftsprüfer und Steuerberater",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "138"
+        },
+        {
+          "name": "Ernst & Young Steuerberatungsgesellschaft AnteilsverwaltungsgmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Ernst & Young Wirtschaftsprüfungsgesellschaft AnteilsverwaltungsgmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "KPMG",
+      "matches": [
+        {
+          "name": "KPMG Austria GmbH Wirtschaftsprüfungs- und Steuerberatungsgesellschaft",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "KPMG Burgenland Wirtschaftstreuhand GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Fidas",
+      "matches": [
+        {
+          "name": "Assl Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Fidas Graz Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "UB Steuerberatung GmbH",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        },
+        {
+          "name": "Fidas Klagenfurt Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Fidas Süd Steuerberatung GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        },
+        {
+          "name": "Fidas Wien Steuerberatung, Consulting GmbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "COUNT IT",
+      "matches": [
+        {
+          "name": "gsp Steuerberatung GmbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        }
+      ]
+    },
+    {
+      "term": "HGC",
+      "matches": []
+    },
+    {
+      "term": "RKP",
+      "matches": [
+        {
+          "name": "RKP Steuerberatungsgesellschaft m.b.H.",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "30"
+        }
+      ]
+    },
+    {
+      "term": "KRW",
+      "matches": [
+        {
+          "name": "KRW Dr. Klinger & Partner Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Innsbruck Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Linz Maaß Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Wien Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Graz Steuerberatungsgesellschaft mbH",
+          "verdict": "UNRESOLVED",
+          "low": ""
+        }
+      ]
+    },
+    {
+      "term": "Klinger",
+      "matches": [
+        {
+          "name": "KRW Dr. Klinger & Partner Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "KRW Wien Steuerberatungsgesellschaft mbH",
+          "verdict": "CONFIRMED_30_PLUS",
+          "low": "200"
+        },
+        {
+          "name": "curans Ärzte-Steuerberatung KG",
+          "verdict": "LIKELY_20_PLUS",
+          "low": "20"
+        }
+      ]
+    }
+  ],
+  "gate_ok": true
+}
