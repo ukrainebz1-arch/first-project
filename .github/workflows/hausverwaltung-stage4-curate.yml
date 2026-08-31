@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/hausverwaltung-stage4-curate.yml'
+      - 'scripts/hausverwaltung_stage4_postcurate_fixes.py'
   workflow_dispatch:
 
 concurrency:
@@ -44,7 +45,11 @@ jobs:
           pmv=next(r for r in rows if r['no']=='20')
           assert pmv['override_personal_email']=='f.hoermann@pmv.at'
           assert pmv['override_email_verified']=='yes'
-          print('rows=99 manual_reviewed=99 PMV_fix=ok')
+          ros=next(r for r in rows if r['no']=='13')
+          assert ros['override_direct_phone']=='+436765227103'
+          assert ros['override_phone_type']=='A_MOBILE_PUBLIC'
+          assert ros['override_phone_verified']=='yes'
+          print('rows=99 manual_reviewed=99 PMV_fix=ok Rosenberger_mobile_priority=ok')
           PY
       - name: Persist curated review to main
         run: |
