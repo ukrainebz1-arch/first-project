@@ -1,0 +1,59 @@
+name: Hausverwaltung Stage 3 compact targets
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hausverwaltung-stage3-compact-targets.yml'
+  workflow_dispatch:
+
+jobs:
+  compact:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build compact target ledger
+        run: |
+          python - <<'PY'
+          import csv, os, json
+          src='data/hausverwaltung/stage3_owners_auto/targets.csv'
+          rows=list(csv.DictReader(open(src,encoding='utf-8-sig')))
+          os.makedirs('data/hausverwaltung/stage3_work',exist_ok=True)
+          fields=['no','company_name','group_name','group_key','website','wko_url','process_fit_class','size_class']
+          out=[]
+          for i,r in enumerate(rows,1):
+              out.append({
+                  'no':i,
+                  'company_name':r.get('company_name',''),
+                  'group_name':r.get('group_name',''),
+                  'group_key':r.get('group_key',''),
+                  'website':(r.get('websites','') or '').split(' | ')[0],
+                  'wko_url':r.get('wko_url',''),
+                  'process_fit_class':r.get('process_fit_class',''),
+                  'size_class':r.get('size_class',''),
+              })
+          with open('data/hausverwaltung/stage3_work/main_targets_compact.tsv','w',encoding='utf-8',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,delimiter='\t'); w.writeheader(); w.writerows(out)
+          secondary=[
+            'APCOA Austria GmbH','Erste Group Immorent GmbH','Salinen Immobilien Gesellschaft m.b.H.',
+            'Bank Austria Real Invest Asset Management GmbH','Reinberg & Partner Immobilienberatung GmbH',
+            'UBM Development AG','WEGRAZ Gesellschaft für Stadterneuerung und Assanierung m.b.H.',
+            'Wohnraumwerk Bauträger- und Projektentwicklungs GmbH','Oberbank Infrastruktur Management GmbH']
+          with open('data/hausverwaltung/stage3_work/secondary_targets.txt','w',encoding='utf-8') as f:
+              f.write('\n'.join(secondary)+'\n')
+          json.dump({'main':len(out),'secondary':len(secondary),'all_opportunities':len(out)+len(secondary)},open('data/hausverwaltung/stage3_work/manifest.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          PY
+      - name: Persist compact ledger
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage3_work
+          git commit -m 'Persist Hausverwaltung Stage 3 compact target ledger' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
