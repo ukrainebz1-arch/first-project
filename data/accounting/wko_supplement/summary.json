@@ -2,6 +2,7 @@
   "reaudited": 25,
   "confirmed": 2,
   "likely": 0,
-  "not_relevant_false_positives": 12,
-  "unresolved_relevant": 11
+  "not_relevant_false_positives": 10,
+  "unresolved_relevant": 13,
+  "regulatory_headcount_blocked": 0
 }
