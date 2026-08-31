@@ -1,0 +1,72 @@
+{
+  "generated_at_utc": "2026-08-30T07:26:07.343024+00:00",
+  "validated_state_parts": 9,
+  "raw_state_rows": 1948,
+  "sum_wko_live_totals": 1948,
+  "unique_wko_firmaids": 1948,
+  "states": [
+    {
+      "state": "burgenland",
+      "wko_live_total": 42,
+      "collected": 42,
+      "rounds": 4,
+      "url": "https://firmen.wko.at/immobilienverwalter/burgenland/"
+    },
+    {
+      "state": "kärnten",
+      "wko_live_total": 104,
+      "collected": 104,
+      "rounds": 10,
+      "url": "https://firmen.wko.at/immobilienverwalter/k%C3%A4rnten/"
+    },
+    {
+      "state": "niederösterreich",
+      "wko_live_total": 235,
+      "collected": 235,
+      "rounds": 23,
+      "url": "https://firmen.wko.at/immobilienverwalter/nieder%C3%B6sterreich/"
+    },
+    {
+      "state": "oberösterreich",
+      "wko_live_total": 165,
+      "collected": 165,
+      "rounds": 16,
+      "url": "https://firmen.wko.at/immobilienverwalter/ober%C3%B6sterreich/"
+    },
+    {
+      "state": "salzburg",
+      "wko_live_total": 130,
+      "collected": 130,
+      "rounds": 12,
+      "url": "https://firmen.wko.at/immobilienverwalter/salzburg/"
+    },
+    {
+      "state": "steiermark",
+      "wko_live_total": 262,
+      "collected": 262,
+      "rounds": 26,
+      "url": "https://firmen.wko.at/immobilienverwalter/steiermark/"
+    },
+    {
+      "state": "tirol",
+      "wko_live_total": 168,
+      "collected": 168,
+      "rounds": 16,
+      "url": "https://firmen.wko.at/immobilienverwalter/tirol/"
+    },
+    {
+      "state": "vorarlberg",
+      "wko_live_total": 75,
+      "collected": 75,
+      "rounds": 7,
+      "url": "https://firmen.wko.at/immobilienverwalter/vorarlberg/"
+    },
+    {
+      "state": "wien",
+      "wko_live_total": 767,
+      "collected": 767,
+      "rounds": 76,
+      "url": "https://firmen.wko.at/immobilienverwalter/wien/"
+    }
+  ]
+}
