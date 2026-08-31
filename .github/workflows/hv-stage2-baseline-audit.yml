@@ -1,0 +1,35 @@
+name: Audit Hausverwaltung Stage2 unresolved baseline
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/hv-stage2-baseline-audit.yml'
+permissions:
+  contents: write
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: |
+          python - <<'PY'
+          import csv
+          p='data/hausverwaltung/size_agent_first/size_agent_first_final_2026-08-31.csv'
+          rows=list(csv.DictReader(open(p,encoding='utf-8-sig',newline='')))
+          bad=[r for r in rows if r.get('sales_include')=='yes' and r.get('decision_reason')=='baseline strict signal retained unless agent override']
+          flds=['company_name','size_class_strict_v2','agent_class','website']
+          with open('data/hausverwaltung/size_agent_first/unresolved_core_baseline.tsv','w',encoding='utf-8') as f:
+            f.write('\t'.join(flds)+'\n')
+            for r in bad:f.write('\t'.join((r.get(k,'') or '').replace('\t',' ') for k in flds)+'\n')
+          print('UNRESOLVED_CORE',len(bad))
+          for r in bad: print(r['company_name'],r['size_class_strict_v2'],r['agent_class'])
+          PY
+      - run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_agent_first/unresolved_core_baseline.tsv
+          git commit -m 'Audit unresolved Hausverwaltung Stage2 core baselines' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
