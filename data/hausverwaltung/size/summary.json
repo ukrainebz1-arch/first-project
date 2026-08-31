@@ -1,0 +1,17 @@
+{
+  "generated_at_utc": "2026-08-31T07:53:34.277655+00:00",
+  "pipeline_stage": "Stage 2 automated size screening",
+  "companies_screened": 1780,
+  "class_counts_preliminary": {
+    "A_TARGET_30_PLUS": 143,
+    "B_LIKELY_30_PLUS_GROUP": 14,
+    "C_BORDERLINE_20_30": 210,
+    "U_NOT_PROVEN": 1413
+  },
+  "karriere_profiles_matched": 1423,
+  "karriere_employee_ranges": 1090,
+  "companies_with_website_employee_mentions": 36,
+  "companies_with_wko_employee_mentions": 7,
+  "manual_review_queue": 367,
+  "note": "Preliminary only. Final A/B/C classification requires Spedition-style manual verification of entity-vs-group evidence and non-core/adjacent status."
+}
