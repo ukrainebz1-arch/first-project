@@ -13,7 +13,7 @@ permissions:
 jobs:
   test-agent:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -41,13 +41,13 @@ jobs:
         run: |
           curl -fsSL https://ollama.com/install.sh | sh
           pkill ollama || true
-          OLLAMA_CONTEXT_LENGTH=16384 nohup ollama serve >/tmp/ollama.log 2>&1 &
+          OLLAMA_CONTEXT_LENGTH=8192 nohup ollama serve >/tmp/ollama.log 2>&1 &
           for i in {1..40}; do
             curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break
             sleep 1
           done
           ollama pull qwen3:4b-instruct
-      - name: Run local research agent on IWTH
+      - name: Run optimized local research agent on IWTH
         run: |
           python scripts/accounting_stage2_local_agent_worker.py \
             --input-csv agent_input/iwth.csv \
