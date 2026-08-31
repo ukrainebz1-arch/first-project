@@ -1,0 +1,61 @@
+﻿pipeline_version,no,company,person,query_family,query,search_result_count,pages_fetched,evidence_hits,status,checked_at
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q01_NAME_PHONE,"""Andreas Fluckinger"" Telefon",8,5,0,DONE,2026-08-31T07:06:45.007417+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q02_NAME_MOBILE,"""Andreas Fluckinger"" Mobil OR Handy OR Durchwahl",8,5,0,DONE,2026-08-31T07:06:45.401917+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q03_NAME_EMAIL,"""Andreas Fluckinger"" E-Mail OR email",8,5,0,DONE,2026-08-31T07:06:45.788822+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q04_COMPANY_PHONE,"""Andreas Fluckinger"" ""Fluckinger Transport"" Telefon",8,5,0,DONE,2026-08-31T07:06:46.179181+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q05_PDF,"""Andreas Fluckinger"" filetype:pdf Telefon OR E-Mail",8,5,0,DONE,2026-08-31T07:06:46.618504+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q06_ASSOCIATION,"""Andreas Fluckinger"" Verband OR Verein OR Logistik OR Spedition",8,5,0,DONE,2026-08-31T07:06:47.051138+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q07_EVENT,"""Andreas Fluckinger"" Konferenz OR Kongress OR Vortrag OR Messe OR Speaker",8,5,0,DONE,2026-08-31T07:06:47.512397+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q08_JOB,"""Andreas Fluckinger"" Karriere OR Stellenanzeige OR Ansprechpartner OR jobs",8,5,0,DONE,2026-08-31T07:06:47.956931+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q09_PRESS,"""Andreas Fluckinger"" Presse OR News OR Interview OR Presseaussendung",8,5,0,DONE,2026-08-31T07:06:48.386366+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q10_DIRECTORY,"""Andreas Fluckinger"" FirmenABC OR WKO OR Herold OR Firmenatlas",8,5,0,DONE,2026-08-31T07:06:48.823042+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q11_TENDER,"""Andreas Fluckinger"" Ausschreibung OR Vergabe OR tender OR procurement",8,5,0,DONE,2026-08-31T07:06:49.241577+00:00
+v2.1,23,Fluckinger Transport GmbH,Andreas Fluckinger,Q12_PARTNER,"""Andreas Fluckinger"" Partner OR Referenz OR case study OR Kunde",8,5,0,DONE,2026-08-31T07:06:49.705503+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q01_NAME_PHONE,"""Lukas Herzog"" Telefon",8,5,0,DONE,2026-08-31T07:06:52.066254+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q02_NAME_MOBILE,"""Lukas Herzog"" Mobil OR Handy OR Durchwahl",8,3,0,DONE,2026-08-31T07:06:57.531642+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q03_NAME_EMAIL,"""Lukas Herzog"" E-Mail OR email",8,5,0,DONE,2026-08-31T07:06:57.911050+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q04_COMPANY_PHONE,"""Lukas Herzog"" ""Friedrich Göbhart Gesellschaft m.b.H"" Telefon",8,5,0,DONE,2026-08-31T07:06:58.330868+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q05_PDF,"""Lukas Herzog"" filetype:pdf Telefon OR E-Mail",8,5,0,DONE,2026-08-31T07:06:58.755864+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q06_ASSOCIATION,"""Lukas Herzog"" Verband OR Verein OR Logistik OR Spedition",8,5,0,DONE,2026-08-31T07:06:59.157010+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q07_EVENT,"""Lukas Herzog"" Konferenz OR Kongress OR Vortrag OR Messe OR Speaker",8,5,0,DONE,2026-08-31T07:06:59.558061+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q08_JOB,"""Lukas Herzog"" Karriere OR Stellenanzeige OR Ansprechpartner OR jobs",8,5,0,DONE,2026-08-31T07:06:59.975664+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q09_PRESS,"""Lukas Herzog"" Presse OR News OR Interview OR Presseaussendung",8,5,0,DONE,2026-08-31T07:07:00.380450+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q10_DIRECTORY,"""Lukas Herzog"" FirmenABC OR WKO OR Herold OR Firmenatlas",8,5,0,DONE,2026-08-31T07:07:00.811971+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q11_TENDER,"""Lukas Herzog"" Ausschreibung OR Vergabe OR tender OR procurement",8,5,0,DONE,2026-08-31T07:07:01.243593+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Lukas Herzog,Q12_PARTNER,"""Lukas Herzog"" Partner OR Referenz OR case study OR Kunde",8,5,0,DONE,2026-08-31T07:07:01.704675+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q01_NAME_PHONE,"""Gerhard Prossinger"" Telefon",8,3,0,DONE,2026-08-31T07:07:23.634396+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q02_NAME_MOBILE,"""Gerhard Prossinger"" Mobil OR Handy OR Durchwahl",8,3,0,DONE,2026-08-31T07:07:25.595348+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q03_NAME_EMAIL,"""Gerhard Prossinger"" E-Mail OR email",8,0,0,DONE,2026-08-31T07:08:16.640763+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q04_COMPANY_PHONE,"""Gerhard Prossinger"" ""Friedrich Göbhart Gesellschaft m.b.H"" Telefon",8,5,0,DONE,2026-08-31T07:08:20.753870+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q05_PDF,"""Gerhard Prossinger"" filetype:pdf Telefon OR E-Mail",8,5,0,DONE,2026-08-31T07:08:27.587670+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q06_ASSOCIATION,"""Gerhard Prossinger"" Verband OR Verein OR Logistik OR Spedition",8,0,0,DONE,2026-08-31T07:08:29.962951+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q07_EVENT,"""Gerhard Prossinger"" Konferenz OR Kongress OR Vortrag OR Messe OR Speaker",8,5,0,DONE,2026-08-31T07:08:32.988661+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q08_JOB,"""Gerhard Prossinger"" Karriere OR Stellenanzeige OR Ansprechpartner OR jobs",8,5,0,DONE,2026-08-31T07:08:37.851389+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q09_PRESS,"""Gerhard Prossinger"" Presse OR News OR Interview OR Presseaussendung",8,2,0,DONE,2026-08-31T07:08:38.766917+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q10_DIRECTORY,"""Gerhard Prossinger"" FirmenABC OR WKO OR Herold OR Firmenatlas",8,3,0,DONE,2026-08-31T07:08:43.384253+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q11_TENDER,"""Gerhard Prossinger"" Ausschreibung OR Vergabe OR tender OR procurement",8,5,0,DONE,2026-08-31T07:08:44.641014+00:00
+v2.1,24,Friedrich Göbhart Gesellschaft m.b.H.,Gerhard Prossinger,Q12_PARTNER,"""Gerhard Prossinger"" Partner OR Referenz OR case study OR Kunde",8,3,0,DONE,2026-08-31T07:08:47.065400+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q01_NAME_PHONE,"""Friedrich Mayer"" Telefon",8,4,0,DONE,2026-08-31T07:08:48.767620+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q02_NAME_MOBILE,"""Friedrich Mayer"" Mobil OR Handy OR Durchwahl",8,4,0,DONE,2026-08-31T07:08:49.201342+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q03_NAME_EMAIL,"""Friedrich Mayer"" E-Mail OR email",8,4,0,DONE,2026-08-31T07:08:49.622746+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q04_COMPANY_PHONE,"""Friedrich Mayer"" ""Fritz Mayer Internationale Spedition & Transport"" Telefon",8,4,0,DONE,2026-08-31T07:08:50.079894+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q05_PDF,"""Friedrich Mayer"" filetype:pdf Telefon OR E-Mail",8,4,0,DONE,2026-08-31T07:08:50.500960+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q06_ASSOCIATION,"""Friedrich Mayer"" Verband OR Verein OR Logistik OR Spedition",8,4,0,DONE,2026-08-31T07:08:50.934889+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q07_EVENT,"""Friedrich Mayer"" Konferenz OR Kongress OR Vortrag OR Messe OR Speaker",8,4,0,DONE,2026-08-31T07:08:51.359300+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q08_JOB,"""Friedrich Mayer"" Karriere OR Stellenanzeige OR Ansprechpartner OR jobs",8,4,0,DONE,2026-08-31T07:08:51.845725+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q09_PRESS,"""Friedrich Mayer"" Presse OR News OR Interview OR Presseaussendung",8,4,0,DONE,2026-08-31T07:08:52.274689+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q10_DIRECTORY,"""Friedrich Mayer"" FirmenABC OR WKO OR Herold OR Firmenatlas",8,4,0,DONE,2026-08-31T07:08:52.709103+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q11_TENDER,"""Friedrich Mayer"" Ausschreibung OR Vergabe OR tender OR procurement",8,4,0,DONE,2026-08-31T07:08:53.226899+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Friedrich Mayer,Q12_PARTNER,"""Friedrich Mayer"" Partner OR Referenz OR case study OR Kunde",8,4,0,DONE,2026-08-31T07:08:53.715211+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q01_NAME_PHONE,"""Peter Mayer"" Telefon",8,5,0,DONE,2026-08-31T07:08:57.514859+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q02_NAME_MOBILE,"""Peter Mayer"" Mobil OR Handy OR Durchwahl",8,5,0,DONE,2026-08-31T07:08:57.937752+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q03_NAME_EMAIL,"""Peter Mayer"" E-Mail OR email",8,5,0,DONE,2026-08-31T07:08:58.374562+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q04_COMPANY_PHONE,"""Peter Mayer"" ""Fritz Mayer Internationale Spedition & Transport"" Telefon",8,5,0,DONE,2026-08-31T07:08:58.803099+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q05_PDF,"""Peter Mayer"" filetype:pdf Telefon OR E-Mail",8,5,0,DONE,2026-08-31T07:08:59.289243+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q06_ASSOCIATION,"""Peter Mayer"" Verband OR Verein OR Logistik OR Spedition",8,5,0,DONE,2026-08-31T07:08:59.723929+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q07_EVENT,"""Peter Mayer"" Konferenz OR Kongress OR Vortrag OR Messe OR Speaker",8,5,0,DONE,2026-08-31T07:09:00.172360+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q08_JOB,"""Peter Mayer"" Karriere OR Stellenanzeige OR Ansprechpartner OR jobs",8,5,0,DONE,2026-08-31T07:09:00.626790+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q09_PRESS,"""Peter Mayer"" Presse OR News OR Interview OR Presseaussendung",8,5,0,DONE,2026-08-31T07:09:01.063082+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q10_DIRECTORY,"""Peter Mayer"" FirmenABC OR WKO OR Herold OR Firmenatlas",8,5,0,DONE,2026-08-31T07:09:01.527977+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q11_TENDER,"""Peter Mayer"" Ausschreibung OR Vergabe OR tender OR procurement",8,5,0,DONE,2026-08-31T07:09:01.982551+00:00
+v2.1,25,Fritz Mayer Internationale Spedition & Transport GmbH,Peter Mayer,Q12_PARTNER,"""Peter Mayer"" Partner OR Referenz OR case study OR Kunde",8,5,0,DONE,2026-08-31T07:09:02.465531+00:00
