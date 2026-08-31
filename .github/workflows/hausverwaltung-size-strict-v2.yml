@@ -1,0 +1,37 @@
+name: Hausverwaltung Strict Size v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'refine_hausverwaltung_size_strict.py'
+      - '.github/workflows/hausverwaltung-size-strict-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python refine_hausverwaltung_size_strict.py
+      - name: Persist v2 checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/size_strict_v2/
+          git commit -m 'Checkpoint Hausverwaltung strict size v2' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-strict-v2
+          path: data/hausverwaltung/size_strict_v2/
+          if-no-files-found: error
+          retention-days: 7
