@@ -1,0 +1,319 @@
+name: Spedition Stage 3 decision makers and direct contacts
+
+on:
+  push:
+    paths:
+      - '.github/workflows/spedition-stage3-decision-makers.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  copilot-requests: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Restore final Stage 2 economic-account universe from existing evidence only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p stage3_input data/spedition/stage2_agent_final
+          cat > /tmp/stage2_restore_prompt.md <<'EOF'
+          You are restoring an ALREADY COMPLETED Stage 2 checkpoint for Austrian Spedition/Logistik. DO NOT do new web research in this step. Use only repository evidence already saved.
+
+          Source files:
+          - data/spedition/contacts/final/company_summary.csv = original 118 legal targets with people/contact work
+          - data/spedition/contacts/targets.csv = original target metadata
+          - data/spedition/stage2_agent_final/agent_review_top300.tsv
+          - data/spedition/stage2_agent_final/evidence_signal_index.csv
+          - data/spedition/agent_recheck/search_evidence/all_search_results.jsonl
+
+          Known checkpoint facts that the restored result must reconcile with evidence:
+          - 1,072/1,072 rejected rows had evidence collected/reviewed
+          - original 118 legal targets normalize to about 100 economic accounts
+          - about 38 recovered economic accounts were added
+          - revised universe is about 138 Austrian Spedition/Logistik economic accounts that are 31+ or likely 31+ in Austrian operating scope
+
+          Task:
+          1. Normalize the original 118 legal targets to Austrian economic accounts. Consolidate legal entities only where there is a real common Austrian operating/group decision center. Examples: Lagermax, Hödlmayr, Gebrüder Weiss, Quehenberger, Schachinger, Rhenus, DHL, cargo-partner/NX, DSV, Nothegger, LKW WALTER. Do not fuzzy-merge unrelated firms.
+          2. Recover additional accounts ONLY where the saved Stage 2 evidence supports >=31 employees in Austria/Austrian operating group or a credible likely-31+ Austrian scope. Do not count global network size alone, and do not include exact 30 as automatic pass.
+          3. Write stage3_input/final_economic_accounts.jsonl. Exactly one JSON object per economic account, no prose/fences. Fields:
+             economic_account_key, economic_account, legal_entities (array), website, location, employee_count_or_range, stage2_status, group_parent, stage2_source_url, stage2_confidence, stage2_notes, origin (ORIGINAL_CORE or RECOVERED)
+          4. economic_account_key must be stable lowercase ASCII slug. No duplicate keys.
+          5. Prefer preserving original Stage 2 employee evidence; do not invent employee counts.
+          EOF
+          copilot -p "$(cat /tmp/stage2_restore_prompt.md)" -s --no-ask-user --allow-tool='read' --allow-tool='write' --deny-tool='shell'
+          test -s stage3_input/final_economic_accounts.jsonl
+      - name: Validate and split Stage 3 input
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('stage3_input/final_economic_accounts.jsonl')
+          rows=[]
+          for n,line in enumerate(p.read_text(encoding='utf-8').splitlines(),1):
+              if not line.strip(): continue
+              o=json.loads(line); rows.append(o)
+          req=['economic_account_key','economic_account','legal_entities','employee_count_or_range','stage2_status','group_parent','stage2_confidence','origin']
+          errs=[]
+          for i,o in enumerate(rows):
+              for k in req:
+                  if k not in o: errs.append(f'{i}:{k}')
+              if not isinstance(o.get('legal_entities'),list): errs.append(f'{i}:legal_entities')
+          keys=[o.get('economic_account_key') for o in rows]
+          if len(keys)!=len(set(keys)): errs.append('duplicate keys')
+          if not (125 <= len(rows) <= 150): errs.append(f'unexpected account count {len(rows)}')
+          if errs: raise SystemExit('Stage2 restore validation failed: '+str(errs[:50]))
+          # Stable sort then 12 chunks.
+          rows.sort(key=lambda x:x['economic_account_key'])
+          p.write_text('\n'.join(json.dumps(x,ensure_ascii=False) for x in rows)+'\n',encoding='utf-8')
+          n=12
+          for i in range(n):
+              rr=rows[i::n]
+              pathlib.Path(f'stage3_input/chunk_{i:02d}.jsonl').write_text('\n'.join(json.dumps(x,ensure_ascii=False) for x in rr)+'\n',encoding='utf-8')
+          pathlib.Path('stage3_input/count.txt').write_text(str(len(rows)),encoding='utf-8')
+          print('economic_accounts',len(rows))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spedition-stage3-input
+          path: stage3_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: spedition-stage3-input
+          path: stage3_input
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Research decision makers and public business contacts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          c=$(printf '%02d' "$CHUNK")
+          mkdir -p stage3_out
+          export IN="stage3_input/chunk_${c}.jsonl"
+          export OUT="stage3_out/chunk_${c}.jsonl"
+          cat > /tmp/stage3_prompt.md <<'EOF'
+          You are Stage 3 of an Austrian Spedition/Logistik B2B sales-research pipeline. Research EVERY economic account in __IN__ and write EXACTLY one JSON object per input account to __OUT__. No prose, no markdown fences.
+
+          You MAY use the web extensively. You MUST also reuse prior repository evidence where relevant:
+          - data/spedition/contacts/final/company_summary.csv
+          - data/spedition/contacts/final/final_contacts.csv
+          - data/spedition/contacts/baseline/baseline_primary_dm.csv
+          These old files are evidence, not unquestionable truth: verify current role/company/Austria scope when practical.
+
+          PEOPLE / OWNERSHIP source priority: official filings / annual reports; official company site (Impressum, management, about); WKO; reputable Austrian company databases; LinkedIn; press/trade media; WKO/Fachverband; conference/association bios. Never rely on a lone search snippet if a stronger source is available.
+
+          PRIMARY DECISION MAKER rules:
+          - owner-managed Mittelstand: owner-Geschäftsführer > substantial owner > Geschäftsführer > COO.
+          - international subsidiary: Austria Geschäftsführer/Country Managing Director > Austria COO/Operations > regional management. Do NOT default to global CEO when Austrian management can buy locally.
+          - enterprise: preserve relevant Economic Buyer, Operational Sponsor, Technical/Digital Stakeholder, but choose one PRIMARY.
+          - Work by economic account. Verify company, location, role, group, Austria scope. No fuzzy person/company matching.
+
+          CONTACT search for the PRIMARY must be persistent and source-backed. Check official team/contact/imprint pages, PDFs/brochures/annual reports/press releases, conference/event PDFs, associations, WKO, company presentations, LinkedIn, indexed PDFs/trade media/speaker bios. Search beyond the first result.
+          Priority: public personal mobile > personal Durchwahl/direct office > personal business email > named management contact > secretariat/assistant for that specific person > central fallback only if nothing else.
+          A central -0 number is NOT direct unless explicitly person-linked. No leaks, private data, or private email/phone. A corporate-pattern email that is only guessed must be status INFERRED_EMAIL and must not be represented as verified.
+
+          contact_status allowed:
+          DIRECT_MOBILE_VERIFIED, DIRECT_PHONE_VERIFIED, PERSONAL_EMAIL_VERIFIED, NAMED_MANAGEMENT_CONTACT, SECRETARIAT_FOR_PERSON, CENTRAL_FALLBACK, INFERRED_EMAIL, NO_PUBLIC_DIRECT_CONTACT
+          If several verified direct modes exist, use the strongest status but preserve all fields.
+          confidence values: HIGH, MEDIUM, LOW.
+
+          Output object fields:
+          economic_account_key, economic_account, legal_entities, website, location, employee_count_or_range, group_parent,
+          ownership_structure, owner_name, owner_share, geschaeftsfuehrer_vorstand,
+          primary_decision_maker, primary_title, primary_reason, primary_role_type (OWNER_LED, MANAGER_LED, UNRESOLVED),
+          linkedin_url, people_source_url, people_source_type, people_confidence,
+          direct_phone, direct_mobile, personal_email, contact_status, contact_source_url, contact_source_type, contact_confidence,
+          central_fallback, notes,
+          all_people (array of objects: person,title,role_category,is_primary,ownership_share,linkedin_url,source_url,source_type,confidence),
+          ownership_evidence (array of objects: owner,share,relationship,source_url,source_type,confidence),
+          contact_evidence (array of objects: person,contact_type,value,status,source_url,source_type,confidence,verified_public_business)
+
+          If no reliable primary person after serious search: primary_decision_maker="UNRESOLVED", primary_role_type="UNRESOLVED", explain notes and preserve candidates in all_people. If primary is known but no direct public business contact exists, set NO_PUBLIC_DIRECT_CONTACT (or CENTRAL_FALLBACK if a fallback is saved).
+          EOF
+          sed -i "s#__IN__#$IN#g; s#__OUT__#$OUT#g" /tmp/stage3_prompt.md
+          copilot -p "$(cat /tmp/stage3_prompt.md)" -s --no-ask-user --allow-all-urls --allow-tool='read' --allow-tool='write' --deny-tool='shell'
+          test -s "$OUT"
+      - name: Validate output and repair once if needed
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          c=$(printf '%02d' "$CHUNK"); IN="stage3_input/chunk_${c}.jsonl"; OUT="stage3_out/chunk_${c}.jsonl"
+          cat > /tmp/validate.py <<'PY'
+          import json,sys
+          inp=[json.loads(x) for x in open(sys.argv[1],encoding='utf-8') if x.strip()]
+          out=[json.loads(x) for x in open(sys.argv[2],encoding='utf-8') if x.strip()]
+          req=['economic_account_key','economic_account','legal_entities','primary_decision_maker','primary_title','primary_reason','primary_role_type','people_source_url','people_confidence','direct_phone','direct_mobile','personal_email','contact_status','contact_source_url','contact_confidence','all_people','ownership_evidence','contact_evidence']
+          allowed={'DIRECT_MOBILE_VERIFIED','DIRECT_PHONE_VERIFIED','PERSONAL_EMAIL_VERIFIED','NAMED_MANAGEMENT_CONTACT','SECRETARIAT_FOR_PERSON','CENTRAL_FALLBACK','INFERRED_EMAIL','NO_PUBLIC_DIRECT_CONTACT'}
+          err=[]
+          if len(inp)!=len(out):err.append(f'count {len(out)} != {len(inp)}')
+          ik={x['economic_account_key'] for x in inp}; ok=[x.get('economic_account_key') for x in out]
+          if set(ok)!=ik:err.append('key mismatch')
+          if len(ok)!=len(set(ok)):err.append('duplicate output keys')
+          for o in out:
+              for k in req:
+                  if k not in o:err.append(f"{o.get('economic_account_key')} missing {k}")
+              if o.get('contact_status') not in allowed:err.append(f"{o.get('economic_account_key')} bad status")
+              if not isinstance(o.get('all_people'),list) or not isinstance(o.get('ownership_evidence'),list) or not isinstance(o.get('contact_evidence'),list):err.append(f"{o.get('economic_account_key')} arrays")
+              if o.get('primary_decision_maker')!='UNRESOLVED' and not str(o.get('people_source_url') or '').startswith('http'):err.append(f"{o.get('economic_account_key')} primary without source")
+          if err:
+              print('\n'.join(err[:100]));sys.exit(2)
+          print('ok',len(out))
+          PY
+          if ! python /tmp/validate.py "$IN" "$OUT" > /tmp/validation.txt 2>&1; then
+            cat /tmp/validation.txt
+            copilot -p "Read $IN, $OUT and /tmp/validation.txt. Repair ONLY $OUT to satisfy the exact Stage 3 schema and one-output-object-per-input-key requirement. Preserve sourced facts; do not invent people or contacts. Use web only where needed to repair missing sourcing." -s --no-ask-user --allow-all-urls --allow-tool='read' --allow-tool='write' --deny-tool='shell'
+            python /tmp/validate.py "$IN" "$OUT"
+          else
+            cat /tmp/validation.txt
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spedition-stage3-result-${{ matrix.chunk }}
+          path: stage3_out/*.jsonl
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: spedition-stage3-input
+          path: stage3_input
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: spedition-stage3-result-*
+          path: stage3_results
+          merge-multiple: true
+      - name: Merge Stage 3 outputs and compute coverage
+        run: |
+          python - <<'PY'
+          import csv,json,pathlib,re
+          outdir=pathlib.Path('data/spedition/stage3_decision_makers');outdir.mkdir(parents=True,exist_ok=True)
+          rows=[]
+          for p in sorted(pathlib.Path('stage3_results').glob('*.jsonl')):
+              for line in p.read_text(encoding='utf-8').splitlines():
+                  if line.strip():rows.append(json.loads(line))
+          keys=[r['economic_account_key'] for r in rows]
+          if len(keys)!=len(set(keys)):raise SystemExit('duplicate Stage3 keys')
+          expected=int(pathlib.Path('stage3_input/count.txt').read_text())
+          if len(rows)!=expected:raise SystemExit(f'Stage3 count {len(rows)} != {expected}')
+          rows.sort(key=lambda r:r['economic_account'].casefold())
+          def scalar(v):
+              if v is None:return ''
+              if isinstance(v,(list,dict)):return json.dumps(v,ensure_ascii=False)
+              return str(v)
+          def write(name,rr,fields):
+              with (outdir/name).open('w',encoding='utf-8-sig',newline='') as f:
+                  w=csv.DictWriter(f,fieldnames=fields);w.writeheader()
+                  for r in rr:w.writerow({k:scalar(r.get(k,'')) for k in fields})
+          account_fields=['economic_account_key','economic_account','legal_entities','website','location','employee_count_or_range','group_parent','ownership_structure','owner_name','owner_share','geschaeftsfuehrer_vorstand','primary_decision_maker','primary_title','primary_reason','primary_role_type','linkedin_url','people_source_url','people_source_type','people_confidence','direct_phone','direct_mobile','personal_email','contact_status','contact_source_url','contact_source_type','contact_confidence','central_fallback','notes']
+          primary_fields=['economic_account_key','economic_account','legal_entity','employee_count','owner_group','primary_decision_maker','title','ownership_share','direct_phone','direct_mobile','personal_email','linkedin','contact_status','source_url','confidence','notes']
+          primary=[];people=[];contacts=[];ownership=[];unresolved=[];nodirect=[]
+          for r in rows:
+              primary.append({'economic_account_key':r['economic_account_key'],'economic_account':r['economic_account'],'legal_entity':' | '.join(r.get('legal_entities') or []),'employee_count':r.get('employee_count_or_range',''),'owner_group':r.get('group_parent') or r.get('owner_name',''),'primary_decision_maker':r.get('primary_decision_maker',''),'title':r.get('primary_title',''),'ownership_share':r.get('owner_share',''),'direct_phone':r.get('direct_phone',''),'direct_mobile':r.get('direct_mobile',''),'personal_email':r.get('personal_email',''),'linkedin':r.get('linkedin_url',''),'contact_status':r.get('contact_status',''),'source_url':r.get('people_source_url',''),'confidence':r.get('people_confidence',''),'notes':r.get('notes','')})
+              for p in r.get('all_people') or []:
+                  x={'economic_account_key':r['economic_account_key'],'economic_account':r['economic_account']};x.update(p);people.append(x)
+              for c in r.get('contact_evidence') or []:
+                  x={'economic_account_key':r['economic_account_key'],'economic_account':r['economic_account']};x.update(c);contacts.append(x)
+              for o in r.get('ownership_evidence') or []:
+                  x={'economic_account_key':r['economic_account_key'],'economic_account':r['economic_account'],'ownership_structure':r.get('ownership_structure',''),'group_parent':r.get('group_parent','')};x.update(o);ownership.append(x)
+              if r.get('primary_decision_maker')=='UNRESOLVED':unresolved.append(r)
+              if r.get('contact_status') in {'NO_PUBLIC_DIRECT_CONTACT','CENTRAL_FALLBACK','INFERRED_EMAIL','SECRETARIAT_FOR_PERSON'}:nodirect.append(r)
+          write('all_accounts_decision_makers.csv',rows,account_fields)
+          write('primary_decision_makers.csv',primary,primary_fields)
+          pf=['economic_account_key','economic_account','person','title','role_category','is_primary','ownership_share','linkedin_url','source_url','source_type','confidence'];write('all_people.csv',people,pf)
+          cf=['economic_account_key','economic_account','person','contact_type','value','status','source_url','source_type','confidence','verified_public_business'];write('direct_contacts.csv',contacts,cf)
+          of=['economic_account_key','economic_account','ownership_structure','group_parent','owner','share','relationship','source_url','source_type','confidence'];write('ownership_structure.csv',ownership,of)
+          write('unresolved_people.csv',unresolved,account_fields)
+          write('no_direct_contact.csv',nodirect,account_fields)
+          verified_status={'DIRECT_MOBILE_VERIFIED','DIRECT_PHONE_VERIFIED','PERSONAL_EMAIL_VERIFIED'}
+          total=len(rows);identified=sum(r.get('primary_decision_maker')!='UNRESOLVED' for r in rows)
+          direct=sum(r.get('contact_status') in verified_status for r in rows)
+          s={
+            'total_stage2_economic_accounts':total,
+            'accounts_with_identified_primary_decision_maker':identified,
+            'owner_led_accounts':sum(r.get('primary_role_type')=='OWNER_LED' for r in rows),
+            'manager_led_accounts':sum(r.get('primary_role_type')=='MANAGER_LED' for r in rows),
+            'accounts_with_verified_direct_mobile':sum(bool(r.get('direct_mobile')) and r.get('contact_status')=='DIRECT_MOBILE_VERIFIED' for r in rows),
+            'accounts_with_verified_direct_phone':sum(bool(r.get('direct_phone')) and r.get('contact_status') in {'DIRECT_PHONE_VERIFIED','DIRECT_MOBILE_VERIFIED'} for r in rows),
+            'accounts_with_verified_personal_email':sum(bool(r.get('personal_email')) and any((e.get('status')=='PERSONAL_EMAIL_VERIFIED' and e.get('verified_public_business')) for e in (r.get('contact_evidence') or [])) for r in rows),
+            'accounts_with_any_verified_direct_contact':direct,
+            'accounts_with_only_central_fallback':sum(r.get('contact_status')=='CENTRAL_FALLBACK' for r in rows),
+            'accounts_with_no_public_direct_contact':sum(r.get('contact_status')=='NO_PUBLIC_DIRECT_CONTACT' for r in rows),
+            'unresolved_decision_makers':total-identified,
+            'coverage_percent':round(100*identified/total,2) if total else 0,
+            'direct_contact_coverage':round(direct/total,4) if total else 0,
+            'direct_contact_coverage_percent':round(100*direct/total,2) if total else 0
+          }
+          (outdir/'summary.json').write_text(json.dumps(s,ensure_ascii=False,indent=2),encoding='utf-8')
+          readme=f'''# Spedition Austria Stage 3 — Decision Makers and Direct Public Business Contacts\n\nEconomic-account based qualification. One primary decision maker per account or explicit UNRESOLVED. Direct contacts are public business contacts only; central fallbacks are separated and inferred emails are never counted as verified.\n\n## Coverage\n- Total accounts: {total}\n- Primary DM identified: {identified}\n- Any verified direct contact: {direct}\n- Unresolved DM: {total-identified}\n- Primary DM coverage: {s['coverage_percent']}%\n- Direct-contact coverage: {s['direct_contact_coverage_percent']}%\n\nContact statuses: DIRECT_MOBILE_VERIFIED, DIRECT_PHONE_VERIFIED, PERSONAL_EMAIL_VERIFIED, NAMED_MANAGEMENT_CONTACT, SECRETARIAT_FOR_PERSON, CENTRAL_FALLBACK, INFERRED_EMAIL, NO_PUBLIC_DIRECT_CONTACT.\n'''
+          (outdir/'README.md').write_text(readme,encoding='utf-8')
+          # Persist restored Stage2 account universe as CSV/JSONL.
+          src=[json.loads(x) for x in pathlib.Path('stage3_input/final_economic_accounts.jsonl').read_text(encoding='utf-8').splitlines() if x.strip()]
+          flds=['economic_account_key','economic_account','legal_entities','website','location','employee_count_or_range','stage2_status','group_parent','stage2_source_url','stage2_confidence','stage2_notes','origin']
+          with pathlib.Path('data/spedition/stage2_agent_final/final_economic_accounts.csv').open('w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=flds);w.writeheader();
+              for r in src:w.writerow({k:scalar(r.get(k,'')) for k in flds})
+          pathlib.Path('data/spedition/stage2_agent_final/final_economic_accounts.jsonl').write_text(pathlib.Path('stage3_input/final_economic_accounts.jsonl').read_text(encoding='utf-8'),encoding='utf-8')
+          print(json.dumps(s,ensure_ascii=False,indent=2))
+          PY
+      - name: Persist Stage 2 final universe and Stage 3 CSV outputs to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/spedition/stage2_agent_final/final_economic_accounts.* data/spedition/stage3_decision_makers
+          git commit -m 'Complete Spedition Stage 3 decision-maker research' || exit 0
+          for n in 1 2 3 4 5 6; do
+            git pull --rebase origin main || { git rebase --abort || true; }
+            git push origin HEAD:main && exit 0
+            sleep $((n*2))
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spedition-stage3-final-csvs
+          path: data/spedition/stage3_decision_makers/*
+          retention-days: 30
