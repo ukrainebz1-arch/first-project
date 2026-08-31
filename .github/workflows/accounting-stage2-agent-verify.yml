@@ -62,13 +62,13 @@ jobs:
           path: agent_input
       - name: Install research dependencies
         run: pip install requests beautifulsoup4
-      - name: Run public-web evidence research worker
+      - name: Run hardened public-web evidence research worker v2
         env:
           CHUNK: ${{ matrix.chunk }}
         run: |
           C=$(printf '%02d' "$CHUNK")
           mkdir -p agent_out
-          python scripts/accounting_stage2_evidence_worker.py \
+          python scripts/accounting_stage2_evidence_worker_v2.py \
             --input-csv "agent_input/chunk_${C}.csv" \
             --output-jsonl "agent_out/chunk_${C}.jsonl"
       - name: Deterministic quality gate
@@ -136,7 +136,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git pull --rebase origin main
           git add data/accounting/stage2_agent_verified
-          git commit -m 'Persist accounting Stage 2.5 full evidence audit' || true
+          git commit -m 'Persist accounting Stage 2.5 hardened evidence audit' || true
           for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
       - uses: actions/upload-artifact@v4
         with:
