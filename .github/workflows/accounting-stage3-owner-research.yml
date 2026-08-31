@@ -4,11 +4,14 @@ on:
   workflow_run:
     workflows: ["Accounting Stage 2.5 agent verification"]
     types: [completed]
+  push:
+    paths:
+      - 'data/accounting/wko_supplement/summary.json'
   workflow_dispatch:
 
 jobs:
   prepare:
-    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_sha == '501c1f905a0b6efaaa23d7ea4c1210ab54eac4f8') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,8 +22,10 @@ jobs:
           python-version: '3.12'
       - name: Sync latest Stage 2 checkpoints
         run: git pull --ff-only origin main
-      - name: Require re-audited WKO-only supplement
-        run: test -f data/accounting/wko_supplement/final_targets.csv
+      - name: Require re-audited confirmed WKO-only supplement
+        run: |
+          test -f data/accounting/wko_supplement/confirmed_targets.csv
+          test -f data/accounting/wko_supplement/summary.json
       - name: Resolve conservative KSW economic-group aliases
         run: |
           test -f data/accounting/stage2_agent_verified/stage2_agent_verified_all.csv
@@ -33,13 +38,21 @@ jobs:
           python scripts/accounting_stage2_sanity_gate.py \
             --input stage2_economic/stage2_economic_groups_all.csv \
             --output stage2_economic/sanity_report.json
-      - name: Build combined KSW plus WKO Stage 3 target chunks
+      - name: Build confirmed-only KSW plus WKO Stage 3 target chunks
         run: |
           python scripts/accounting_stage3_prepare.py \
             --confirmed stage2_economic/stage3_size_verified_targets_economic.csv \
-            --likely stage2_economic/stage2_still_likely_20plus_economic.csv \
-            --supplement data/accounting/wko_supplement/final_targets.csv \
+            --likely /dev/null \
+            --supplement data/accounting/wko_supplement/confirmed_targets.csv \
             --output-dir stage3_input --chunks 16
+          python - <<'PY'
+          import json
+          p='stage3_input/manifest.json'
+          m=json.load(open(p,encoding='utf-8'))
+          assert m.get('likely') == 0, m
+          assert m.get('source_counts',{}).get('ksw_likely') == 0, m
+          print('confirmed-only manifest:', json.dumps(m,ensure_ascii=False))
+          PY
           cp stage2_economic/economic_dedup_summary.json stage3_input/economic_dedup_summary.json
           cp stage2_economic/sanity_report.json stage3_input/stage2_sanity_report.json
           cp data/accounting/wko_supplement/summary.json stage3_input/wko_supplement_summary.json
