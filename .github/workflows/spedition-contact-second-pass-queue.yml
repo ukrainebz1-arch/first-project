@@ -1,0 +1,23 @@
+name: Spedition second-pass queue
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/spedition_contact_second_pass_queue.py'
+permissions:
+  contents: write
+jobs:
+  queue:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build queue
+        run: python scripts/spedition_contact_second_pass_queue.py
+      - name: Persist queue
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@users.noreply.github.com
+          git add data/spedition/contacts/second_pass
+          git commit -m 'Checkpoint Spedition second-pass queue' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
