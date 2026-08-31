@@ -60,10 +60,10 @@ jobs:
           path: stage4_input
       - name: Install public-web/PDF research dependencies
         run: pip install requests beautifulsoup4 pypdf
-      - name: Research exact Stage-3 Primary DMs
+      - name: Research exact Stage-3 Primary DMs with hardened parser v2
         run: |
           mkdir -p "stage4_out/${{ matrix.chunk }}"
-          python scripts/hausverwaltung_stage4_worker.py \
+          python scripts/hausverwaltung_stage4_worker_v2.py \
             --input-csv "stage4_input/${{ matrix.chunk }}.csv" \
             --output-dir "stage4_out/${{ matrix.chunk }}"
       - uses: actions/upload-artifact@v4
@@ -113,7 +113,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git pull --rebase origin main
           git add data/hausverwaltung/stage4_contacts
-          git commit -m 'Persist Hausverwaltung Stage 4 machine contact checkpoint' || true
+          git commit -m 'Persist Hausverwaltung Stage 4 machine contact checkpoint v2' || true
           for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
       - uses: actions/upload-artifact@v4
         with:
