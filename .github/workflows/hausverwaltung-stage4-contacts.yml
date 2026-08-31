@@ -1,0 +1,122 @@
+name: Hausverwaltung Stage 4 public direct contacts
+
+on:
+  push:
+    paths:
+      - '.github/workflows/hausverwaltung-stage4-contacts.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: hausverwaltung-stage4-contacts
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate curated Stage 3 and build MAIN-first chunks
+        run: |
+          python scripts/hausverwaltung_stage4_prepare.py \
+            --input data/hausverwaltung/stage3_owners/stage3_master_99.csv \
+            --output-dir stage4_input \
+            --chunk-size 10
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage4-input
+          path: stage4_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        chunk:
+          - chunk_001_010
+          - chunk_011_020
+          - chunk_021_030
+          - chunk_031_040
+          - chunk_041_050
+          - chunk_051_060
+          - chunk_061_070
+          - chunk_071_080
+          - chunk_081_090
+          - chunk_091_099
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage4-input
+          path: stage4_input
+      - name: Install public-web/PDF research dependencies
+        run: pip install requests beautifulsoup4 pypdf
+      - name: Research exact Stage-3 Primary DMs
+        run: |
+          mkdir -p "stage4_out/${{ matrix.chunk }}"
+          python scripts/hausverwaltung_stage4_worker.py \
+            --input-csv "stage4_input/${{ matrix.chunk }}.csv" \
+            --output-dir "stage4_out/${{ matrix.chunk }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage4-result-${{ matrix.chunk }}
+          path: stage4_out/${{ matrix.chunk }}/*
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage4-input
+          path: stage4_input
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hausverwaltung-stage4-result-*
+          path: stage4_results
+      - name: Merge conservative machine checkpoint
+        run: |
+          rm -rf data/hausverwaltung/stage4_contacts
+          mkdir -p data/hausverwaltung/stage4_contacts/chunks
+          python scripts/hausverwaltung_stage4_merge.py \
+            --targets stage4_input/targets.csv \
+            --results-dir stage4_results \
+            --output-dir data/hausverwaltung/stage4_contacts
+          for d in stage4_results/hausverwaltung-stage4-result-*; do
+            test -d "$d" || continue
+            n=$(basename "$d" | sed 's/^hausverwaltung-stage4-result-//')
+            mkdir -p "data/hausverwaltung/stage4_contacts/chunks/$n"
+            cp -f "$d"/* "data/hausverwaltung/stage4_contacts/chunks/$n/" || true
+          done
+          cp stage4_input/manifest.json data/hausverwaltung/stage4_contacts/input_manifest.json
+      - name: Persist Stage 4 machine checkpoint to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage4_contacts
+          git commit -m 'Persist Hausverwaltung Stage 4 machine contact checkpoint' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage4-machine-checkpoint
+          path: data/hausverwaltung/stage4_contacts/*
+          retention-days: 30
