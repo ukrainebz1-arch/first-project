@@ -1,0 +1,32 @@
+name: Hausverwaltung FirmenABC Known Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/hausverwaltung_firmenabc_enrich.py'
+      - '.github/workflows/hausverwaltung-firmenabc-known.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - name: Test known strict targets
+        run: |
+          python scripts/hausverwaltung_firmenabc_enrich.py --start 88 --end 88 --out smoke/part1.csv
+          python scripts/hausverwaltung_firmenabc_enrich.py --start 172 --end 172 --out smoke/part2.csv
+          cat smoke/part1.csv
+          cat smoke/part2.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-firmenabc-known
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
