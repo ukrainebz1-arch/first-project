@@ -1,0 +1,26 @@
+name: Hausverwaltung Size Snippet Mini
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hausverwaltung-size-snippet-mini.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 pypdf
+      - run: python scripts/hausverwaltung_size_external_snippets.py --start 1 --end 5 --out smoke/evidence.csv --progress-out smoke/progress.csv
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-size-snippet-mini
+          path: smoke/
+          if-no-files-found: error
+          retention-days: 7
