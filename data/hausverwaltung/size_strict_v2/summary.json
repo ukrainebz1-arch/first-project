@@ -1,0 +1,13 @@
+{
+  "generated_at_utc": "2026-08-31T07:40:27.179541+00:00",
+  "companies": 1780,
+  "counts": {
+    "A_TARGET_30_PLUS": 37,
+    "B_LIKELY_30_PLUS_GROUP": 10,
+    "C_BORDERLINE_20_30": 43,
+    "U_NOT_PROVEN": 1690
+  },
+  "classification_changes_vs_v1": 5,
+  "manual_review_queue": 133,
+  "group_rule": "word-boundary group markers plus multi-country detection; avoids matching gesamt inside insgesamt"
+}
