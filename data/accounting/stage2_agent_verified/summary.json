@@ -1,0 +1,22 @@
+{
+  "candidate_expected": 823,
+  "agent_results_seen": 823,
+  "agent_results_valid": 823,
+  "missing": 0,
+  "invalid": 0,
+  "verdict_counts": {
+    "LIKELY_20_PLUS": 281,
+    "UNRESOLVED": 346,
+    "CONFIRMED_30_PLUS": 118,
+    "BELOW_20": 4,
+    "CONFIRMED_20_PLUS": 72,
+    "CONFIRMED_20_29": 2
+  },
+  "stage3_confirmed_targets": 192,
+  "recovered_false_negatives": 14,
+  "still_likely_20plus": 281,
+  "below_20": 4,
+  "unresolved": 346,
+  "missing_group_keys": [],
+  "errors": []
+}
