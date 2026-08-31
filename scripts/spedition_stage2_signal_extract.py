@@ -1,121 +1,89 @@
 #!/usr/bin/env python3
-import csv,json,re,sys,unicodedata
+import csv,json,re,unicodedata
 from pathlib import Path
 from urllib.parse import urlparse
 
 INPUT=Path('data/spedition/agent_recheck/search_evidence/all_search_results.jsonl')
 OUTDIR=Path('data/spedition/stage2_agent_final')
-
+EMP_WORDS=('mitarbeiter','mitarbeiterinnen','beschäftigte','beschaeftigte','arbeitnehmer','employees','employee','mitarbeitenden','personal')
+AU_WORDS=('österreich','oesterreich','austria','austrian')
 HIGH_DOMAINS={
- 'wko.at':100,'firmen.wko.at':100,'justizonline.gv.at':100,'evi.gv.at':100,
- 'linkedin.com':55,'karriere.at':50,'herold.at':45,'firmenabc.at':45,'compass.at':45,'kompass.com':42,
+ 'firmen.wko.at':100,'wko.at':95,'evi.gv.at':100,'justizonline.gv.at':100,
+ 'linkedin.com':58,'karriere.at':52,'herold.at':48,'firmenabc.at':47,'compass.at':47,'kompass.com':44,
 }
-OFFICIAL_HINTS=('unternehmen','company','group','logistik','logistics','spedition','transport','cargo','freight','rail','post','hafen')
-EMP_WORDS=r'(?:mitarbeiter(?:innen)?|besch[aä]ftigte|arbeitnehmer|employees?|persons?|personal|mitarbeitenden)'
-NUM=r'(?:\d{1,3}(?:[ .]\d{3})*|\d{1,4})'
-PATTERNS=[
- re.compile(rf'(?P<a>{NUM})\s*(?:-|–|bis|to)\s*(?P<b>{NUM})\s*{EMP_WORDS}',re.I),
- re.compile(rf'{EMP_WORDS}\s*(?P<a>{NUM})\s*(?:-|–|bis|to)\s*(?P<b>{NUM})',re.I),
- re.compile(rf'(?:rund|ca\.?|circa|etwa|über|mehr als|mehr als rund|approximately|about|around|over)?\s*(?P<a>{NUM})\+?\s*{EMP_WORDS}',re.I),
- re.compile(rf'{EMP_WORDS}\s*(?:von|:)?\s*(?:rund|ca\.?|circa|etwa|über|mehr als|approximately|about|around|over)?\s*(?P<a>{NUM})\+?',re.I),
-]
-BANDS=re.compile(r'\b(1\s*[-–]\s*10|11\s*[-–]\s*20|11\s*[-–]\s*30|20\s*[-–]\s*30|21\s*[-–]\s*50|31\s*[-–]\s*50|51\s*[-–]\s*100|101\s*[-–]\s*200|101\s*[-–]\s*500|201\s*[-–]\s*500|501\s*[-–]\s*1[.,]?000|1[.,]?001\s*[-–]\s*5[.,]?000)\b',re.I)
 
 def clean(s): return re.sub(r'\s+',' ',s or '').strip()
-def ascii_norm(s):
+def anorm(s):
  s=unicodedata.normalize('NFKD',clean(s)).encode('ascii','ignore').decode().lower()
  return re.sub(r'[^a-z0-9]+',' ',s).strip()
-def tokens(name):
- stop={'gmbh','gesmbh','gesellschaft','mbh','kg','ag','og','eu','e','u','co','und','spedition','logistik','logistics','transport','transporte','internationale','international'}
- return [x for x in ascii_norm(name).split() if len(x)>2 and x not in stop]
-def host(url):
+def host(u):
  try:
-  h=(urlparse(url).hostname or '').lower()
-  return h[4:] if h.startswith('www.') else h
- except: return ''
-def source_score(url):
- h=host(url)
+  h=(urlparse(u).hostname or '').lower(); return h[4:] if h.startswith('www.') else h
+ except:return ''
+def company_tokens(n):
+ stop={'gmbh','gesmbh','gesellschaft','mbh','kg','ag','og','eu','co','und','spedition','speditions','logistik','logistics','transport','transporte','internationale','international','austria','osterreich'}
+ return [x for x in anorm(n).split() if len(x)>2 and x not in stop]
+def source_score(u):
+ h=host(u)
  for d,s in HIGH_DOMAINS.items():
   if h==d or h.endswith('.'+d): return s
- return 65 if any(x in h for x in OFFICIAL_HINTS) else 25
+ return 35
 
-def parse_int(s):
- s=re.sub(r'[^0-9]','',s or '')
- try:return int(s)
- except:return None
+def relevance(name,text):
+ t=anorm(text); toks=company_tokens(name)
+ if not toks:return 0,0
+ m=sum(1 for x in toks if x in t); return m/max(1,len(toks)), int(anorm(name) in t)
 
-def emp_signals(text):
+def numeric_contexts(text):
+ # Evidence extraction only; these are not final verdicts.
  out=[]
- for p in PATTERNS:
-  for m in p.finditer(text):
-   a=parse_int(m.groupdict().get('a')); b=parse_int(m.groupdict().get('b'))
-   if a is None: continue
-   vals=(a,b if b is not None else a)
-   if vals not in out: out.append(vals)
- for m in BANDS.finditer(text):
-  z=m.group(1).replace('.','').replace(',','')
-  ns=[int(x) for x in re.findall(r'\d+',z)]
-  if len(ns)>=2:
-   vals=(ns[0],ns[1])
-   if vals not in out: out.append(vals)
+ for m in re.finditer(r'(?i)(.{0,85}(?:mitarbeiter(?:innen)?|besch[aä]ftigte|employees?|arbeitnehmer|personal).{0,85})',text):
+  ctx=clean(m.group(1)); nums=[int(x.replace('.','')) for x in re.findall(r'\b\d{1,4}(?:\.\d{3})?\b',ctx)]
+  out.append((ctx,nums))
  return out
-
-def relevance(name,hit,states,places):
- text=ascii_norm((hit.get('title') or '')+' '+(hit.get('snippet') or ''))
- nt=tokens(name)
- matched=sum(1 for t in nt if t in text)
- ratio=matched/max(1,len(nt))
- loc=0
- for x in (states or '').split(';')+(places or '').replace('|',';').split(';'):
-  q=ascii_norm(x)
-  if q and q in text: loc=1; break
- austria=1 if ('osterreich' in text or 'austria' in text or 'austrian' in text) else 0
- exact=1 if ascii_norm(name) in text else 0
- return ratio,exact,austria,loc
 
 def main():
  OUTDIR.mkdir(parents=True,exist_ok=True)
  rows=[]
  for line in INPUT.open(encoding='utf-8'):
-  if not line.strip(): continue
-  o=json.loads(line); name=o.get('company_name',''); hits=o.get('results') or []
-  scored=[]; allnums=[]
-  for h in hits:
-   text=clean((h.get('title') or '')+' — '+(h.get('snippet') or ''))
-   nums=emp_signals(text)
-   ratio,exact,at,loc=relevance(name,h,o.get('states',''),o.get('places',''))
-   ss=source_score(h.get('url',''))
-   rel=int(40*ratio)+20*exact+12*at+8*loc
-   numboost=25 if nums else 0
-   score=ss+rel+numboost
-   if ratio>=0.34 or exact or (at and ratio>0):
-    scored.append((score,h,nums,ratio,exact,at,loc,ss))
-    for a,b in nums: allnums.append((a,b,score,h.get('url',''),text))
-  scored.sort(key=lambda x:x[0],reverse=True)
-  allnums.sort(key=lambda x:x[2],reverse=True)
-  top=scored[:5]
-  max_emp=max([b for a,b,*_ in allnums],default='')
-  max_rel_emp=max([b for a,b,score,*_ in allnums if score>=80],default='')
-  ge31=sum(1 for a,b,score,*_ in allnums if b>=31 and score>=80)
-  le30=sum(1 for a,b,score,*_ in allnums if b<=30 and score>=80)
-  rec={
-   'candidate_key':o.get('candidate_key',''),'company_name':name,'states':o.get('states',''),'places':o.get('places',''),'websites':o.get('websites',''),'wko_urls':o.get('wko_urls',''),
-   'search_hits':len(hits),'relevant_hits':len(scored),'max_employee_signal':max_emp,'max_relevant_employee_signal':max_rel_emp,'strong_31plus_signals':ge31,'strong_30_or_below_signals':le30,
-  }
-  for i,x in enumerate(top,1):
-   score,h,nums,ratio,exact,at,loc,ss=x
-   rec[f'evidence_{i}_score']=score; rec[f'evidence_{i}_source_score']=ss; rec[f'evidence_{i}_url']=h.get('url',''); rec[f'evidence_{i}_title']=h.get('title',''); rec[f'evidence_{i}_snippet']=h.get('snippet',''); rec[f'evidence_{i}_employee_signals']=' | '.join(f'{a}-{b}' for a,b in nums)
+  if not line.strip():continue
+  o=json.loads(line); name=o.get('company_name',''); scored=[]
+  for h in o.get('results') or []:
+   title=clean(h.get('title','')); sn=clean(h.get('snippet','')); text=title+' — '+sn; low=text.lower()
+   ratio,exact=relevance(name,text); emp=any(w in low for w in EMP_WORDS); au=any(w in low for w in AU_WORDS)
+   contexts=numeric_contexts(text); nums=[n for _,ns in contexts for n in ns]
+   s=source_score(h.get('url','')) + int(55*ratio) + 20*exact + 22*emp + 10*au + (18 if nums else 0)
+   # Drop clearly unrelated results unless exact name or meaningful token overlap.
+   if exact or ratio>=0.34:
+    scored.append({'score':s,'source_score':source_score(h.get('url','')),'employee_keyword':int(emp),'austria_keyword':int(au),'numbers':'|'.join(map(str,nums[:8])),'url':h.get('url',''),'title':title,'snippet':sn})
+  scored.sort(key=lambda x:x['score'],reverse=True)
+  rec={'candidate_key':o.get('candidate_key',''),'company_name':name,'states':o.get('states',''),'places':o.get('places',''),'websites':o.get('websites',''),'wko_urls':o.get('wko_urls',''),'search_hits':len(o.get('results') or []),'relevant_hits':len(scored),'employee_keyword_hits':sum(x['employee_keyword'] for x in scored),'employee_number_hits':sum(bool(x['numbers']) for x in scored),'best_score':scored[0]['score'] if scored else 0}
+  for i,x in enumerate(scored[:5],1):
+   for k,v in x.items(): rec[f'evidence_{i}_{k}']=v
   rows.append(rec)
  fields=[]
  for r in rows:
   for k in r:
-   if k not in fields: fields.append(k)
+   if k not in fields:fields.append(k)
  with (OUTDIR/'evidence_signal_index.csv').open('w',encoding='utf-8-sig',newline='') as f:
-  w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(rows)
- ranked=sorted(rows,key=lambda r:(int(r.get('strong_31plus_signals') or 0),int(r.get('max_relevant_employee_signal') or 0),int(r.get('relevant_hits') or 0)),reverse=True)
+  w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
+ ranked=sorted(rows,key=lambda r:(int(r['employee_number_hits']),int(r['employee_keyword_hits']),int(r['best_score']),int(r['relevant_hits'])),reverse=True)
  with (OUTDIR/'agent_review_priority.csv').open('w',encoding='utf-8-sig',newline='') as f:
-  w=csv.DictWriter(f,fieldnames=fields); w.writeheader(); w.writerows(ranked)
- summary={'rows':len(rows),'with_relevant_hits':sum(bool(r['relevant_hits']) for r in rows),'with_strong_31plus_signal':sum(bool(r['strong_31plus_signals']) for r in rows),'with_any_employee_signal':sum(r['max_employee_signal']!='' for r in rows)}
+  w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(ranked)
+ # Compact human/agent review file that is easy to read from GitHub.
+ compact=[]
+ for r in ranked[:300]:
+  ev=[]
+  for i in range(1,4):
+   if not r.get(f'evidence_{i}_url'):continue
+   sn=clean(r.get(f'evidence_{i}_snippet',''))[:360]
+   ti=clean(r.get(f'evidence_{i}_title',''))[:180]
+   ev.append(f"[{r.get(f'evidence_{i}_score','')}] {ti} :: {sn} :: {r.get(f'evidence_{i}_url','')}")
+  compact.append({'candidate_key':r['candidate_key'],'company_name':r['company_name'],'states':r['states'],'places':r['places'],'websites':r['websites'],'employee_keyword_hits':r['employee_keyword_hits'],'employee_number_hits':r['employee_number_hits'],'best_score':r['best_score'],'evidence':' || '.join(ev)})
+ cfields=list(compact[0]) if compact else []
+ with (OUTDIR/'agent_review_top300.tsv').open('w',encoding='utf-8',newline='') as f:
+  w=csv.DictWriter(f,fieldnames=cfields,delimiter='\t');w.writeheader();w.writerows(compact)
+ summary={'rows':len(rows),'with_relevant_hits':sum(bool(r['relevant_hits']) for r in rows),'with_employee_keyword_hit':sum(bool(r['employee_keyword_hits']) for r in rows),'with_employee_number_hit':sum(bool(r['employee_number_hits']) for r in rows),'top300_rows':len(compact)}
  (OUTDIR/'signal_index_summary.json').write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
  print(json.dumps(summary,ensure_ascii=False,indent=2))
-if __name__=='__main__': main()
+if __name__=='__main__':main()
