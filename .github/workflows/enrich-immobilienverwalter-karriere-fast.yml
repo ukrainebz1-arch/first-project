@@ -1,0 +1,33 @@
+name: Enrich Immobilienverwalter karriere fast
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'enrich_immobilienverwalter_karriere_fast.py'
+      - '.github/workflows/enrich-immobilienverwalter-karriere-fast.yml'
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests beautifulsoup4 rapidfuzz
+      - name: Prepare canonical Hausverwaltung input
+        run: python prepare_immobilienverwalter_size_input.py
+      - name: Match karriere.at profiles using indexed candidate search
+        env:
+          WKO_CSV: iv_size_input/iv_size_input.csv
+          OUTDIR: iv_karriere_fast
+        run: python enrich_immobilienverwalter_karriere_fast.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iv-size-karriere-fast
+          path: iv_karriere_fast/
+          if-no-files-found: error
+          retention-days: 7
