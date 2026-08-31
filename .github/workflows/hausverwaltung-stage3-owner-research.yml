@@ -1,0 +1,124 @@
+name: Hausverwaltung Stage 3 owner research
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hausverwaltung-stage3-owner-research.yml'
+      - 'scripts/hausverwaltung_stage3_prepare.py'
+      - 'scripts/accounting_stage3_owner_worker.py'
+      - 'scripts/accounting_stage3_owner_validate.py'
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare 90 main Stage 3 targets
+        run: |
+          rm -rf stage3_input
+          python scripts/hausverwaltung_stage3_prepare.py \
+            --input data/hausverwaltung/size_agent_first/sales_targets_process_fit_2026-08-31.csv \
+            --output-dir stage3_input --chunks 16
+          python - <<'PY'
+          import json
+          m=json.load(open('stage3_input/manifest.json'))
+          assert m['main']==90, m
+          assert m['targets']==90, m
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-input
+          path: stage3_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage3-input
+          path: stage3_input
+      - run: pip install requests beautifulsoup4
+      - name: Research public management and ownership
+        env:
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          mkdir -p stage3_out
+          python scripts/accounting_stage3_owner_worker.py \
+            --input-csv "stage3_input/chunk_${C}.csv" \
+            --output-jsonl "stage3_out/chunk_${C}.jsonl"
+      - name: Validate research object shape
+        env:
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          python scripts/accounting_stage3_owner_validate.py chunk \
+            --input-csv "stage3_input/chunk_${C}.csv" \
+            --result-jsonl "stage3_out/chunk_${C}.jsonl"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-result-${{ matrix.chunk }}
+          path: stage3_out/*.jsonl
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: hausverwaltung-stage3-input
+          path: stage3_input
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hausverwaltung-stage3-result-*
+          path: stage3_results
+          merge-multiple: true
+      - name: Merge auto research
+        run: |
+          rm -rf data/hausverwaltung/stage3_owners_auto
+          mkdir -p data/hausverwaltung/stage3_owners_auto/raw
+          python scripts/accounting_stage3_owner_validate.py merge \
+            --targets-csv stage3_input/targets_universe.csv \
+            --results-dir stage3_results \
+            --output-dir data/hausverwaltung/stage3_owners_auto
+          cp stage3_results/*.jsonl data/hausverwaltung/stage3_owners_auto/raw/
+          cp stage3_input/manifest.json data/hausverwaltung/stage3_owners_auto/input_manifest.json
+      - name: Persist auto Stage 3 checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage3_owners_auto
+          git commit -m 'Persist Hausverwaltung Stage 3 auto ownership research' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage3-owners-auto
+          path: data/hausverwaltung/stage3_owners_auto/*
+          retention-days: 30
