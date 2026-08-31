@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   test-agent:
@@ -15,36 +16,43 @@ jobs:
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-python@v5
         with:
-          node-version: '22'
-      - name: Install Copilot CLI
-        run: npm install -g @github/copilot
-      - name: Install Ollama and local Qwen agent model
+          python-version: '3.12'
+      - name: Install Python research dependencies
+        run: pip install requests beautifulsoup4
+      - name: Download Stage 2 checkpoint and make IWTH test input
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p source agent_input test_out
+          gh api repos/${{ github.repository }}/actions/artifacts/9731550965/zip > /tmp/ksw.zip
+          unzip -o /tmp/ksw.zip -d source >/dev/null
+          python scripts/accounting_stage2_agent_prepare.py --input source/ksw_all_groups_qualified.csv --output-dir agent_input --chunks 1
+          python - <<'PY'
+          import csv
+          rows=list(csv.DictReader(open('agent_input/candidate_universe.csv',encoding='utf-8-sig')))
+          hit=[r for r in rows if r['group_key']=='domain:iwth.at']
+          assert len(hit)==1, len(hit)
+          with open('agent_input/iwth.csv','w',encoding='utf-8-sig',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=list(hit[0].keys()));w.writeheader();w.writerows(hit)
+          PY
+      - name: Install Ollama and Qwen
         run: |
           curl -fsSL https://ollama.com/install.sh | sh
           pkill ollama || true
-          OLLAMA_CONTEXT_LENGTH=32768 nohup ollama serve >/tmp/ollama.log 2>&1 &
-          for i in {1..30}; do
+          OLLAMA_CONTEXT_LENGTH=16384 nohup ollama serve >/tmp/ollama.log 2>&1 &
+          for i in {1..40}; do
             curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break
             sleep 1
           done
           ollama pull qwen3:4b-instruct
-          cat > /tmp/Modelfile <<'EOF'
-          FROM qwen3:4b-instruct
-          PARAMETER num_ctx 32768
-          EOF
-          ollama create accounting-agent -f /tmp/Modelfile
-          curl -fsS http://127.0.0.1:11434/v1/models | grep -q 'accounting-agent'
-      - name: Test local-model subagent plus web
-        env:
-          COPILOT_PROVIDER_BASE_URL: http://127.0.0.1:11434/v1
-          COPILOT_PROVIDER_TYPE: openai
-          COPILOT_PROVIDER_API_KEY: ollama
-          COPILOT_MODEL: accounting-agent
+      - name: Run local research agent on IWTH
         run: |
-          copilot -p "Use the task tool to launch one general-purpose subagent. The subagent must research IWTH Steuerberatung in Austria on the public web, open its official team page, and determine whether the official site supports at least 50 staff. After the subagent reports back, reply with exactly LOCAL_SUBAGENT_WEB_OK if it successfully used public web evidence; otherwise reply FAILED. Do not modify files or run shell commands." \
-            -s --no-ask-user --allow-all-urls \
-            --deny-tool='shell' --deny-tool='write' > /tmp/copilot.txt
-          cat /tmp/copilot.txt
-          grep -q 'LOCAL_SUBAGENT_WEB_OK' /tmp/copilot.txt
+          python scripts/accounting_stage2_local_agent_worker.py \
+            --input-csv agent_input/iwth.csv \
+            --output-jsonl test_out/iwth.jsonl \
+            --model qwen3:4b-instruct
+          cat test_out/iwth.jsonl
+      - name: Deterministic gate
+        run: python scripts/accounting_stage2_agent_validate.py chunk --input-csv agent_input/iwth.csv --result-jsonl test_out/iwth.jsonl
