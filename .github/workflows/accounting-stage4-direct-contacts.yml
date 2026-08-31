@@ -1,0 +1,114 @@
+name: Accounting Stage 4 direct contacts
+
+on:
+  workflow_run:
+    workflows: ["Accounting Stage 3 owner research"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sync latest ownership checkpoint
+        run: git pull --ff-only origin main
+      - name: Build direct-contact research chunks
+        run: |
+          test -f data/accounting/stage3_owners/targets.csv
+          python scripts/accounting_stage4_prepare.py \
+            --input data/accounting/stage3_owners/targets.csv \
+            --output-dir stage4_input --chunks 16
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage4-input
+          path: stage4_input/*
+          retention-days: 30
+
+  research:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        chunk: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: accounting-stage4-input
+          path: stage4_input
+      - name: Install contact research dependencies
+        run: pip install requests beautifulsoup4
+      - name: Search person-specific public contacts
+        env:
+          CHUNK: ${{ matrix.chunk }}
+        run: |
+          C=$(printf '%02d' "$CHUNK")
+          mkdir -p stage4_out
+          python scripts/accounting_stage4_contact_worker.py \
+            --input-csv "stage4_input/chunk_${C}.csv" \
+            --output-csv "stage4_out/chunk_${C}.csv"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage4-result-${{ matrix.chunk }}
+          path: stage4_out/*.csv
+          retention-days: 30
+
+  merge:
+    needs: research
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install merge dependencies
+        run: pip install requests beautifulsoup4
+      - uses: actions/download-artifact@v4
+        with:
+          name: accounting-stage4-input
+          path: stage4_input
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: accounting-stage4-result-*
+          path: stage4_results
+          merge-multiple: true
+      - name: Merge, rank and add central fallback only where needed
+        run: |
+          rm -rf data/accounting/contacts
+          mkdir -p data/accounting/contacts/raw
+          python scripts/accounting_stage4_contact_merge.py \
+            --targets stage4_input/eligible_targets.csv \
+            --hits-dir stage4_results \
+            --output-dir data/accounting/contacts
+          cp stage4_results/*.csv data/accounting/contacts/raw/
+          cp stage4_input/manifest.json data/accounting/contacts/input_manifest.json
+      - name: Persist Stage 4 checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/accounting/contacts
+          git commit -m 'Persist accounting Stage 4 direct contacts' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-stage4-contacts-final
+          path: data/accounting/contacts/*
+          retention-days: 30
