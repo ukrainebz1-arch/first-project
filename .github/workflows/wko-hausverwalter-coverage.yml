@@ -1,0 +1,83 @@
+name: WKO Hausverwalter Coverage Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'merge_hausverwalter_coverage.py'
+      - '.github/workflows/wko-hausverwalter-coverage.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    name: hausverwalter / ${{ matrix.slug }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        include:
+          - {state: burgenland, slug: burgenland}
+          - {state: kärnten, slug: kaernten}
+          - {state: niederösterreich, slug: niederoesterreich}
+          - {state: oberösterreich, slug: oberoesterreich}
+          - {state: salzburg, slug: salzburg}
+          - {state: steiermark, slug: steiermark}
+          - {state: tirol, slug: tirol}
+          - {state: vorarlberg, slug: vorarlberg}
+          - {state: wien, slug: wien}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.54.0 beautifulsoup4==4.12.3
+      - run: python -m playwright install --with-deps chromium
+      - name: Scrape and validate live WKO count
+        env:
+          TERM_NAME: hausverwalter
+          STATE_NAME: ${{ matrix.state }}
+          STATE_SLUG: ${{ matrix.slug }}
+          OUT_DIR: part
+        run: python wko_playwright_state.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hv-cover-${{ matrix.slug }}
+          path: part/
+          if-no-files-found: error
+          retention-days: 7
+
+  merge:
+    needs: scrape
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: hv-cover-*
+          path: parts
+          merge-multiple: true
+      - name: Compare Hausverwalter universe to validated Immobilienverwalter base
+        env:
+          PARTS_DIR: parts
+          OUT_DIR: data/hausverwaltung/coverage
+        run: python merge_hausverwalter_coverage.py
+      - name: Persist coverage checkpoint
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/hausverwaltung/coverage/
+          git commit -m 'Checkpoint Hausverwalter coverage audit' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwalter-coverage-audit
+          path: data/hausverwaltung/coverage/
+          if-no-files-found: error
+          retention-days: 7
