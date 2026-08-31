@@ -1,0 +1,51 @@
+name: Hausverwaltung Stage 4 curated final
+
+on:
+  push:
+    paths:
+      - 'data/hausverwaltung/stage4_contacts/manual_overrides.csv'
+  workflow_dispatch:
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce 99-row manual/agent quality gate
+        run: |
+          python scripts/hausverwaltung_stage4_finalize.py \
+            --machine-master data/hausverwaltung/stage4_contacts/stage4_machine_master_99.csv \
+            --overrides data/hausverwaltung/stage4_contacts/manual_overrides.csv \
+            --output-dir data/hausverwaltung/stage4_contacts/final
+      - name: Publish final Stage 4 master
+        run: |
+          cp data/hausverwaltung/stage4_contacts/final/stage4_master_99.csv data/hausverwaltung/stage4_contacts/stage4_master_99.csv
+          cp data/hausverwaltung/stage4_contacts/final/stage4_main_90.csv data/hausverwaltung/stage4_contacts/stage4_main_90.csv
+          cp data/hausverwaltung/stage4_contacts/final/stage4_secondary_9.csv data/hausverwaltung/stage4_contacts/stage4_secondary_9.csv
+          cp data/hausverwaltung/stage4_contacts/final/summary.json data/hausverwaltung/stage4_contacts/summary.json
+          cp data/hausverwaltung/stage4_contacts/final/README.md data/hausverwaltung/stage4_contacts/README.md
+      - name: Persist final Stage 4 to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin main
+          git add data/hausverwaltung/stage4_contacts
+          git commit -m 'Finalize Hausverwaltung Stage 4 direct contacts' || true
+          for i in 1 2 3; do git push && break || { git pull --rebase origin main; sleep 2; }; done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hausverwaltung-stage4-final
+          path: |
+            data/hausverwaltung/stage4_contacts/stage4_master_99.csv
+            data/hausverwaltung/stage4_contacts/stage4_main_90.csv
+            data/hausverwaltung/stage4_contacts/stage4_secondary_9.csv
+            data/hausverwaltung/stage4_contacts/summary.json
+            data/hausverwaltung/stage4_contacts/README.md
+          retention-days: 30
