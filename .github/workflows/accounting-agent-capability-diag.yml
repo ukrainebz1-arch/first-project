@@ -1,0 +1,32 @@
+name: Accounting agent capability test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/accounting-agent-capability-diag.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  copilot-requests: write
+
+jobs:
+  test-agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Test non-interactive agent
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          copilot -p "Reply exactly READY. Do not modify files and do not run shell commands." \
+            -s --no-ask-user --model gpt-5.6-luna \
+            --deny-tool='shell' --deny-tool='write' > /tmp/copilot.txt
+          cat /tmp/copilot.txt
+          grep -q 'READY' /tmp/copilot.txt
