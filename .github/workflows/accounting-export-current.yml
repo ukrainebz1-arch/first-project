@@ -1,0 +1,22 @@
+name: Accounting export current
+
+on:
+  push:
+    paths:
+      - '.github/workflows/accounting-export-current.yml'
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify assembled dataset
+        run: |
+          test -f data/accounting/final/Accounting_Steuerberatung_Austria_AI_Prospects_2026-08-31.csv
+          ls -lh data/accounting/final/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accounting-current-final
+          path: data/accounting/final/*
+          retention-days: 30
